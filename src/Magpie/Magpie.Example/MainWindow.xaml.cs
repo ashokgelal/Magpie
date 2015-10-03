@@ -1,4 +1,6 @@
-﻿namespace Magpie.Example
+﻿using Magpie.Services;
+
+namespace Magpie.Example
 {
     public partial class MainWindow
     {

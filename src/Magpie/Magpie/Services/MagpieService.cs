@@ -1,13 +1,14 @@
 ﻿using System;
-using System.CodeDom;
 using System.IO;
 using System.Net;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using System.Threading.Tasks;
 using Magpie.Interfaces;
+using Magpie.Models;
+using Magpie.ViewModels;
 
-namespace Magpie
+namespace Magpie.Services
 {
     public class MagpieService : IMagpieService
     {

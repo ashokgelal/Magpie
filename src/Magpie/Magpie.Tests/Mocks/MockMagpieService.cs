@@ -1,5 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Magpie.Interfaces;
+using Magpie.Models;
+using Magpie.Services;
 
 namespace Magpie.Tests.Mocks
 {

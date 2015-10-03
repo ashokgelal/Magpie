@@ -3,7 +3,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.Serialization;
 
-namespace Magpie
+namespace Magpie.Models
 {
     [DataContract]
     public class RemoteAppcast
