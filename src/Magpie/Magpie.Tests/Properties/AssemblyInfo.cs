@@ -8,7 +8,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Magpie.Tests")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("")]
+[assembly: AssemblyCompany("MagpieTests")]
 [assembly: AssemblyProduct("Magpie.Tests")]
 [assembly: AssemblyCopyright("Ashok Gelal Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]

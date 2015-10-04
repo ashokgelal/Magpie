@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Reflection;
 using Magpie.Tests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -7,6 +8,12 @@ namespace Magpie.Tests
     [TestClass]
     public class MagpieServiceTests
     {
+        [TestInitialize]
+        public void Initialize()
+        {
+            AssemblyInjector.Inject();
+        }
+
         [TestMethod]
         public void TestValidJson()
         {
@@ -26,6 +33,26 @@ namespace Magpie.Tests
             mockMagpieService.RemoteAppcastAvailableEvent += (s, a) => { raised = true; };
             mockMagpieService.RunInBackground("validContentUrl");
             Assert.IsTrue(raised);
+        }
+    }
+
+    internal static class AssemblyInjector
+    {
+        /// <summary>
+        /// Allows setting the Entry Assembly when needed. 
+        /// Use AssemblyUtilities.SetEntryAssembly() as first line in XNA ad hoc tests
+        /// </summary>
+        /// <param name="assembly">Assembly to set as entry assembly</param>
+        public static void Inject(Assembly assembly = null)
+        {
+            assembly = assembly ?? Assembly.GetCallingAssembly();
+            var manager = new AppDomainManager();
+            var entryAssemblyfield = manager.GetType().GetField("m_entryAssembly", BindingFlags.Instance | BindingFlags.NonPublic);
+            entryAssemblyfield.SetValue(manager, assembly);
+
+            var domain = AppDomain.CurrentDomain;
+            var domainManagerField = domain.GetType().GetField("_domainManager", BindingFlags.Instance | BindingFlags.NonPublic);
+            domainManagerField.SetValue(domain, manager);
         }
     }
 }
