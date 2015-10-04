@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Reflection;
 using System.Runtime.Serialization.Json;
 using System.Text;
 using Magpie.Interfaces;
@@ -13,13 +12,15 @@ namespace Magpie.Services
     public class MagpieService : IMagpieService
     {
         private readonly IDebuggingInfoLogger _logger;
+        internal UpdateDecider UpdateDecider { get; set; }
+        internal IRemoteContentDownloader RemoteContentDownloader { get; set; }
         public event EventHandler<SingleEventArgs<RemoteAppcast>> RemoteAppcastAvailableEvent;
-        protected IRemoteContentDownloader RemoteContentDownloader { get; set; }
 
         public MagpieService(IDebuggingInfoLogger debuggingInfoLogger = null)
         {
             _logger = debuggingInfoLogger ?? new DebuggingWindowViewModel();
             RemoteContentDownloader = new DefaultRemoteContentDownloader();
+            UpdateDecider = new UpdateDecider(_logger);
         }
 
         public async void RunInBackground(string appcastUrl, bool showDebuggingWindow = false)
@@ -30,7 +31,7 @@ namespace Magpie.Services
                 var data = await RemoteContentDownloader.DownloadStringContent(appcastUrl).ConfigureAwait(true);
                 var appcast = ParseAppcast(data);
                 OnRemoteAppcastAvailableEvent(new SingleEventArgs<RemoteAppcast>(appcast));
-                if (CanUpdate(appcast))
+                if (UpdateDecider.ShouldUpdate(appcast))
                 {
                     ShowUpdateWindow(appcast);
                 }
@@ -62,15 +63,6 @@ namespace Magpie.Services
             ms.Close();
             _logger.Log("Finished deserializing remote appcast content");
             return appcast;
-        }
-
-        protected virtual bool CanUpdate(RemoteAppcast appcast)
-        {
-            // todo: check registry
-            var curVer = Assembly.GetExecutingAssembly().GetName().Version;
-            var isHigherVersionAvailable = appcast.Version.IsHigherThan(curVer);
-            _logger.Log(string.Format("Higher version of app is {0}available", isHigherVersionAvailable ? "" : "not "));
-            return isHigherVersionAvailable;
         }
 
         protected virtual void OnRemoteAppcastAvailableEvent(SingleEventArgs<RemoteAppcast> args)
