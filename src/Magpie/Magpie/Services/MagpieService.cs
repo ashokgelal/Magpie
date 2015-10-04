@@ -68,12 +68,7 @@ namespace Magpie.Services
         {
             // todo: check registry
             var curVer = Assembly.GetExecutingAssembly().GetName().Version;
-            var remVer = appcast.Version;
-
-            var isHigherVersionAvailable = remVer.Revision > curVer.Revision
-                   || remVer.Build > curVer.Build
-                   || remVer.Minor > curVer.Minor
-                   || remVer.Major > curVer.Major;
+            var isHigherVersionAvailable = appcast.Version.IsHigherThan(curVer);
             _logger.Log(string.Format("Higher version of app is {0}available", isHigherVersionAvailable ? "" : "not "));
             return isHigherVersionAvailable;
         }

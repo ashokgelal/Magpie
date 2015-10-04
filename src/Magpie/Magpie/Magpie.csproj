@@ -62,6 +62,7 @@
     <Compile Include="Interfaces\IMagpieService.cs" />
     <Compile Include="Interfaces\IRemoteContentDownloader.cs" />
     <Compile Include="Services\DefaultRemoteContentDownloader.cs" />
+    <Compile Include="Services\Helpers.cs" />
     <Compile Include="Services\MagpieService.cs" />
     <Compile Include="ViewModels\BindableBase.cs" />
     <Compile Include="ViewModels\DebuggingWindowViewModel.cs" />
