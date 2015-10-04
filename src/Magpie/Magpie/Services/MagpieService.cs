@@ -1,9 +1,8 @@
 ﻿using System;
 using System.IO;
-using System.Net;
+using System.Reflection;
 using System.Runtime.Serialization.Json;
 using System.Text;
-using System.Threading.Tasks;
 using Magpie.Interfaces;
 using Magpie.Models;
 using Magpie.ViewModels;
@@ -14,10 +13,12 @@ namespace Magpie.Services
     {
         private readonly IDebuggingInfoLogger _logger;
         public event EventHandler<SingleEventArgs<RemoteAppcast>> RemoteAppcastAvailableEvent;
+        protected IRemoteContentDownloader RemoteContentDownloader { get; set; }
 
         public MagpieService(IDebuggingInfoLogger debuggingInfoLogger = null)
         {
             _logger = debuggingInfoLogger ?? new DebuggingWindowViewModel();
+            RemoteContentDownloader = new DefaultRemoteContentDownloader();
         }
 
         public async void RunInBackground(string appcastUrl, bool showDebuggingWindow = false)
@@ -25,32 +26,27 @@ namespace Magpie.Services
             _logger.Log(string.Format("Starting fetching remote appcast content from address: {0}", appcastUrl));
             try
             {
-                var data = await FetchRemoteAppcastContent(appcastUrl).ConfigureAwait(false);
-                _logger.Log(data);
-                try
+                var data = await RemoteContentDownloader.DownloadStringContent(appcastUrl).ConfigureAwait(true);
+                var appcast = ParseAppcast(data);
+                OnRemoteAppcastAvailableEvent(new SingleEventArgs<RemoteAppcast>(appcast));
+                if (CanUpdate(appcast))
                 {
-                    var appcast = ParseAppcast(data);
-                    OnRemoteAppcastAvailableEvent(new SingleEventArgs<RemoteAppcast>(appcast));
-                }
-                catch (Exception ex)
-                {
-                    _logger.Log(string.Format("Error parsing remote appcast: {0}", ex.Message));
+                    ShowUpdateWindow(appcast);
                 }
             }
             catch (Exception ex)
             {
-                _logger.Log(ex.Message);
+                _logger.Log(string.Format("Error parsing remote appcast: {0}", ex.Message));
             }
+
             finally
             {
                 _logger.Log("Finished fetching remote appcast content");
             }
         }
 
-        protected virtual async Task<string> FetchRemoteAppcastContent(string appcastUrl)
+        protected virtual void ShowUpdateWindow(RemoteAppcast appcast)
         {
-            var client = new WebClient();
-            return await client.DownloadStringTaskAsync(new Uri(appcastUrl)).ConfigureAwait(false);
         }
 
         private RemoteAppcast ParseAppcast(string content)
