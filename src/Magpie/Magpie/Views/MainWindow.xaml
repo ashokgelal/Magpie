@@ -10,6 +10,25 @@
         d:DataContext="{d:DesignInstance d:Type=viewModels:MainWindowViewModel}"
         mc:Ignorable="d">
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
         <TextBlock Text="{Binding ReleaseNotes}" />
+        <DockPanel Grid.Row="1"
+                   HorizontalAlignment="Stretch"
+                   LastChildFill="False">
+            <Button Command="{Binding SkipThisVersionCommand}"
+                    Content="Skip This Version"
+                    DockPanel.Dock="Left" />
+            <Button HorizontalAlignment="Right"
+                    Command="{Binding ContinueUpdateCommand}"
+                    Content="Update"
+                    DockPanel.Dock="Right" />
+            <Button HorizontalAlignment="Right"
+                    Command="{Binding RemindMeLaterCommand}"
+                    Content="Remind Me Later"
+                    DockPanel.Dock="Right" />
+        </DockPanel>
     </Grid>
 </Window>
