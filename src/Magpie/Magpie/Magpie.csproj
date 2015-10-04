@@ -61,6 +61,7 @@
     <Compile Include="Interfaces\IDebuggingInfoLogger.cs" />
     <Compile Include="Interfaces\IMagpieService.cs" />
     <Compile Include="Interfaces\IRemoteContentDownloader.cs" />
+    <Compile Include="Services\AssemblyAccessor.cs" />
     <Compile Include="Services\DefaultRemoteContentDownloader.cs" />
     <Compile Include="Services\Helpers.cs" />
     <Compile Include="Services\MagpieService.cs" />
