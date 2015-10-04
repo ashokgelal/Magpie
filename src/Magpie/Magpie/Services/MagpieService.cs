@@ -6,6 +6,7 @@ using System.Text;
 using Magpie.Interfaces;
 using Magpie.Models;
 using Magpie.ViewModels;
+using Magpie.Views;
 
 namespace Magpie.Services
 {
@@ -38,7 +39,6 @@ namespace Magpie.Services
             {
                 _logger.Log(string.Format("Error parsing remote appcast: {0}", ex.Message));
             }
-
             finally
             {
                 _logger.Log("Finished fetching remote appcast content");
@@ -47,6 +47,10 @@ namespace Magpie.Services
 
         protected virtual void ShowUpdateWindow(RemoteAppcast appcast)
         {
+            var viewModel = new MainWindowViewModel(appcast, _logger);
+            var window = new MainWindow { DataContext = viewModel };
+            // todo: set owner
+            window.ShowDialog();
         }
 
         private RemoteAppcast ParseAppcast(string content)
