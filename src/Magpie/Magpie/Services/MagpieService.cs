@@ -64,6 +64,20 @@ namespace Magpie.Services
             return appcast;
         }
 
+        protected virtual bool CanUpdate(RemoteAppcast appcast)
+        {
+            // todo: check registry
+            var curVer = Assembly.GetExecutingAssembly().GetName().Version;
+            var remVer = appcast.Version;
+
+            var isHigherVersionAvailable = remVer.Revision > curVer.Revision
+                   || remVer.Build > curVer.Build
+                   || remVer.Minor > curVer.Minor
+                   || remVer.Major > curVer.Major;
+            _logger.Log(string.Format("Higher version of app is {0}available", isHigherVersionAvailable ? "" : "not "));
+            return isHigherVersionAvailable;
+        }
+
         protected virtual void OnRemoteAppcastAvailableEvent(SingleEventArgs<RemoteAppcast> args)
         {
             var handler = RemoteAppcastAvailableEvent;
