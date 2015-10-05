@@ -24,5 +24,10 @@ namespace Magpie.Tests.Mocks
             RemoteAppcast = args.Payload;
             base.OnRemoteAppcastAvailableEvent(args);
         }
+
+        protected override void ShowUpdateWindow(RemoteAppcast appcast)
+        {
+            // can't do in tests
+        }
     }
 }
