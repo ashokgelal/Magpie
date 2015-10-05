@@ -4,31 +4,110 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:Magpie.ViewModels"
+        xmlns:views="clr-namespace:Magpie.Views"
         Title="Update Available"
-        Width="525"
-        Height="350"
+        Width="600"
+        Height="520"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        UseLayoutRounding="True"
         d:DataContext="{d:DesignInstance d:Type=viewModels:MainWindowViewModel}"
         mc:Ignorable="d">
-    <Grid>
+    <Window.Resources>
+        <ResourceDictionary Source="pack://application:,,,/Magpie;component/Resources/Styles.xaml" />
+    </Window.Resources>
+    <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="*" />
             <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
-        <TextBlock Text="{Binding ReleaseNotes}" />
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="Auto" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+        <Image Grid.Row="0"
+               Grid.Column="0"
+               Width="64"
+               Margin="10"
+               VerticalAlignment="Top"
+               RenderOptions.BitmapScalingMode="HighQuality"
+               Source="../Resources/magpie.png" />
+
+        <StackPanel Grid.Row="0"
+                    Grid.Column="1"
+                    Margin="5 0">
+            <TextBlock Style="{DynamicResource _magpieWindowHeader}"
+                       Text="A NEW VERSION OF MAGPIE IS AVAILABLE"
+                       TextWrapping="Wrap" />
+
+            <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+                <Label Content="Your version:"
+                       FontSize="14"
+                       Foreground="#777777" />
+                <Label Content="0.2.3"
+                       FontSize="14"
+                       FontWeight="SemiBold" />
+                <Label Content="New version:"
+                       FontSize="14"
+                       Foreground="#777777" />
+                <Label Content="0.4.0"
+                       FontSize="14"
+                       FontWeight="SemiBold" />
+            </StackPanel>
+            <Rectangle Height="1"
+                       Margin="5"
+                       Fill="#DCDCDC" />
+            <Label Content="RELEASE NOTES"
+                   FontSize="18"
+                   Foreground="#777777" />
+            <WebBrowser x:Name="ReleaseNotesBrowser"
+                        Height="280"
+                        VerticalAlignment="Stretch"
+                        views:BrowserBehavior.Html="{Binding ReleaseNotes}" />
+
+        </StackPanel>
+
         <DockPanel Grid.Row="1"
+                   Grid.Column="1"
                    HorizontalAlignment="Stretch"
                    LastChildFill="False">
-            <Button Command="{Binding SkipThisVersionCommand}"
+            <Button Width="130"
+                    Command="{Binding SkipThisVersionCommand}"
                     Content="Skip This Version"
-                    DockPanel.Dock="Left" />
-            <Button HorizontalAlignment="Right"
+                    DockPanel.Dock="Left"
+                    Foreground="{DynamicResource _magpieSkipBtnFgBrush}"
+                    Style="{DynamicResource _magpieSecondaryBtn}" />
+            <Button Width="140"
+                    HorizontalAlignment="Right"
                     Command="{Binding ContinueUpdateCommand}"
-                    Content="Update"
-                    DockPanel.Dock="Right" />
-            <Button HorizontalAlignment="Right"
+                    Content="Download Now"
+                    DockPanel.Dock="Right"
+                    Style="{StaticResource _magpiePrimaryBtn}" />
+            <Button Width="130"
+                    Margin="10 0"
+                    HorizontalAlignment="Right"
                     Command="{Binding RemindMeLaterCommand}"
                     Content="Remind Me Later"
-                    DockPanel.Dock="Right" />
+                    DockPanel.Dock="Right"
+                    Foreground="{DynamicResource _magpieRemindLaterBtnFgBrush}"
+                    Style="{DynamicResource _magpieSecondaryBtn}" />
         </DockPanel>
+
+        <StackPanel Grid.Row="2"
+                    Grid.Column="0"
+                    Grid.ColumnSpan="2"
+                    HorizontalAlignment="Center"
+                    Background="{x:Null}"
+                    Orientation="Horizontal">
+            <Label FontSize="13">
+                <Hyperlink Foreground="#BBBBBB"
+                           NavigateUri="https://github.com/ashokgelal/Magpie"
+                           RequestNavigate="PoweredBy_RequestNavigate"
+                           TextDecorations="None">
+                    <Run Text="Powered by Magpie" />
+                </Hyperlink>
+            </Label>
+        </StackPanel>
     </Grid>
 </Window>

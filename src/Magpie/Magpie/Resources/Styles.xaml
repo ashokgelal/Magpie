@@ -1,0 +1,80 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+    <SolidColorBrush x:Key="_magpiePrimaryBtnBgBrush" Color="#28A214" />
+    <SolidColorBrush x:Key="_magpieSecondaryBtnBgBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="_magpieSkipBtnFgBrush" Color="Crimson" />
+    <SolidColorBrush x:Key="_magpieRemindLaterBtnFgBrush" Color="Black" />
+
+    <Style x:Key="_magpieButtonFocusStyle">
+        <Setter Property="Control.Template">
+            <Setter.Value>
+                <ControlTemplate>
+                    <Rectangle Margin="2"
+                               SnapsToDevicePixels="true"
+                               Stroke="#55FFFFFF"
+                               StrokeDashArray="2 1"
+                               StrokeThickness="2" />
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="_magpieButtonBase" TargetType="Button">
+        <Setter Property="FocusVisualStyle" Value="{StaticResource _magpieButtonFocusStyle}" />
+        <Setter Property="BorderThickness" Value="0" />
+        <Setter Property="Padding" Value="10 5" />
+        <Setter Property="FontSize" Value="16" />
+        <Setter Property="Opacity" Value="1" />
+        <Setter Property="Foreground" Value="White" />
+        <Setter Property="HorizontalContentAlignment" Value="Center" />
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type Button}">
+                    <Border x:Name="border"
+                            Background="{TemplateBinding Background}"
+                            BorderBrush="{TemplateBinding BorderBrush}"
+                            BorderThickness="{TemplateBinding BorderThickness}"
+                            CornerRadius="2"
+                            SnapsToDevicePixels="true">
+                        <ContentPresenter x:Name="contentPresenter"
+                                          Margin="{TemplateBinding Padding}"
+                                          HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                          VerticalAlignment="{TemplateBinding VerticalContentAlignment}"
+                                          Focusable="False"
+                                          RecognizesAccessKey="True"
+                                          SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" />
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="true">
+                            <Setter Property="FontWeight" Value="SemiBold" />
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="false">
+                            <Setter Property="Opacity" Value="0.3" />
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="_magpiePrimaryBtn"
+           BasedOn="{StaticResource _magpieButtonBase}"
+           TargetType="Button">
+        <Setter Property="Background" Value="{DynamicResource _magpiePrimaryBtnBgBrush}" />
+        <Setter Property="IsDefault" Value="True" />
+    </Style>
+    <Style x:Key="_magpieSecondaryBtn"
+           BasedOn="{StaticResource _magpieButtonBase}"
+           TargetType="Button">
+        <Setter Property="FontSize" Value="14" />
+        <Setter Property="Background" Value="{DynamicResource _magpieSecondaryBtnBgBrush}" />
+    </Style>
+    <FontFamily x:Key="_magpieHeaderFont">Trebuchet MS</FontFamily>
+    <SolidColorBrush x:Key="_magpieHeaderFgBrush" Color="#282830" />
+
+    <Style x:Key="_magpieWindowHeader" TargetType="TextBlock">
+        <Setter Property="HorizontalAlignment" Value="Center" />
+        <Setter Property="VerticalAlignment" Value="Center" />
+        <Setter Property="FontWeight" Value="Bold" />
+        <Setter Property="FontSize" Value="20" />
+        <Setter Property="FontFamily" Value="{StaticResource _magpieHeaderFont}" />
+        <Setter Property="Foreground" Value="{StaticResource _magpieHeaderFgBrush}" />
+    </Style>
+</ResourceDictionary>
