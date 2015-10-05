@@ -5,13 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:viewModels="clr-namespace:Magpie.ViewModels"
         xmlns:views="clr-namespace:Magpie.Views"
-        Title="Update Available"
         Width="600"
         Height="520"
         ResizeMode="NoResize"
         ShowInTaskbar="False"
         UseLayoutRounding="True"
         d:DataContext="{d:DesignInstance d:Type=viewModels:MainWindowViewModel}"
+        views:NoIconBehavior.ShowIcon="False"
         mc:Ignorable="d">
     <Window.Resources>
         <ResourceDictionary Source="pack://application:,,,/Magpie;component/Resources/Styles.xaml" />
