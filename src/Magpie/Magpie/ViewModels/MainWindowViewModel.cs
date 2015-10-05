@@ -1,8 +1,11 @@
 ﻿using System;
+using System.Globalization;
 using System.Net;
+using System.Threading.Tasks;
 using System.Windows.Input;
 using Magpie.Interfaces;
 using Magpie.Models;
+using Magpie.Services;
 
 namespace Magpie.ViewModels
 {
@@ -11,6 +14,10 @@ namespace Magpie.ViewModels
         private readonly RemoteAppcast _remoteAppcast;
         private readonly IDebuggingInfoLogger _logger;
         private string _releaseNotes;
+        private string _title;
+        private string _oldVersion;
+        private string _newVersion;
+        private string _appIconPath;
 
         public string ReleaseNotes
         {
@@ -25,12 +32,45 @@ namespace Magpie.ViewModels
         public ICommand SkipThisVersionCommand { get; set; }
         public ICommand RemindMeLaterCommand { get; set; }
 
-        public MainWindowViewModel(RemoteAppcast appcast, IDebuggingInfoLogger logger)
+        public string Title
+        {
+            get { return _title; }
+            set { SetProperty(ref _title, value); }
+        }
+
+        public string OldVersion
+        {
+            get { return _oldVersion; }
+            set { SetProperty(ref _oldVersion, value); }
+        }
+
+        public string NewVersion
+        {
+            get { return _newVersion; }
+            set { SetProperty(ref _newVersion, value); }
+        }
+
+        public string AppIconPath
+        {
+            get { return _appIconPath; }
+            set { SetProperty(ref _appIconPath, value); }
+        }
+
+        public MainWindowViewModel(RemoteAppcast appcast, AppInfo appInfo, IDebuggingInfoLogger logger)
         {
             _remoteAppcast = appcast;
+            AppIconPath = appInfo.AppIconPath;
             _logger = logger;
+
+        }
+
+        internal async Task InitializeAsync()
+        {
             InitializeCommands();
-            PrepareReleaseNotes(appcast.ReleaseNotesUrl);
+            Title = string.Format("A NEW VERSION OF {0} IS AVAILABLE", _remoteAppcast.Title).ToUpperInvariant();
+            OldVersion = new AssemblyAccessor().Version;
+            NewVersion = _remoteAppcast.Version.ToString();
+            ReleaseNotes = await FetchReleaseNotesAsync(_remoteAppcast.ReleaseNotesUrl).ConfigureAwait(false);
         }
 
         private void InitializeCommands()
@@ -43,11 +83,15 @@ namespace Magpie.ViewModels
         private void RemindMeLaterCommandHandler(object obj)
         {
             _logger.Log("Remind me later command invoked");
+            var registryIO = new RegistryIO();
+            registryIO.WriteToRegistry(MagicStrings.LAST_CHECK_DATE, DateTime.Now.ToString(CultureInfo.InvariantCulture));
         }
 
         private void SkipThisVersionCommandHandler(object obj)
         {
             _logger.Log("Skip this version command invoked");
+            var registryIO = new RegistryIO();
+            registryIO.WriteToRegistry(MagicStrings.SKIP_VERSION_KEY, _remoteAppcast.Version.ToString());
         }
 
         private void ContinueUpdateCommandHandler(object obj)
@@ -55,15 +99,16 @@ namespace Magpie.ViewModels
             _logger.Log("Continue with update command invoked");
         }
 
-        private async void PrepareReleaseNotes(string releaseNotesUrl)
+        private async Task<string> FetchReleaseNotesAsync(string releaseNotesUrl)
         {
             _logger.Log("Fetching release notes");
             var client = new WebClient();
             var notes = await client.DownloadStringTaskAsync(new Uri(releaseNotesUrl)).ConfigureAwait(false);
             _logger.Log("Finished fetching release notes");
             _logger.Log("Converting release notes from markdown to html");
-            ReleaseNotes = CommonMark.CommonMarkConverter.Convert(notes);
+            var htmlNotes = CommonMark.CommonMarkConverter.Convert(notes);
             _logger.Log("Finished converting release notes from markdown to html");
+            return htmlNotes;
         }
     }
 }

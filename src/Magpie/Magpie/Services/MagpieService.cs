@@ -2,6 +2,7 @@
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
+using System.Windows;
 using Magpie.Interfaces;
 using Magpie.Models;
 using Magpie.ViewModels;
@@ -11,13 +12,15 @@ namespace Magpie.Services
 {
     public class MagpieService : IMagpieService
     {
+        private readonly AppInfo _appInfo;
         private readonly IDebuggingInfoLogger _logger;
         internal UpdateDecider UpdateDecider { get; set; }
         internal IRemoteContentDownloader RemoteContentDownloader { get; set; }
         public event EventHandler<SingleEventArgs<RemoteAppcast>> RemoteAppcastAvailableEvent;
 
-        public MagpieService(IDebuggingInfoLogger debuggingInfoLogger = null)
+        public MagpieService(AppInfo appInfo, IDebuggingInfoLogger debuggingInfoLogger = null)
         {
+            _appInfo = appInfo;
             _logger = debuggingInfoLogger ?? new DebuggingWindowViewModel();
             RemoteContentDownloader = new DefaultRemoteContentDownloader();
             UpdateDecider = new UpdateDecider(_logger);
@@ -46,12 +49,21 @@ namespace Magpie.Services
             }
         }
 
-        protected virtual void ShowUpdateWindow(RemoteAppcast appcast)
+        protected virtual async void ShowUpdateWindow(RemoteAppcast appcast)
         {
-            var viewModel = new MainWindowViewModel(appcast, _logger);
+            var viewModel = new MainWindowViewModel(appcast, _appInfo, _logger);
+            await viewModel.InitializeAsync().ConfigureAwait(true);
             var window = new MainWindow { DataContext = viewModel };
-            // todo: set owner
+            SetOwner(window);
             window.ShowDialog();
+        }
+
+        protected virtual void SetOwner(Window window)
+        {
+            if (Application.Current != null && !Application.Current.MainWindow.Equals(window))
+            {
+                window.Owner = Application.Current.MainWindow;
+            }
         }
 
         private RemoteAppcast ParseAppcast(string content)

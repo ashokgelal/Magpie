@@ -7,7 +7,9 @@ namespace Magpie.Example
         public MainWindow()
         {
             InitializeComponent();
-            new MagpieService().RunInBackground("https://dl.dropboxusercontent.com/u/83257/Updaters/Magpie/appcast.json");
+            var appInfo = new AppInfo();
+            appInfo.SetAppIcon("Magpie.Example", "magpie.png");
+            new MagpieService(appInfo).RunInBackground("https://dl.dropboxusercontent.com/u/83257/Updaters/Magpie/appcast.json");
         }
     }
 }

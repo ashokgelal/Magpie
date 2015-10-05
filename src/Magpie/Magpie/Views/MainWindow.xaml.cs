@@ -13,6 +13,7 @@ namespace Magpie.Views
         public MainWindow()
         {
             InitializeComponent();
+            SetValue(NoIconBehavior.ShowIconProperty, false);
         }
 
         private void PoweredBy_RequestNavigate(object sender, RequestNavigateEventArgs e)

@@ -26,7 +26,7 @@ namespace Magpie.Models
         [DataMember(Name = "release_notes_url", IsRequired = true)]
         public string ReleaseNotesUrl { get; private set; }
 
-        [DataMember(Name = "title", IsRequired = false)]
+        [DataMember(Name = "title", IsRequired = true)]
         public string Title { get; private set; }
 
         [OnDeserialized]
