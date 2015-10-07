@@ -23,7 +23,7 @@ namespace Magpie.Views
         }
     }
 
-    public class BrowserBehavior
+    internal class BrowserBehavior
     {
         public static readonly DependencyProperty HtmlProperty = DependencyProperty.RegisterAttached(
                 "Html",
@@ -49,7 +49,7 @@ namespace Magpie.Views
                 webBrowser.NavigateToString(e.NewValue as string ?? "&nbsp;");
         }
     }
-    public class NoIconBehavior
+    internal class NoIconBehavior
     {
         private const int GwlExstyle = -20;
         private const int SwpFramechanged = 0x0020;

@@ -1,8 +1,8 @@
 ﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
     <SolidColorBrush x:Key="_magpieContainerBgBrush" Color="White" />
     <SolidColorBrush x:Key="_magpiePrimaryBtnBgBrush" Color="#28A214" />
-    <SolidColorBrush x:Key="_magpieSkipBtnBgBrush" Color="Crimson" />
-    <SolidColorBrush x:Key="_magpieSkipBtnFgBrush" Color="White" />
+    <SolidColorBrush x:Key="_magpieSkipBtnBgBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="_magpieSkipBtnFgBrush" Color="Crimson" />
     <SolidColorBrush x:Key="_magpieRemindLaterBtnBgBrush" Color="Transparent" />
     <SolidColorBrush x:Key="_magpieRemindLaterBtnFgBrush" Color="DarkCyan" />
     <SolidColorBrush x:Key="_magpieHeaderFgBrush" Color="Black" />

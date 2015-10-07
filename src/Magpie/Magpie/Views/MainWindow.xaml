@@ -78,6 +78,7 @@
 
         <DockPanel Grid.Row="4"
                    Grid.Column="0"
+                   Margin="10 0"
                    HorizontalAlignment="Stretch"
                    LastChildFill="False">
             <Button Width="130"
@@ -85,12 +86,11 @@
                     Content="Skip This Version"
                     DockPanel.Dock="Left"
                     Style="{DynamicResource _magpieSkipBtn}" />
-            <Button Width="140"
-                    HorizontalAlignment="Right"
+            <Button HorizontalAlignment="Right"
                     Command="{Binding ContinueUpdateCommand}"
                     Content="Download Now"
                     DockPanel.Dock="Right"
-                    Style="{StaticResource _magpiePrimaryBtn}" />
+                    Padding="4" />
             <Button Width="130"
                     Margin="10 0"
                     HorizontalAlignment="Right"
