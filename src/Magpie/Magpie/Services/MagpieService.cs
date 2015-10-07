@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization.Json;
 using System.Text;
@@ -17,6 +18,7 @@ namespace Magpie.Services
         internal UpdateDecider UpdateDecider { get; set; }
         internal IRemoteContentDownloader RemoteContentDownloader { get; set; }
         public event EventHandler<SingleEventArgs<RemoteAppcast>> RemoteAppcastAvailableEvent;
+        public event EventHandler<SingleEventArgs<string>> ArtifactDownloadedEvent;
 
         public MagpieService(AppInfo appInfo, IDebuggingInfoLogger debuggingInfoLogger = null)
         {
@@ -51,11 +53,45 @@ namespace Magpie.Services
 
         protected virtual async void ShowUpdateWindow(RemoteAppcast appcast)
         {
-            var viewModel = new MainWindowViewModel(appcast, _appInfo, _logger);
-            await viewModel.InitializeAsync().ConfigureAwait(true);
+            var viewModel = new MainWindowViewModel(_appInfo, _logger, RemoteContentDownloader);
+            await viewModel.StartAsync(appcast).ConfigureAwait(true);
             var window = new MainWindow { DataContext = viewModel };
+            viewModel.ContinueUpdateCommand = new DelegateCommand(e =>
+            {
+                _logger.Log("Continuing with downloading the artifact");
+                window.Close();
+                ShowDownloadWindow(appcast);
+            });
             SetOwner(window);
             window.ShowDialog();
+        }
+        private static string CreateTempPath(string url)
+        {
+            var uri = new Uri(url);
+            var path = Path.GetTempPath();
+            var fileName = string.Format(Guid.NewGuid() + Path.GetFileName(uri.LocalPath));
+            return Path.Combine(path, fileName);
+        }
+        protected virtual void ShowDownloadWindow(RemoteAppcast appcast)
+        {
+            var viewModel = new DownloadWindowViewModel(_appInfo, _logger, RemoteContentDownloader);
+            var destinationPath = CreateTempPath(appcast.ArtifactUrl);
+            var window = new DownloadWindow { DataContext = viewModel };
+            viewModel.ContinueCommand = new DelegateCommand(e =>
+            {
+                _logger.Log("Continue after downloading artifact");
+                OnArtifactDownloadedEvent(new SingleEventArgs<string>(destinationPath));
+                window.Close();
+                OpenArtifact(destinationPath);
+            });
+            SetOwner(window);
+            viewModel.StartAsync(appcast, destinationPath);
+            window.ShowDialog();
+        }
+
+        protected virtual void OpenArtifact(string artifactPath)
+        {
+            Process.Start(artifactPath);
         }
 
         protected virtual void SetOwner(Window window)
@@ -80,6 +116,12 @@ namespace Magpie.Services
         protected virtual void OnRemoteAppcastAvailableEvent(SingleEventArgs<RemoteAppcast> args)
         {
             var handler = RemoteAppcastAvailableEvent;
+            if (handler != null) handler(this, args);
+        }
+
+        protected virtual void OnArtifactDownloadedEvent(SingleEventArgs<string> args)
+        {
+            var handler = ArtifactDownloadedEvent;
             if (handler != null) handler(this, args);
         }
     }

@@ -64,6 +64,7 @@
     <Compile Include="Services\AppInfo.cs" />
     <Compile Include="Services\AssemblyAccessor.cs" />
     <Compile Include="Services\DefaultRemoteContentDownloader.cs" />
+    <Compile Include="ViewModels\DownloadWindowViewModel.cs" />
     <Compile Include="Services\Helpers.cs" />
     <Compile Include="Services\MagicStrings.cs" />
     <Compile Include="Services\MagpieService.cs" />
@@ -73,6 +74,9 @@
     <Compile Include="ViewModels\DebuggingWindowViewModel.cs" />
     <Compile Include="ViewModels\DelegateCommand.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
+    <Compile Include="Views\DownloadWindow.xaml.cs">
+      <DependentUpon>DownloadWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
@@ -106,6 +110,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="Resources\Styles.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\DownloadWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

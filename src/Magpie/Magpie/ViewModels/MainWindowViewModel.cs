@@ -11,13 +11,14 @@ namespace Magpie.ViewModels
 {
     internal class MainWindowViewModel : BindableBase
     {
-        private readonly RemoteAppcast _remoteAppcast;
         private readonly IDebuggingInfoLogger _logger;
+        private readonly IRemoteContentDownloader _contentDownloader;
         private string _releaseNotes;
         private string _title;
         private string _oldVersion;
         private string _newVersion;
         private string _appIconPath;
+        private string _remoteVersion;
 
         public string ReleaseNotes
         {
@@ -56,26 +57,25 @@ namespace Magpie.ViewModels
             set { SetProperty(ref _appIconPath, value); }
         }
 
-        public MainWindowViewModel(RemoteAppcast appcast, AppInfo appInfo, IDebuggingInfoLogger logger)
+        public MainWindowViewModel(AppInfo appInfo, IDebuggingInfoLogger logger, IRemoteContentDownloader contentDownloader)
         {
-            _remoteAppcast = appcast;
             AppIconPath = appInfo.AppIconPath;
             _logger = logger;
-
+            _contentDownloader = contentDownloader;
         }
 
-        internal async Task InitializeAsync()
+        internal async Task StartAsync(RemoteAppcast appcast)
         {
-            InitializeCommands();
-            Title = string.Format("A NEW VERSION OF {0} IS AVAILABLE", _remoteAppcast.Title).ToUpperInvariant();
+            InitializeCommands(appcast);
+            Title = string.Format("A NEW VERSION OF {0} IS AVAILABLE", appcast.Title).ToUpperInvariant();
             OldVersion = new AssemblyAccessor().Version;
-            NewVersion = _remoteAppcast.Version.ToString();
-            ReleaseNotes = await FetchReleaseNotesAsync(_remoteAppcast.ReleaseNotesUrl).ConfigureAwait(false);
+            NewVersion = appcast.Version.ToString();
+            ReleaseNotes = await FetchReleaseNotesAsync(appcast.ReleaseNotesUrl).ConfigureAwait(false);
         }
 
-        private void InitializeCommands()
+        private void InitializeCommands(RemoteAppcast appcast)
         {
-            ContinueUpdateCommand = new DelegateCommand(ContinueUpdateCommandHandler);
+            _remoteVersion = appcast.Version.ToString();
             SkipThisVersionCommand = new DelegateCommand(SkipThisVersionCommandHandler);
             RemindMeLaterCommand = new DelegateCommand(RemindMeLaterCommandHandler);
         }
@@ -91,19 +91,13 @@ namespace Magpie.ViewModels
         {
             _logger.Log("Skip this version command invoked");
             var registryIO = new RegistryIO();
-            registryIO.WriteToRegistry(MagicStrings.SKIP_VERSION_KEY, _remoteAppcast.Version.ToString());
-        }
-
-        private void ContinueUpdateCommandHandler(object obj)
-        {
-            _logger.Log("Continue with update command invoked");
+            registryIO.WriteToRegistry(MagicStrings.SKIP_VERSION_KEY, _remoteVersion);
         }
 
         private async Task<string> FetchReleaseNotesAsync(string releaseNotesUrl)
         {
             _logger.Log("Fetching release notes");
-            var client = new WebClient();
-            var notes = await client.DownloadStringTaskAsync(new Uri(releaseNotesUrl)).ConfigureAwait(false);
+            var notes = await _contentDownloader.DownloadStringContent(releaseNotesUrl).ConfigureAwait(false);
             _logger.Log("Finished fetching release notes");
             _logger.Log("Converting release notes from markdown to html");
             var htmlNotes = CommonMark.CommonMarkConverter.Convert(notes);
