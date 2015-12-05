@@ -18,7 +18,7 @@ namespace Magpie.Tests
         public void TestValidJson()
         {
             var mockMagpieService = new MockMagpieService("validContentUrl");
-            mockMagpieService.RunInBackground("validContentUrl");
+            mockMagpieService.CheckInBackground("validContentUrl");
             var appcast = mockMagpieService.RemoteAppcast;
             Assert.IsNotNull(appcast);
             Assert.AreEqual("Magpie", appcast.Title);
@@ -31,7 +31,7 @@ namespace Magpie.Tests
             var raised = false;
             var mockMagpieService = new MockMagpieService("validContentUrl");
             mockMagpieService.RemoteAppcastAvailableEvent += (s, a) => { raised = true; };
-            mockMagpieService.RunInBackground("validContentUrl");
+            mockMagpieService.CheckInBackground("validContentUrl");
             Assert.IsTrue(raised);
         }
     }
