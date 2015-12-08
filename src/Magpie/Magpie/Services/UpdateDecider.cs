@@ -6,7 +6,7 @@ using Magpie.Models;
 
 namespace Magpie.Services
 {
-    internal class UpdateDecider
+    public class UpdateDecider
     {
         private readonly IDebuggingInfoLogger _logger;
         private readonly RegistryIO _registryIO;
@@ -38,7 +38,7 @@ namespace Magpie.Services
             }
         }
 
-        internal UpdateDecider(IDebuggingInfoLogger debuggingInfoLogger)
+        public UpdateDecider(IDebuggingInfoLogger debuggingInfoLogger)
         {
             _logger = debuggingInfoLogger;
             _registryIO = new RegistryIO();

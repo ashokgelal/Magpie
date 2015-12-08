@@ -51,6 +51,10 @@ namespace Magpie.Services
                 {
                     ShowUpdateWindow(appcast);
                 }
+                else
+                {
+                    ShowNoUpdatesWindow();
+                }
             }
             catch (Exception ex)
             {
@@ -73,6 +77,13 @@ namespace Magpie.Services
                 window.Close();
                 ShowDownloadWindow(appcast);
             });
+            SetOwner(window);
+            window.ShowDialog();
+        }
+
+        protected virtual void ShowNoUpdatesWindow()
+        {
+            var window = new NoUpdatesWindow();
             SetOwner(window);
             window.ShowDialog();
         }
