@@ -10,6 +10,8 @@ namespace Magpie.Tests.Mocks
     {
         private const string VALID_JSON = @"{ 'title': 'Magpie', 'version': '0.0.1', 'build_date': '10/03/2015', 'release_notes_url': '', 'artifact_url': 'https://dl.dropboxusercontent.com/u/83257/Updaters/Magpie/appcast.zip' }";
         internal RemoteAppcast RemoteAppcast { get; private set; }
+        internal bool ShowUpdateWindowFlag;
+        internal bool ShowNoUpdatesWindowFlag;
 
         public MockMagpieService(string validUrl, IDebuggingInfoLogger infoLogger = null) : base(new AppInfo(), infoLogger)
         {
@@ -28,6 +30,13 @@ namespace Magpie.Tests.Mocks
         protected override void ShowUpdateWindow(RemoteAppcast appcast)
         {
             // can't do in tests
+            ShowUpdateWindowFlag = true;
+        }
+
+        protected override void ShowNoUpdatesWindow()
+        {
+            // can't do in tests
+            ShowNoUpdatesWindowFlag = true;
         }
     }
 }
