@@ -42,7 +42,7 @@ namespace Magpie.ViewModels
 
         internal async void StartAsync(RemoteAppcast appcast, string destinationPath)
         {
-            Title = string.Format("Downloading {0} Installer...", appcast.Title);
+            Title = string.Format(Properties.Resources.DownloadingInstaller, appcast.Title);
             await DownloadArtifact(appcast, destinationPath).ConfigureAwait(true);
         }
 
