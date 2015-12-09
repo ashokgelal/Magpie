@@ -1,8 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
-MinimumVisualStudioVersion = 10.0.40219.1
+# Visual Studio 2012
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Magpie", "Magpie\Magpie.csproj", "{A745A663-E35C-45CB-8502-021844A53F59}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Magpie.Example", "Magpie.Example\Magpie.Example.csproj", "{D30F01F9-2C4F-478E-9E2E-FAD64FBB7105}"
@@ -15,18 +13,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{A745A663-E35C-45CB-8502-021844A53F59}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{A745A663-E35C-45CB-8502-021844A53F59}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{A745A663-E35C-45CB-8502-021844A53F59}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{A745A663-E35C-45CB-8502-021844A53F59}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D30F01F9-2C4F-478E-9E2E-FAD64FBB7105}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D30F01F9-2C4F-478E-9E2E-FAD64FBB7105}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D30F01F9-2C4F-478E-9E2E-FAD64FBB7105}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D30F01F9-2C4F-478E-9E2E-FAD64FBB7105}.Release|Any CPU.Build.0 = Release|Any CPU
-		{31487E9D-6D55-430F-9AF4-2CEBD15C4A98}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{31487E9D-6D55-430F-9AF4-2CEBD15C4A98}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{31487E9D-6D55-430F-9AF4-2CEBD15C4A98}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{31487E9D-6D55-430F-9AF4-2CEBD15C4A98}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A745A663-E35C-45CB-8502-021844A53F59}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{A745A663-E35C-45CB-8502-021844A53F59}.Debug|Any CPU.Build.0 = Debug|x86
+		{A745A663-E35C-45CB-8502-021844A53F59}.Release|Any CPU.ActiveCfg = Release|x86
+		{D30F01F9-2C4F-478E-9E2E-FAD64FBB7105}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{D30F01F9-2C4F-478E-9E2E-FAD64FBB7105}.Debug|Any CPU.Build.0 = Debug|x86
+		{D30F01F9-2C4F-478E-9E2E-FAD64FBB7105}.Release|Any CPU.ActiveCfg = Release|x86
+		{31487E9D-6D55-430F-9AF4-2CEBD15C4A98}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{31487E9D-6D55-430F-9AF4-2CEBD15C4A98}.Debug|Any CPU.Build.0 = Debug|x86
+		{31487E9D-6D55-430F-9AF4-2CEBD15C4A98}.Release|Any CPU.ActiveCfg = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
