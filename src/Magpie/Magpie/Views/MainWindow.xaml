@@ -79,7 +79,7 @@
                     Grid.Row="3"
                     Height="280"
                     VerticalAlignment="Stretch"
-                    views:BrowserBehavior.Html="{Binding ReleaseNotes}" />
+                    views:BrowserBehavior.Html="{Binding ReleaseNotes}"/>
 
         <DockPanel Grid.Row="4"
                    Grid.Column="0"
