@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using Magpie.Interfaces;
 using Magpie.Models;
+using Magpie.Properties;
 using Magpie.Services;
 
 namespace Magpie.ViewModels
@@ -113,9 +114,16 @@ namespace Magpie.ViewModels
 
         private string CreateDefaultCssLink()
         {
-            var relativePathToStylesheet = Path.Combine(Directory.GetCurrentDirectory(), "../../../../Magpie/Resources/style.css");
-            var fullPathToStylesheet = Path.GetFullPath((new Uri(relativePathToStylesheet)).LocalPath);
-            return String.Format("<link rel=\"stylesheet\" type=\"text/css\" href=\"{0}\">", fullPathToStylesheet);
+            var stylesheet = GetStylesheet();
+            return string.IsNullOrWhiteSpace(stylesheet) ? string.Empty : string.Format("<style>{0}</style>", stylesheet);
+        }
+
+        protected virtual string GetStylesheet()
+        {
+            var stylesheetStream = Resources.ResourceManager.GetStream("style");
+            if (stylesheetStream == null) return String.Empty;
+            var stylesheetReader = new StreamReader(stylesheetStream);
+            return stylesheetReader.ReadToEnd();
         }
     }
 }
