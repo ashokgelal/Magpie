@@ -51,7 +51,7 @@ namespace Magpie.Services
                 {
                     ShowUpdateWindow(appcast);
                 }
-                else
+                else if (forceCheck)
                 {
                     ShowNoUpdatesWindow();
                 }
