@@ -25,14 +25,21 @@ namespace Magpie.Tests
         }
 
         [TestMethod]
-        public async Task TestReleaseNotesGetDefaultCssFile()
+        public async Task TestReleaseNotesGetsDefaultCssFile()
         {
+            _mainWindowViewModel.Stylesheet = "body{color:red;}";
             await _mainWindowViewModel.StartAsync(_appCast);
 
-            Assert.IsTrue(_mainWindowViewModel.ReleaseNotes.Contains("<link rel=\"stylesheet\" type=\"text/css\" href="));
-            Assert.IsTrue(_mainWindowViewModel.ReleaseNotes.Contains("style.css"));
+            Assert.IsTrue(_mainWindowViewModel.ReleaseNotes.Contains("<style>body{color:red;}</style>"));
         }
 
+        [TestMethod]
+        public async Task TestReleaseNotesDoNotGetStyledIfCannotFindDefaultCssFile()
+        {
+            _mainWindowViewModel.Stylesheet = string.Empty;
+            await _mainWindowViewModel.StartAsync(_appCast);
 
+            Assert.IsFalse(_mainWindowViewModel.ReleaseNotes.Contains("<style>"));
+        }
     }
 }
