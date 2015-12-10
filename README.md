@@ -8,15 +8,16 @@ A modern software update framework for .net applications.
 
 ![Download Screenshot](https://github.com/ashokgelal/Magpie/blob/master/screenshots/lp_download_screenshot.PNG)
 
-###TODO
+### TODO
 
 - [x] Build on AppVeyor
 - [x] Markdown support for Release Notes
 - [x] Download installer and allow to open it
-- [ ] Custom CSS Support
-- [ ] Force check
-- [ ] Notify "No Updates Available"
+- [x] Custom CSS Support (contributed by [mariannabudnikova](https://github.com/mariannabudnikova))
+- [x] Force check
+- [ ] Notify "No Updates Available" (contributed by [antistrongguy](https://github.com/antistrongguy))
 - [ ] Create nuget package
+- [ ] Add XML docs
 - [ ] Implement a debugging window
 - [ ] Analytics interface
 
