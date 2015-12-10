@@ -3,6 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:prop="clr-namespace:Magpie.Properties"
         xmlns:viewModels="clr-namespace:Magpie.ViewModels"
         xmlns:views="clr-namespace:Magpie.Views"
         Width="600"
@@ -54,9 +55,13 @@
                         DockPanel.Dock="Right"
                         Orientation="Horizontal">
 
-                <Label Content="Your version:" Style="{DynamicResource _magpieMetadataLbl}" />
+                <Label Content="{x:Static prop:Resources.YourVersion}"
+                       ContentStringFormat="{}{0}:"
+                       Style="{DynamicResource _magpieMetadataLbl}" />
                 <Label Content="{Binding OldVersion}" Style="{DynamicResource _magpieMetadataValue}" />
-                <Label Content="New version:" Style="{DynamicResource _magpieMetadataLbl}" />
+                <Label Content="{x:Static prop:Resources.NewVersion}"
+                       ContentStringFormat="{}{0}:"
+                       Style="{DynamicResource _magpieMetadataLbl}" />
                 <Label Content="{Binding NewVersion}" Style="{DynamicResource _magpieMetadataValue}" />
             </StackPanel>
         </Grid>
@@ -67,7 +72,7 @@
                    Fill="{DynamicResource _magpieSeparatorFillBrush}" />
 
         <Label Grid.Row="2"
-               Content="RELEASE NOTES"
+               Content="{x:Static prop:Resources.ReleaseNotes}"
                Style="{DynamicResource _magpieReleaseTitle}" />
 
         <WebBrowser x:Name="ReleaseNotesBrowser"
@@ -83,19 +88,19 @@
                    LastChildFill="False">
             <Button Width="130"
                     Command="{Binding SkipThisVersionCommand}"
-                    Content="Skip This Version"
+                    Content="{x:Static prop:Resources.SkipThisVersion}"
                     DockPanel.Dock="Left"
                     Style="{DynamicResource _magpieSkipBtn}" />
             <Button HorizontalAlignment="Right"
                     Command="{Binding ContinueUpdateCommand}"
-                    Content="Download Now"
+                    Content="{x:Static prop:Resources.DownloadNow}"
                     DockPanel.Dock="Right"
                     Padding="4" />
             <Button Width="130"
                     Margin="10 0"
                     HorizontalAlignment="Right"
                     Command="{Binding RemindMeLaterCommand}"
-                    Content="Remind Me Later"
+                    Content="{x:Static prop:Resources.RemindMeLater}"
                     DockPanel.Dock="Right"
                     Style="{DynamicResource _magpieRemindLaterBtn}" />
         </DockPanel>
@@ -107,7 +112,7 @@
                        NavigateUri="https://github.com/ashokgelal/Magpie"
                        RequestNavigate="PoweredBy_RequestNavigate"
                        TextDecorations="None">
-                <Run Text="Powered by Magpie" />
+                <Run Text="{x:Static prop:Resources.PoweredByMagpie}" />
             </Hyperlink>
         </Label>
     </Grid>
