@@ -41,13 +41,23 @@ namespace Magpie.Tests
         }
 
         [TestMethod]
-        public void TestNoUpdatesWindowShown()
+        public void TestNoUpdatesWindowShownOnForceCheck()
         {
             var updateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
             updateDecider.ShouldUpdate(Arg.Any<RemoteAppcast>(), true).Returns(false);
             _mockMagpieService.UpdateDecider = updateDecider;
             _mockMagpieService.ForceCheckInBackground("validContentUrl");
             Assert.IsTrue(_mockMagpieService.ShowNoUpdatesWindowFlag);
+        }
+
+        [TestMethod]
+        public void TestNoUpdatesWindowNotShownOnNormalCheck()
+        {
+            var updateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
+            updateDecider.ShouldUpdate(Arg.Any<RemoteAppcast>(), false).Returns(false);
+            _mockMagpieService.UpdateDecider = updateDecider;
+            _mockMagpieService.CheckInBackground("validContentUrl");
+            Assert.IsFalse(_mockMagpieService.ShowNoUpdatesWindowFlag);
         }
 
         [TestMethod]
