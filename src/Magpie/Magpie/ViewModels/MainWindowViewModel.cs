@@ -68,7 +68,7 @@ namespace Magpie.ViewModels
         internal async Task StartAsync(RemoteAppcast appcast)
         {
             InitializeCommands(appcast);
-            Title = string.Format("A NEW VERSION OF {0} IS AVAILABLE", appcast.Title).ToUpperInvariant();
+            Title = string.Format(Properties.Resources.NewVersionAvailable, appcast.Title).ToUpperInvariant();
             OldVersion = GetOldVersion();
             NewVersion = appcast.Version.ToString();
             ReleaseNotes = await FetchReleaseNotesAsync(appcast.ReleaseNotesUrl).ConfigureAwait(false);
