@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Globalization;
-using System.Net;
+using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Magpie.Interfaces;
 using Magpie.Models;
+using Magpie.Properties;
 using Magpie.Services;
 
 namespace Magpie.ViewModels
@@ -67,10 +68,15 @@ namespace Magpie.ViewModels
         internal async Task StartAsync(RemoteAppcast appcast)
         {
             InitializeCommands(appcast);
-            Title = string.Format("A NEW VERSION OF {0} IS AVAILABLE", appcast.Title).ToUpperInvariant();
-            OldVersion = new AssemblyAccessor().Version;
+            Title = string.Format(Properties.Resources.NewVersionAvailable, appcast.Title).ToUpperInvariant();
+            OldVersion = GetOldVersion();
             NewVersion = appcast.Version.ToString();
             ReleaseNotes = await FetchReleaseNotesAsync(appcast.ReleaseNotesUrl).ConfigureAwait(false);
+        }
+
+        protected virtual string GetOldVersion()
+        {
+            return new AssemblyAccessor().Version;
         }
 
         private void InitializeCommands(RemoteAppcast appcast)
@@ -101,8 +107,23 @@ namespace Magpie.ViewModels
             _logger.Log("Finished fetching release notes");
             _logger.Log("Converting release notes from markdown to html");
             var htmlNotes = CommonMark.CommonMarkConverter.Convert(notes);
+            htmlNotes = CreateDefaultCssLink() + htmlNotes;
             _logger.Log("Finished converting release notes from markdown to html");
             return htmlNotes;
+        }
+
+        private string CreateDefaultCssLink()
+        {
+            var stylesheet = GetStylesheet();
+            return string.IsNullOrWhiteSpace(stylesheet) ? string.Empty : string.Format("<style>{0}</style>", stylesheet);
+        }
+
+        protected virtual string GetStylesheet()
+        {
+            var stylesheetStream = Resources.ResourceManager.GetStream("style");
+            if (stylesheetStream == null) return String.Empty;
+            var stylesheetReader = new StreamReader(stylesheetStream);
+            return stylesheetReader.ReadToEnd();
         }
     }
 }

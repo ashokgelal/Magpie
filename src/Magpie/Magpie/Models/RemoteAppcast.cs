@@ -10,7 +10,7 @@ namespace Magpie.Models
     {
         [DataMember(Name = "version", IsRequired = true)]
         private string _version;
-        public Version Version { get; private set; }
+        public Version Version { get; protected set; }
 
         // Dates example:
         // e.g. January 30, 2015 18:15:00 +0200
