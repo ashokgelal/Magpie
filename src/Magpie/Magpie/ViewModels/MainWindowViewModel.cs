@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Magpie.Interfaces;
@@ -68,7 +67,7 @@ namespace Magpie.ViewModels
         internal async Task StartAsync(RemoteAppcast appcast)
         {
             InitializeCommands(appcast);
-            Title = string.Format(Properties.Resources.NewVersionAvailable, appcast.Title).ToUpperInvariant();
+            Title = string.Format(Resources.NewVersionAvailable, appcast.Title).ToUpperInvariant();
             OldVersion = GetOldVersion();
             NewVersion = appcast.Version.ToString();
             ReleaseNotes = await FetchReleaseNotesAsync(appcast.ReleaseNotesUrl).ConfigureAwait(false);
