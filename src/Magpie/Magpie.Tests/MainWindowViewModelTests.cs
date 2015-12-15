@@ -54,11 +54,17 @@ namespace Magpie.Tests
         [TestMethod]
         public void SkipThisVersionCommandLogsAnalytics()
         {
+            _mainWindowViewModel.SkipThisVersionCommand.Execute(null);
+            _analyticsLogger.Received().LogSkipThisVersion();
         }
 
         [TestMethod]
         public void RemindMeLaterCommandLogsAnalytics()
         {
+            _mainWindowViewModel.RemindMeLaterCommand.Execute(null);
+            _analyticsLogger.Received().LogRemindMeLater();
         }
+
+
     }
 }

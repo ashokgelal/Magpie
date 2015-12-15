@@ -11,6 +11,8 @@ namespace Magpie.Tests.Mocks
         public MockMainWindowViewModel(AppInfo appInfo, IDebuggingInfoLogger logger, IRemoteContentDownloader contentDownloader, IAnalyticsLogger analyticsLogger) : base(appInfo, logger, contentDownloader, analyticsLogger)
         {
             ContinueUpdateCommand = new DelegateCommand(message=> analyticsLogger.LogContinueUpdate());
+            SkipThisVersionCommand = new DelegateCommand(message => analyticsLogger.LogSkipThisVersion());
+            RemindMeLaterCommand = new DelegateCommand(message => analyticsLogger.LogRemindMeLater());
         }
         
         protected override string GetOldVersion()
