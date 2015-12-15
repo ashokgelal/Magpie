@@ -52,19 +52,39 @@ namespace Magpie.Tests
         }
 
         [TestMethod]
-        public void SkipThisVersionCommandLogsAnalytics()
+        public void TestSkipThisVersionCommandLogsAnalytics()
         {
             _mainWindowViewModel.SkipThisVersionCommand.Execute(null);
             _analyticsLogger.Received().LogSkipThisVersion();
         }
 
         [TestMethod]
-        public void RemindMeLaterCommandLogsAnalytics()
+        public void TestRemindMeLaterCommandLogsAnalytics()
         {
             _mainWindowViewModel.RemindMeLaterCommand.Execute(null);
             _analyticsLogger.Received().LogRemindMeLater();
         }
 
+        [TestMethod]
+        public void TestLogOldVersion()
+        {
+            _mainWindowViewModel.OldVersion = "1.0.0";
+            _analyticsLogger.Received().LogOldVersion("1.0.0");
+        }
+
+        [TestMethod]
+        public void TestLogNewVersion()
+        {
+            _mainWindowViewModel.NewVersion = "1.0.1";
+            _analyticsLogger.Received().LogNewVersion("1.0.1");
+        }
+
+        [TestMethod]
+        public void TestLogAppTitle()
+        {
+            _mainWindowViewModel.Title = "My Super Awesome App";
+            _analyticsLogger.Received().LogAppTitle("My Super Awesome App");
+        }
 
     }
 }
