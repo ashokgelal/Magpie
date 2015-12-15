@@ -15,5 +15,21 @@ namespace Magpie.Services
         public void LogRemindMeLater()
         {
         }
+
+        public void LogContinueWithInstallation()
+        {
+        }
+
+        public void LogOldVersion(string oldVersion)
+        {
+        }
+
+        public void LogNewVersion(string s)
+        {
+        }
+
+        public void LogAppTitle(string mySuperAwesomeApp)
+        {
+        }
     }
 }

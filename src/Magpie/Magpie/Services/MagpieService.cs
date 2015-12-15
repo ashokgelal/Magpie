@@ -107,6 +107,7 @@ namespace Magpie.Services
             viewModel.ContinueCommand = new DelegateCommand(e =>
             {
                 _logger.Log("Continue after downloading artifact");
+                _analyticsLogger.LogContinueWithInstallation();
                 OnArtifactDownloadedEvent(new SingleEventArgs<string>(destinationPath));
                 window.Close();
                 OpenArtifact(destinationPath);

@@ -37,19 +37,31 @@ namespace Magpie.ViewModels
         public string Title
         {
             get { return _title; }
-            set { SetProperty(ref _title, value); }
+            set
+            {
+                SetProperty(ref _title, value);
+                _analyticsLogger.LogAppTitle(value);
+            }
         }
 
         public string OldVersion
         {
             get { return _oldVersion; }
-            set { SetProperty(ref _oldVersion, value); }
+            set
+            {
+                SetProperty(ref _oldVersion, value);
+                _analyticsLogger.LogOldVersion(value);
+            }
         }
 
         public string NewVersion
         {
             get { return _newVersion; }
-            set { SetProperty(ref _newVersion, value); }
+            set
+            {
+                SetProperty(ref _newVersion, value);
+                _analyticsLogger.LogNewVersion(value);
+            }
         }
 
         public string AppIconPath
