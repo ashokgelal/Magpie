@@ -2,8 +2,10 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:prop="clr-namespace:Magpie.Properties"
+        xmlns:services="clr-namespace:Magpie.Services"
         xmlns:viewModels="clr-namespace:Magpie.ViewModels"
         xmlns:views="clr-namespace:Magpie.Views"
         Width="600"
@@ -13,6 +15,11 @@
         UseLayoutRounding="True"
         d:DataContext="{d:DesignInstance d:Type=viewModels:MainWindowViewModel}"
         mc:Ignorable="d">
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding CancelCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Window.Resources>
         <ResourceDictionary Source="pack://application:,,,/Magpie;component/Resources/Styles.xaml" />
     </Window.Resources>
@@ -79,7 +86,7 @@
                     Grid.Row="3"
                     Height="280"
                     VerticalAlignment="Stretch"
-                    views:BrowserBehavior.Html="{Binding ReleaseNotes}"/>
+                    views:BrowserBehavior.Html="{Binding ReleaseNotes}" />
 
         <DockPanel Grid.Row="4"
                    Grid.Column="0"

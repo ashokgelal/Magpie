@@ -9,5 +9,6 @@
         void LogOldVersion(string oldVersion);
         void LogNewVersion(string s);
         void LogAppTitle(string mySuperAwesomeApp);
+        void LogUpdateCancelled();
     }
 }

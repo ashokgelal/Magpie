@@ -20,6 +20,7 @@ namespace Magpie.ViewModels
         private string _newVersion;
         private string _appIconPath;
         private string _remoteVersion;
+        private ICommand _cancelCommand;
 
         public string ReleaseNotes
         {
@@ -33,6 +34,12 @@ namespace Magpie.ViewModels
         public ICommand ContinueUpdateCommand { get; set; }
         public ICommand SkipThisVersionCommand { get; set; }
         public ICommand RemindMeLaterCommand { get; set; }
+
+        public ICommand CancelCommand
+        {
+            get { return _cancelCommand ?? (_cancelCommand = new DelegateCommand(CancelCommandHandler)); }
+            set { _cancelCommand = value; }
+        }
 
         public string Title
         {
@@ -113,6 +120,11 @@ namespace Magpie.ViewModels
             _analyticsLogger.LogSkipThisVersion();
             var registryIO = new RegistryIO();
             registryIO.WriteToRegistry(MagicStrings.SKIP_VERSION_KEY, _remoteVersion);
+        }
+        
+        private void CancelCommandHandler(object obj)
+        {
+            _analyticsLogger.LogUpdateCancelled();
         }
 
         private async Task<string> FetchReleaseNotesAsync(string releaseNotesUrl)

@@ -31,5 +31,9 @@ namespace Magpie.Services
         public void LogAppTitle(string mySuperAwesomeApp)
         {
         }
+
+        public void LogUpdateCancelled()
+        {
+        }
     }
 }
