@@ -31,11 +31,11 @@ namespace Magpie.ViewModels
             }
         }
 
-        public ICommand ContinueUpdateCommand { get; set; }
+        public ICommand DownloadNowCommand { get; set; }
         public ICommand SkipThisVersionCommand { get; set; }
         public ICommand RemindMeLaterCommand { get; set; }
 
-        public ICommand CancelCommand
+        public ICommand CancelUpdateCommand
         {
             get { return _cancelCommand ?? (_cancelCommand = new DelegateCommand(CancelCommandHandler)); }
             set { _cancelCommand = value; }

@@ -73,9 +73,9 @@ namespace Magpie.Services
             var viewModel = new MainWindowViewModel(_appInfo, _logger, RemoteContentDownloader, _analyticsLogger);
             await viewModel.StartAsync(appcast).ConfigureAwait(true);
             var window = new MainWindow { DataContext = viewModel };
-            viewModel.ContinueUpdateCommand = new DelegateCommand(e =>
+            viewModel.DownloadNowCommand = new DelegateCommand(e =>
             {
-                _analyticsLogger.LogContinueUpdate();
+                _analyticsLogger.LogDownloadNow();
                 _logger.Log("Continuing with downloading the artifact");
                 window.Close();
                 ShowDownloadWindow(appcast);
@@ -104,7 +104,7 @@ namespace Magpie.Services
             var viewModel = new DownloadWindowViewModel(_appInfo, _logger, RemoteContentDownloader);
             var destinationPath = CreateTempPath(appcast.ArtifactUrl);
             var window = new DownloadWindow { DataContext = viewModel };
-            viewModel.ContinueCommand = new DelegateCommand(e =>
+            viewModel.ContinueWithInstallationCommand = new DelegateCommand(e =>
             {
                 _logger.Log("Continue after downloading artifact");
                 _analyticsLogger.LogContinueWithInstallation();

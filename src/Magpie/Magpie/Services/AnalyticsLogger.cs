@@ -4,7 +4,7 @@ namespace Magpie.Services
 {
     public class AnalyticsLogger : IAnalyticsLogger
     {
-        public void LogContinueUpdate()
+        public void LogDownloadNow()
         {
         }
 

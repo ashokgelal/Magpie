@@ -2,7 +2,7 @@
 {
     public interface IAnalyticsLogger
     {
-        void LogContinueUpdate();
+        void LogDownloadNow();
         void LogSkipThisVersion();
         void LogRemindMeLater();
         void LogContinueWithInstallation();

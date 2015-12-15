@@ -56,7 +56,7 @@
                 Grid.ColumnSpan="2"
                 Margin="0 0 0 10"
                 HorizontalAlignment="Center"
-                Command="{Binding ContinueCommand}"
+                Command="{Binding ContinueWithInstallationCommand}"
                 Content="{x:Static prop:Resources.RunInstaller}"
                 Padding="4" />
         <Label Grid.Row="3"

@@ -16,7 +16,7 @@
         mc:Ignorable="d">
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
-            <i:InvokeCommandAction Command="{Binding CancelCommand}" />
+            <i:InvokeCommandAction Command="{Binding CancelUpdateCommand}" />
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Window.Resources>
@@ -98,7 +98,7 @@
                     DockPanel.Dock="Left"
                     Style="{DynamicResource _magpieSkipBtn}" />
             <Button HorizontalAlignment="Right"
-                    Command="{Binding ContinueUpdateCommand}"
+                    Command="{Binding DownloadNowCommand}"
                     Content="{x:Static prop:Resources.DownloadNow}"
                     DockPanel.Dock="Right"
                     Padding="4" />

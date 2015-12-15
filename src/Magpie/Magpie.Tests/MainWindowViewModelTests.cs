@@ -45,10 +45,10 @@ namespace Magpie.Tests
         }
 
         [TestMethod]
-        public void TestContinueUpdateCommandLogsAnalytics()
+        public void TestDownloadNowCommandLogsAnalytics()
         {
-            _mainWindowViewModel.ContinueUpdateCommand.Execute(null);
-            _analyticsLogger.Received().LogContinueUpdate();
+            _mainWindowViewModel.DownloadNowCommand.Execute(null);
+            _analyticsLogger.Received().LogDownloadNow();
         }
 
         [TestMethod]
@@ -87,9 +87,9 @@ namespace Magpie.Tests
         }
 
         [TestMethod]
-        public void TestLogUpdateWindowClosed()
+        public void TestLogUpdateCancelled()
         {
-            _mainWindowViewModel.CancelCommand.Execute(null);
+            _mainWindowViewModel.CancelUpdateCommand.Execute(null);
             _analyticsLogger.Received().LogUpdateCancelled();
         }
 
