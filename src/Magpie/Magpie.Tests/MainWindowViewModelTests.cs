@@ -89,7 +89,7 @@ namespace Magpie.Tests
         [TestMethod]
         public void TestLogUpdateCancelled()
         {
-            _mainWindowViewModel.CancelUpdateCommand.Execute(null);
+            _mainWindowViewModel.CancelUpdate();
             _analyticsLogger.Received().LogUpdateCancelled();
         }
 

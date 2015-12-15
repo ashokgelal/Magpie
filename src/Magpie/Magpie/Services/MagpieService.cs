@@ -72,7 +72,7 @@ namespace Magpie.Services
         {
             var viewModel = new MainWindowViewModel(_appInfo, _logger, RemoteContentDownloader, _analyticsLogger);
             await viewModel.StartAsync(appcast).ConfigureAwait(true);
-            var window = new MainWindow { DataContext = viewModel };
+            var window = new MainWindow { ViewModel = viewModel };
             viewModel.DownloadNowCommand = new DelegateCommand(e =>
             {
                 _analyticsLogger.LogDownloadNow();
