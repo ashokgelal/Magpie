@@ -1,9 +1,9 @@
 body {
 	margin: 5px 10px;
 	padding: 0;
+	font-family: 'Segoe UI', Verdana, sans;
 }
 .content {
-	font-family: 'Helvetica Neue', Helvetica, sans;
 	color: #333;
 	font-size: 12px;
 	line-height: 1.3em;
@@ -17,9 +17,18 @@ a {
 a:hover {
 	text-decoration: underline;
 }
+h1 {
+	font-size: 1.3em;
+	font-weight: 400;
+	color: #24a6a2;
+	margin-bottom: 10px;
+	margin-top: 0;
+}
+h1 + ul {
+	margin-bottom: 20px;
+}
 h2 {
-	font-size: 1.25em;
-	text-transform: uppercase;
+	font-size: 1.2em;
 	font-weight: 400;
 	color: #35BBB7;
 	margin-bottom: 10px;
@@ -47,9 +56,15 @@ pre {
 	border: 1px solid #ccc;
 	padding: 1em;
 	overflow: scroll;
+	-ms-border-radius: 3px;
 	border-radius: 3px;
 }
+
+hr {
+	color: #eeeeee;
+}
+
 code {
-	font-family: 'Menlo', 'Monaco', fixed;
+	font-family: 'Courier New', 'Monaco', fixed;
 	font-size: 11px;
 }
