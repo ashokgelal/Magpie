@@ -13,15 +13,17 @@ namespace Magpie.Tests
     {
         private MockMainWindowViewModel _mainWindowViewModel;
         private MockRemoteAppcast _appCast;
+        private IAnalyticsLogger _analyticsLogger;
 
         [TestInitialize]
         public void Initialize()
         {
-            var logger = Substitute.For<IDebuggingInfoLogger>();
+            var debuggingInfoLogger = Substitute.For<IDebuggingInfoLogger>();
+            _analyticsLogger = Substitute.For<IAnalyticsLogger>();
             var remoteContentDownloader = Substitute.For<IRemoteContentDownloader>();
             var appInfo = new AppInfo();
             _appCast = new MockRemoteAppcast(new Version(1, 0));
-            _mainWindowViewModel = new MockMainWindowViewModel(appInfo, logger, remoteContentDownloader);
+            _mainWindowViewModel = new MockMainWindowViewModel(appInfo, debuggingInfoLogger, remoteContentDownloader, _analyticsLogger);
         }
 
         [TestMethod]
@@ -40,6 +42,23 @@ namespace Magpie.Tests
             await _mainWindowViewModel.StartAsync(_appCast);
 
             Assert.IsFalse(_mainWindowViewModel.ReleaseNotes.Contains("<style>"));
+        }
+
+        [TestMethod]
+        public void TestContinueUpdateCommandLogsAnalytics()
+        {
+            _mainWindowViewModel.ContinueUpdateCommand.Execute(null);
+            _analyticsLogger.Received().LogContinueUpdate();
+        }
+
+        [TestMethod]
+        public void SkipThisVersionCommandLogsAnalytics()
+        {
+        }
+
+        [TestMethod]
+        public void RemindMeLaterCommandLogsAnalytics()
+        {
         }
     }
 }

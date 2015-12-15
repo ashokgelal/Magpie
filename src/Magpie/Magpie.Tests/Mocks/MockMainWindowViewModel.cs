@@ -1,5 +1,4 @@
-﻿using System.IO;
-using Magpie.Interfaces;
+﻿using Magpie.Interfaces;
 using Magpie.Services;
 using Magpie.ViewModels;
 
@@ -9,8 +8,9 @@ namespace Magpie.Tests.Mocks
     {
         public string Stylesheet { get; set; }
 
-        public MockMainWindowViewModel(AppInfo appInfo, IDebuggingInfoLogger logger, IRemoteContentDownloader contentDownloader) : base(appInfo, logger, contentDownloader)
+        public MockMainWindowViewModel(AppInfo appInfo, IDebuggingInfoLogger logger, IRemoteContentDownloader contentDownloader, IAnalyticsLogger analyticsLogger) : base(appInfo, logger, contentDownloader, analyticsLogger)
         {
+            ContinueUpdateCommand = new DelegateCommand(message=> analyticsLogger.LogContinueUpdate());
         }
         
         protected override string GetOldVersion()
