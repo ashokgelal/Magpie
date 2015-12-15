@@ -12,6 +12,7 @@ namespace Magpie.ViewModels
     internal class MainWindowViewModel : BindableBase
     {
         private readonly IDebuggingInfoLogger _logger;
+        private IAnalyticsLogger _analyticsLogger;
         private readonly IRemoteContentDownloader _contentDownloader;
         private string _releaseNotes;
         private string _title;
@@ -57,11 +58,12 @@ namespace Magpie.ViewModels
             set { SetProperty(ref _appIconPath, value); }
         }
 
-        public MainWindowViewModel(AppInfo appInfo, IDebuggingInfoLogger logger, IRemoteContentDownloader contentDownloader)
+        public MainWindowViewModel(AppInfo appInfo, IDebuggingInfoLogger logger, IRemoteContentDownloader contentDownloader, IAnalyticsLogger analyticsLogger)
         {
             AppIconPath = appInfo.AppIconPath;
             _logger = logger;
             _contentDownloader = contentDownloader;
+            _analyticsLogger = analyticsLogger;
         }
 
         internal async Task StartAsync(RemoteAppcast appcast)

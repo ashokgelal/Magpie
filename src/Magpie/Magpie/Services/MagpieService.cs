@@ -16,15 +16,17 @@ namespace Magpie.Services
     {
         private readonly AppInfo _appInfo;
         private readonly IDebuggingInfoLogger _logger;
+        private IAnalyticsLogger _analyticsLogger;
         internal UpdateDecider UpdateDecider { get; set; }
         internal IRemoteContentDownloader RemoteContentDownloader { get; set; }
         public event EventHandler<SingleEventArgs<RemoteAppcast>> RemoteAppcastAvailableEvent;
         public event EventHandler<SingleEventArgs<string>> ArtifactDownloadedEvent;
 
-        public MagpieService(AppInfo appInfo, IDebuggingInfoLogger debuggingInfoLogger = null)
+        public MagpieService(AppInfo appInfo, IDebuggingInfoLogger debuggingInfoLogger = null, IAnalyticsLogger analyticsLogger = null)
         {
             _appInfo = appInfo;
             _logger = debuggingInfoLogger ?? new DebuggingWindowViewModel();
+            _analyticsLogger = analyticsLogger ?? new AnalyticsLogger();
             RemoteContentDownloader = new DefaultRemoteContentDownloader();
             UpdateDecider = new UpdateDecider(_logger);
         }
@@ -68,11 +70,12 @@ namespace Magpie.Services
 
         protected virtual async void ShowUpdateWindow(RemoteAppcast appcast)
         {
-            var viewModel = new MainWindowViewModel(_appInfo, _logger, RemoteContentDownloader);
+            var viewModel = new MainWindowViewModel(_appInfo, _logger, RemoteContentDownloader, _analyticsLogger);
             await viewModel.StartAsync(appcast).ConfigureAwait(true);
             var window = new MainWindow { DataContext = viewModel };
             viewModel.ContinueUpdateCommand = new DelegateCommand(e =>
             {
+                _analyticsLogger.LogContinueUpdate();
                 _logger.Log("Continuing with downloading the artifact");
                 window.Close();
                 ShowDownloadWindow(appcast);
