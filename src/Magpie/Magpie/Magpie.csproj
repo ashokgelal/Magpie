@@ -58,9 +58,11 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Interfaces\IAnalyticsLogger.cs" />
     <Compile Include="Interfaces\IDebuggingInfoLogger.cs" />
     <Compile Include="Interfaces\IMagpieService.cs" />
     <Compile Include="Interfaces\IRemoteContentDownloader.cs" />
+    <Compile Include="Services\AnalyticsLogger.cs" />
     <Compile Include="Services\AppInfo.cs" />
     <Compile Include="Services\AssemblyAccessor.cs" />
     <Compile Include="Services\DefaultRemoteContentDownloader.cs" />
