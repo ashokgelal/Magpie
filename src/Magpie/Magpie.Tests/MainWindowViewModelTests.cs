@@ -86,5 +86,12 @@ namespace Magpie.Tests
             _analyticsLogger.Received().LogAppTitle("My Super Awesome App");
         }
 
+        [TestMethod]
+        public void TestLogUpdateWindowClosed()
+        {
+            _mainWindowViewModel.CancelCommand.Execute(null);
+            _analyticsLogger.Received().LogUpdateCancelled();
+        }
+
     }
 }
