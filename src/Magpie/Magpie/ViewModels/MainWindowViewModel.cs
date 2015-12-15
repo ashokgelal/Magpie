@@ -12,7 +12,7 @@ namespace Magpie.ViewModels
     internal class MainWindowViewModel : BindableBase
     {
         private readonly IDebuggingInfoLogger _logger;
-        private IAnalyticsLogger _analyticsLogger;
+        private readonly IAnalyticsLogger _analyticsLogger;
         private readonly IRemoteContentDownloader _contentDownloader;
         private string _releaseNotes;
         private string _title;
@@ -90,6 +90,7 @@ namespace Magpie.ViewModels
         private void RemindMeLaterCommandHandler(object obj)
         {
             _logger.Log("Remind me later command invoked");
+            _analyticsLogger.LogRemindMeLater();
             var registryIO = new RegistryIO();
             registryIO.WriteToRegistry(MagicStrings.LAST_CHECK_DATE, DateTime.Now.ToString(CultureInfo.InvariantCulture));
         }
@@ -97,6 +98,7 @@ namespace Magpie.ViewModels
         private void SkipThisVersionCommandHandler(object obj)
         {
             _logger.Log("Skip this version command invoked");
+            _analyticsLogger.LogSkipThisVersion();
             var registryIO = new RegistryIO();
             registryIO.WriteToRegistry(MagicStrings.SKIP_VERSION_KEY, _remoteVersion);
         }

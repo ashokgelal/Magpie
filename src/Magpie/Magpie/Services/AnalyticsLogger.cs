@@ -7,5 +7,13 @@ namespace Magpie.Services
         public void LogContinueUpdate()
         {
         }
+
+        public void LogSkipThisVersion()
+        {
+        }
+
+        public void LogRemindMeLater()
+        {
+        }
     }
 }
