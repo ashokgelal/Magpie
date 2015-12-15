@@ -134,9 +134,7 @@
     <Resource Include="Resources\magpie.png" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\style.css">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <None Include="Resources\style.css" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -121,7 +121,7 @@ namespace Magpie.ViewModels
         protected virtual string GetStylesheet()
         {
             var stylesheetStream = Resources.ResourceManager.GetObject("style") as string;
-            return stylesheetStream ?? String.Empty;
+            return stylesheetStream ?? string.Empty;
         }
     }
 }
