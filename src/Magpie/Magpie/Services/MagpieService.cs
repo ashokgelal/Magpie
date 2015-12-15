@@ -122,6 +122,7 @@ namespace Magpie.Services
         {
             if (Application.Current != null && !Application.Current.MainWindow.Equals(window))
             {
+                window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
                 window.Owner = Application.Current.MainWindow;
             }
         }
