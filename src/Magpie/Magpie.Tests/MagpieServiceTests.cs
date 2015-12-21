@@ -24,7 +24,7 @@ namespace Magpie.Tests
         [TestMethod]
         public void TestValidJson()
         {
-            _mockMagpieService.CheckInBackground("validContentUrl");
+            _mockMagpieService.CheckInBackground();
             var appcast = _mockMagpieService.RemoteAppcast;
             Assert.IsNotNull(appcast);
             Assert.AreEqual("Magpie", appcast.Title);
@@ -36,7 +36,7 @@ namespace Magpie.Tests
         {
             var raised = false;
             _mockMagpieService.RemoteAppcastAvailableEvent += (s, a) => { raised = true; };
-            _mockMagpieService.CheckInBackground("validContentUrl");
+            _mockMagpieService.CheckInBackground();
             Assert.IsTrue(raised);
         }
 
@@ -46,18 +46,18 @@ namespace Magpie.Tests
             var updateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
             updateDecider.ShouldUpdate(Arg.Any<RemoteAppcast>(), true).Returns(false);
             _mockMagpieService.UpdateDecider = updateDecider;
-            _mockMagpieService.ForceCheckInBackground("validContentUrl");
-            Assert.IsTrue(_mockMagpieService.ShowNoUpdatesWindowFlag);
+            _mockMagpieService.ForceCheckInBackground();
+            Assert.IsTrue(_mockMagpieService._showNoUpdatesWindowFlag);
         }
 
         [TestMethod]
         public void TestNoUpdatesWindowNotShownOnNormalCheck()
         {
             var updateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
-            updateDecider.ShouldUpdate(Arg.Any<RemoteAppcast>(), false).Returns(false);
+            updateDecider.ShouldUpdate(Arg.Any<RemoteAppcast>()).Returns(false);
             _mockMagpieService.UpdateDecider = updateDecider;
-            _mockMagpieService.CheckInBackground("validContentUrl");
-            Assert.IsFalse(_mockMagpieService.ShowNoUpdatesWindowFlag);
+            _mockMagpieService.CheckInBackground();
+            Assert.IsFalse(_mockMagpieService._showNoUpdatesWindowFlag);
         }
 
         [TestMethod]
@@ -65,8 +65,26 @@ namespace Magpie.Tests
         {
             _mockMagpieService.UpdateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
             _mockMagpieService.UpdateDecider.ShouldUpdate(Arg.Any<RemoteAppcast>(), true).Returns(true);
-            _mockMagpieService.ForceCheckInBackground("validContentUrl");
-            Assert.IsTrue(_mockMagpieService.ShowUpdateWindowFlag);
+            _mockMagpieService.ForceCheckInBackground();
+            Assert.IsTrue(_mockMagpieService._showUpdateWindowFlag);
+        }
+
+        [TestMethod]
+        public void TestForceCheckOverridingAppCastUrl()
+        {
+            _mockMagpieService.UpdateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
+            _mockMagpieService.UpdateDecider.ShouldUpdate(Arg.Any<RemoteAppcast>(), true).Returns(true);
+            _mockMagpieService.ForceCheckInBackground("alternateUrl");
+            _mockMagpieService._remoteContentDownloader.Received(1).DownloadStringContent("alternateUrl");
+        }
+
+        [TestMethod]
+        public void TestBackgroundCheckOverridingAppCastUrl()
+        {
+            _mockMagpieService.UpdateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
+            _mockMagpieService.UpdateDecider.ShouldUpdate(Arg.Any<RemoteAppcast>(), true).Returns(true);
+            _mockMagpieService.CheckInBackground("alternateUrl");
+            _mockMagpieService._remoteContentDownloader.Received(1).DownloadStringContent("alternateUrl");
         }
     }
 
@@ -82,11 +100,11 @@ namespace Magpie.Tests
             assembly = assembly ?? Assembly.GetCallingAssembly();
             var manager = new AppDomainManager();
             var entryAssemblyfield = manager.GetType().GetField("m_entryAssembly", BindingFlags.Instance | BindingFlags.NonPublic);
-            entryAssemblyfield.SetValue(manager, assembly);
+            if (entryAssemblyfield != null) entryAssemblyfield.SetValue(manager, assembly);
 
             var domain = AppDomain.CurrentDomain;
             var domainManagerField = domain.GetType().GetField("_domainManager", BindingFlags.Instance | BindingFlags.NonPublic);
-            domainManagerField.SetValue(domain, manager);
+            if (domainManagerField != null) domainManagerField.SetValue(domain, manager);
         }
     }
 }

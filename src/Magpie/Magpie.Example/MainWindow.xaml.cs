@@ -8,16 +8,19 @@ namespace Magpie.Example
         public MainWindow()
         {
             InitializeComponent();
-            var appInfo = new AppInfo();
-            appInfo.SetAppIcon("Magpie.Example", "logo64x64.tiff");
-            new MagpieService(appInfo).CheckInBackground("https://dl.dropboxusercontent.com/u/83257/Updaters/Magpie/appcast.json");
+            new MagpieService(MakeAppInfo()).CheckInBackground();
         }
 
         private void ForceCheck_OnClick(object sender, RoutedEventArgs e)
         {
-            var appInfo = new AppInfo();
+            new MagpieService(MakeAppInfo()).ForceCheckInBackground();
+        }
+
+        private static AppInfo MakeAppInfo()
+        {
+            var appInfo = new AppInfo("https://dl.dropboxusercontent.com/u/83257/Updaters/Magpie/appcast.json");
             appInfo.SetAppIcon("Magpie.Example", "logo64x64.tiff");
-            new MagpieService(appInfo).ForceCheckInBackground("https://dl.dropboxusercontent.com/u/83257/Updaters/Magpie/appcast.json");
+            return appInfo;
         }
     }
 }

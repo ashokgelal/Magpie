@@ -9,6 +9,5 @@ namespace Magpie.Tests.Mocks
         {
             Version = version;
         }
-
     }
 }

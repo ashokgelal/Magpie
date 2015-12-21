@@ -21,7 +21,7 @@ namespace Magpie.Tests
             var debuggingInfoLogger = Substitute.For<IDebuggingInfoLogger>();
             _analyticsLogger = Substitute.For<IAnalyticsLogger>();
             var remoteContentDownloader = Substitute.For<IRemoteContentDownloader>();
-            var appInfo = new AppInfo();
+            var appInfo = new AppInfo("valid_url");
             _appCast = new MockRemoteAppcast(new Version(1, 0));
             _mainWindowViewModel = new MockMainWindowViewModel(appInfo, debuggingInfoLogger, remoteContentDownloader, _analyticsLogger);
         }
