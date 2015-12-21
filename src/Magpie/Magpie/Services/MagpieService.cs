@@ -16,7 +16,7 @@ namespace Magpie.Services
     {
         private readonly AppInfo _appInfo;
         private readonly IDebuggingInfoLogger _logger;
-        private IAnalyticsLogger _analyticsLogger;
+        private readonly IAnalyticsLogger _analyticsLogger;
         internal UpdateDecider UpdateDecider { get; set; }
         internal IRemoteContentDownloader RemoteContentDownloader { get; set; }
         public event EventHandler<SingleEventArgs<RemoteAppcast>> RemoteAppcastAvailableEvent;

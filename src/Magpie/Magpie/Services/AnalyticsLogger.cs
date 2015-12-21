@@ -4,35 +4,35 @@ namespace Magpie.Services
 {
     public class AnalyticsLogger : IAnalyticsLogger
     {
-        public void LogDownloadNow()
+        public virtual void LogDownloadNow()
         {
         }
 
-        public void LogSkipThisVersion()
+        public virtual void LogSkipThisVersion()
         {
         }
 
-        public void LogRemindMeLater()
+        public virtual void LogRemindMeLater()
         {
         }
 
-        public void LogContinueWithInstallation()
+        public virtual void LogContinueWithInstallation()
         {
         }
 
-        public void LogOldVersion(string oldVersion)
+        public virtual void LogOldVersion(string oldVersion)
         {
         }
 
-        public void LogNewVersion(string s)
+        public virtual void LogNewVersion(string s)
         {
         }
 
-        public void LogAppTitle(string mySuperAwesomeApp)
+        public virtual void LogAppTitle(string mySuperAwesomeApp)
         {
         }
 
-        public void LogUpdateCancelled()
+        public virtual void LogUpdateCancelled()
         {
         }
     }

@@ -37,8 +37,8 @@
         /// <summary>
         /// Log the name of the application to be updated.
         /// </summary>
-        /// <param name="mySuperAwesomeApp">Application name</param>
-        void LogAppTitle(string mySuperAwesomeApp);
+        /// <param name="appName">Application name</param>
+        void LogAppTitle(string appName);
 
         /// <summary>
         /// Log analytics when the user cancels the update.
