@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Magpie</id>
-    <version>1.0.1-beta</version>
+    <version>1.0.3-beta</version>
     <authors>MetaGeek, LLC</authors>
     <projectUrl>https://github.com/metageek-llc/Magpie</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
