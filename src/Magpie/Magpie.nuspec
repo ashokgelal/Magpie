@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Magpie</id>
-    <version>1.0.0-beta</version>
+    <version>1.0.1-beta</version>
     <authors>MetaGeek, LLC</authors>
     <projectUrl>https://github.com/metageek-llc/Magpie</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
@@ -12,6 +12,6 @@
     </dependencies>
   </metadata>
   <files>
-    <file src="Magpie\bin\x86\Release\Magpie.dll" target="lib\Magpie.dll" />
+    <file src="Magpie\bin\Release\Magpie.dll" target="lib\Magpie.dll" />
   </files>
 </package>

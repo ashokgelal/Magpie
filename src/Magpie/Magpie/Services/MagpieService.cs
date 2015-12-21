@@ -16,7 +16,7 @@ namespace Magpie.Services
     {
         private readonly AppInfo _appInfo;
         private readonly IDebuggingInfoLogger _logger;
-        private IAnalyticsLogger _analyticsLogger;
+        private readonly IAnalyticsLogger _analyticsLogger;
         internal UpdateDecider UpdateDecider { get; set; }
         internal IRemoteContentDownloader RemoteContentDownloader { get; set; }
         public event EventHandler<SingleEventArgs<RemoteAppcast>> RemoteAppcastAvailableEvent;
@@ -31,14 +31,14 @@ namespace Magpie.Services
             UpdateDecider = new UpdateDecider(_logger);
         }
 
-        public async void CheckInBackground(string appcastUrl, bool showDebuggingWindow = false)
+        public async void CheckInBackground(string appcastUrl = null, bool showDebuggingWindow = false)
         {
-            await Check(appcastUrl, showDebuggingWindow).ConfigureAwait(false);
+            await Check(appcastUrl ?? _appInfo.AppCastUrl, showDebuggingWindow).ConfigureAwait(false);
         }
 
-        public async void ForceCheckInBackground(string appcastUrl, bool showDebuggingWindow = false)
+        public async void ForceCheckInBackground(string appcastUrl = null, bool showDebuggingWindow = false)
         {
-            await Check(appcastUrl, showDebuggingWindow, true).ConfigureAwait(false);
+            await Check(appcastUrl ?? _appInfo.AppCastUrl, showDebuggingWindow, true).ConfigureAwait(false);
         }
 
         private async Task Check(string appcastUrl, bool showDebuggingWindow = false, bool forceCheck = false)
