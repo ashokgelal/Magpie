@@ -13,15 +13,17 @@ namespace Magpie.Tests
     {
         private MockMainWindowViewModel _mainWindowViewModel;
         private MockRemoteAppcast _appCast;
+        private IAnalyticsLogger _analyticsLogger;
 
         [TestInitialize]
         public void Initialize()
         {
-            var logger = Substitute.For<IDebuggingInfoLogger>();
+            var debuggingInfoLogger = Substitute.For<IDebuggingInfoLogger>();
+            _analyticsLogger = Substitute.For<IAnalyticsLogger>();
             var remoteContentDownloader = Substitute.For<IRemoteContentDownloader>();
             var appInfo = new AppInfo();
             _appCast = new MockRemoteAppcast(new Version(1, 0));
-            _mainWindowViewModel = new MockMainWindowViewModel(appInfo, logger, remoteContentDownloader);
+            _mainWindowViewModel = new MockMainWindowViewModel(appInfo, debuggingInfoLogger, remoteContentDownloader, _analyticsLogger);
         }
 
         [TestMethod]
@@ -41,5 +43,55 @@ namespace Magpie.Tests
 
             Assert.IsFalse(_mainWindowViewModel.ReleaseNotes.Contains("<style>"));
         }
+
+        [TestMethod]
+        public void TestDownloadNowCommandLogsAnalytics()
+        {
+            _mainWindowViewModel.DownloadNowCommand.Execute(null);
+            _analyticsLogger.Received().LogDownloadNow();
+        }
+
+        [TestMethod]
+        public void TestSkipThisVersionCommandLogsAnalytics()
+        {
+            _mainWindowViewModel.SkipThisVersionCommand.Execute(null);
+            _analyticsLogger.Received().LogSkipThisVersion();
+        }
+
+        [TestMethod]
+        public void TestRemindMeLaterCommandLogsAnalytics()
+        {
+            _mainWindowViewModel.RemindMeLaterCommand.Execute(null);
+            _analyticsLogger.Received().LogRemindMeLater();
+        }
+
+        [TestMethod]
+        public void TestLogOldVersion()
+        {
+            _mainWindowViewModel.OldVersion = "1.0.0";
+            _analyticsLogger.Received().LogOldVersion("1.0.0");
+        }
+
+        [TestMethod]
+        public void TestLogNewVersion()
+        {
+            _mainWindowViewModel.NewVersion = "1.0.1";
+            _analyticsLogger.Received().LogNewVersion("1.0.1");
+        }
+
+        [TestMethod]
+        public void TestLogAppTitle()
+        {
+            _mainWindowViewModel.Title = "My Super Awesome App";
+            _analyticsLogger.Received().LogAppTitle("My Super Awesome App");
+        }
+
+        [TestMethod]
+        public void TestLogUpdateCancelled()
+        {
+            _mainWindowViewModel.CancelUpdate();
+            _analyticsLogger.Received().LogUpdateCancelled();
+        }
+
     }
 }

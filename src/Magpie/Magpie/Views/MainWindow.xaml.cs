@@ -5,11 +5,24 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Navigation;
+using Magpie.ViewModels;
 
 namespace Magpie.Views
 {
     public partial class MainWindow
     {
+        private MainWindowViewModel _viewModel;
+
+        internal MainWindowViewModel ViewModel
+        {
+            get { return _viewModel; }
+            set
+            {
+                _viewModel = value;
+                DataContext = value;
+            }
+        }
+
         public MainWindow()
         {
             InitializeComponent();
@@ -20,6 +33,11 @@ namespace Magpie.Views
         {
             Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
             e.Handled = true;
+        }
+
+        private void MainWindow_OnClosed(object sender, EventArgs e)
+        {
+            ViewModel.CancelUpdate();
         }
     }
 

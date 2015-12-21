@@ -8,6 +8,7 @@
         xmlns:views="clr-namespace:Magpie.Views"
         Width="600"
         Height="520"
+        Closed="MainWindow_OnClosed"
         ResizeMode="NoResize"
         ShowInTaskbar="False"
         UseLayoutRounding="True"
@@ -79,7 +80,7 @@
                     Grid.Row="3"
                     Height="280"
                     VerticalAlignment="Stretch"
-                    views:BrowserBehavior.Html="{Binding ReleaseNotes}"/>
+                    views:BrowserBehavior.Html="{Binding ReleaseNotes}" />
 
         <DockPanel Grid.Row="4"
                    Grid.Column="0"
@@ -92,7 +93,7 @@
                     DockPanel.Dock="Left"
                     Style="{DynamicResource _magpieSkipBtn}" />
             <Button HorizontalAlignment="Right"
-                    Command="{Binding ContinueUpdateCommand}"
+                    Command="{Binding DownloadNowCommand}"
                     Content="{x:Static prop:Resources.DownloadNow}"
                     DockPanel.Dock="Right"
                     Padding="4" />

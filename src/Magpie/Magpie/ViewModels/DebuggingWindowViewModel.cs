@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics;
-using System.Security.Policy;
 using Magpie.Interfaces;
 
 namespace Magpie.ViewModels

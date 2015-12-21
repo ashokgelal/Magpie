@@ -14,7 +14,7 @@ namespace Magpie.ViewModels
         private int _progressPercent;
         private string _appIconPath;
         private string _title;
-        public ICommand ContinueCommand { get; set; }
+        public ICommand ContinueWithInstallationCommand { get; set; }
 
         public string Title
         {

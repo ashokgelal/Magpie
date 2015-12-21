@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.IO;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Magpie.Interfaces;
@@ -13,6 +12,7 @@ namespace Magpie.ViewModels
     internal class MainWindowViewModel : BindableBase
     {
         private readonly IDebuggingInfoLogger _logger;
+        private readonly IAnalyticsLogger _analyticsLogger;
         private readonly IRemoteContentDownloader _contentDownloader;
         private string _releaseNotes;
         private string _title;
@@ -30,26 +30,38 @@ namespace Magpie.ViewModels
             }
         }
 
-        public ICommand ContinueUpdateCommand { get; set; }
+        public ICommand DownloadNowCommand { get; set; }
         public ICommand SkipThisVersionCommand { get; set; }
         public ICommand RemindMeLaterCommand { get; set; }
 
         public string Title
         {
             get { return _title; }
-            set { SetProperty(ref _title, value); }
+            set
+            {
+                SetProperty(ref _title, value);
+                _analyticsLogger.LogAppTitle(value);
+            }
         }
 
         public string OldVersion
         {
             get { return _oldVersion; }
-            set { SetProperty(ref _oldVersion, value); }
+            set
+            {
+                SetProperty(ref _oldVersion, value);
+                _analyticsLogger.LogOldVersion(value);
+            }
         }
 
         public string NewVersion
         {
             get { return _newVersion; }
-            set { SetProperty(ref _newVersion, value); }
+            set
+            {
+                SetProperty(ref _newVersion, value);
+                _analyticsLogger.LogNewVersion(value);
+            }
         }
 
         public string AppIconPath
@@ -58,17 +70,18 @@ namespace Magpie.ViewModels
             set { SetProperty(ref _appIconPath, value); }
         }
 
-        public MainWindowViewModel(AppInfo appInfo, IDebuggingInfoLogger logger, IRemoteContentDownloader contentDownloader)
+        public MainWindowViewModel(AppInfo appInfo, IDebuggingInfoLogger logger, IRemoteContentDownloader contentDownloader, IAnalyticsLogger analyticsLogger)
         {
             AppIconPath = appInfo.AppIconPath;
             _logger = logger;
             _contentDownloader = contentDownloader;
+            _analyticsLogger = analyticsLogger;
         }
 
         internal async Task StartAsync(RemoteAppcast appcast)
         {
             InitializeCommands(appcast);
-            Title = string.Format(Properties.Resources.NewVersionAvailable, appcast.Title).ToUpperInvariant();
+            Title = string.Format(Resources.NewVersionAvailable, appcast.Title).ToUpperInvariant();
             OldVersion = GetOldVersion();
             NewVersion = appcast.Version.ToString();
             ReleaseNotes = await FetchReleaseNotesAsync(appcast.ReleaseNotesUrl).ConfigureAwait(false);
@@ -89,6 +102,7 @@ namespace Magpie.ViewModels
         private void RemindMeLaterCommandHandler(object obj)
         {
             _logger.Log("Remind me later command invoked");
+            _analyticsLogger.LogRemindMeLater();
             var registryIO = new RegistryIO();
             registryIO.WriteToRegistry(MagicStrings.LAST_CHECK_DATE, DateTime.Now.ToString(CultureInfo.InvariantCulture));
         }
@@ -96,10 +110,11 @@ namespace Magpie.ViewModels
         private void SkipThisVersionCommandHandler(object obj)
         {
             _logger.Log("Skip this version command invoked");
+            _analyticsLogger.LogSkipThisVersion();
             var registryIO = new RegistryIO();
             registryIO.WriteToRegistry(MagicStrings.SKIP_VERSION_KEY, _remoteVersion);
         }
-
+        
         private async Task<string> FetchReleaseNotesAsync(string releaseNotesUrl)
         {
             _logger.Log("Fetching release notes");
@@ -122,6 +137,11 @@ namespace Magpie.ViewModels
         {
             var stylesheetStream = Resources.ResourceManager.GetObject("style") as string;
             return stylesheetStream ?? string.Empty;
+        }
+
+        public void CancelUpdate()
+        {
+            _analyticsLogger.LogUpdateCancelled();
         }
     }
 }
