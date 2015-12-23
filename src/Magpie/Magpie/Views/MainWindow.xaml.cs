@@ -39,6 +39,24 @@ namespace Magpie.Views
         {
             ViewModel.CancelUpdate();
         }
+
+        private void RemindMeLater_OnClick(object sender, RoutedEventArgs e)
+        {
+            var viewModel = DataContext as MainWindowViewModel;
+            if (viewModel != null)
+            {
+                viewModel.RemindMeLaterCommand.Execute(null);
+            }
+        }
+
+        private void SkipThisVersion_OnClick(object sender, RoutedEventArgs e)
+        {
+            var viewModel = DataContext as MainWindowViewModel;
+            if (viewModel != null)
+            {
+                viewModel.SkipThisVersionCommand.Execute(null);
+            }
+        }
     }
 
     internal class BrowserBehavior
