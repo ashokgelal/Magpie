@@ -88,9 +88,10 @@
                    HorizontalAlignment="Stretch"
                    LastChildFill="False">
             <Button Width="130"
-                    Command="{Binding SkipThisVersionCommand}"
+                    Click="SkipThisVersion_OnClick"
                     Content="{x:Static prop:Resources.SkipThisVersion}"
                     DockPanel.Dock="Left"
+                    IsCancel="True"
                     Style="{DynamicResource _magpieSkipBtn}" />
             <Button HorizontalAlignment="Right"
                     Command="{Binding DownloadNowCommand}"
@@ -100,9 +101,10 @@
             <Button Width="130"
                     Margin="10 0"
                     HorizontalAlignment="Right"
-                    Command="{Binding RemindMeLaterCommand}"
+                    Click="RemindMeLater_OnClick"
                     Content="{x:Static prop:Resources.RemindMeLater}"
                     DockPanel.Dock="Right"
+                    IsCancel="True"
                     Style="{DynamicResource _magpieRemindLaterBtn}" />
         </DockPanel>
 
