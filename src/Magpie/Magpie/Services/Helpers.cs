@@ -4,12 +4,9 @@ namespace Magpie.Services
 {
     internal static class Helpers
     {
-        internal static bool IsHigherThan(this Version version, Version otherVersion)
+        internal static bool IsHigherThan(this Version thisVersion, Version otherVersion)
         {
-            return version.Revision > otherVersion.Revision
-                               || version.Build > otherVersion.Build
-                               || version.Minor > otherVersion.Minor
-                               || version.Major > otherVersion.Major;
+             return thisVersion.CompareTo(otherVersion) > 0;
         }
     }
 }
