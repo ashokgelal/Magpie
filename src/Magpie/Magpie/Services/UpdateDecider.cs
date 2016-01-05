@@ -99,7 +99,7 @@ namespace Magpie.Services
 
         protected virtual bool CheckVersion(RemoteAppcast appcast)
         {
-            var curVer = Assembly.GetExecutingAssembly().GetName().Version;
+            var curVer = Assembly.GetEntryAssembly().GetName().Version;
             var isHigherVersionAvailable = appcast.Version.IsHigherThan(curVer);
             _logger.Log(string.Format("Higher version of app is {0}available", isHigherVersionAvailable ? "" : "not "));
             return isHigherVersionAvailable;

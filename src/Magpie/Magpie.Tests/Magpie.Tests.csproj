@@ -55,6 +55,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="HelpersTests.cs" />
     <Compile Include="MagpieServiceTests.cs" />
     <Compile Include="MainWindowViewModelTests.cs" />
     <Compile Include="Mocks\MockMagpieService.cs" />
