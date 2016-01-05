@@ -16,8 +16,9 @@ A modern software update framework for .net applications.
 - [x] Custom CSS Support (contributed by [mariannabudnikova](https://github.com/mariannabudnikova))
 - [x] Force check
 - [x] Notify "No Updates Available" (contributed by [antistrongguy](https://github.com/antistrongguy))
-- [ ] Create nuget package
-- [ ] Add XML docs
+- [x] Create nuget package
+- [x] Add XML docs
+- [x] Analytics interface
 - [ ] Implement a debugging window
-- [ ] Analytics interface
+- [ ] Add more tests
 
