@@ -1,7 +1,9 @@
 ## Magpie
+
 A modern software update framework for .net applications.
 
 #### Master Branch Status:
+
 [![Build status](https://ci.appveyor.com/api/projects/status/a5t0tq8i5y5q0ixi/branch/master?svg=true)](https://ci.appveyor.com/project/ashokgelal/magpie/branch/master)
 
 ![Update Available Screenshot](https://github.com/ashokgelal/Magpie/blob/master/screenshots/lp_screenshot.png)
@@ -9,12 +11,15 @@ A modern software update framework for .net applications.
 ![Download Screenshot](https://github.com/ashokgelal/Magpie/blob/master/screenshots/lp_download_screenshot.png)
 
 ### Installing
+
 Use MetaGeek.Magpie nuget package
 
 `PM> Install-Package Magpie -Pre`
 
 ### Using Magpie
+
 To use Magpie in your project, you only need to interact with `MagpieService` class. Here are basic steps:
+
 1. Create an instance of `AppInfo` class:
 `var appInfo = new AppInfo("<url to appcast.json>");`
 2. Now, to run Magpie in the background:
@@ -23,6 +28,7 @@ To use Magpie in your project, you only need to interact with `MagpieService` cl
 `new MagpieService(appInfo).CheckInBackground();`
 
 #### Using your own logo in the update window:
+
 1. Create an instance of `AppInfo` class:
 `var appInfo = new AppInfo("<url to appcast.json>");`
 2. Call `SetAppIcon()` method with a namespace of your project that contains the logo, and the name of the logo itself:
@@ -45,6 +51,7 @@ When instantiating MagpieService, you can also pass an instance `IAnalyticsLogge
 - [x] Create nuget package
 - [x] Add XML docs
 - [x] Analytics interface
+- [ ] Validate signature of download files (see: [issue #19](https://github.com/ashokgelal/Magpie/issues/19))
 - [ ] Implement a debugging window
 - [ ] Add more tests
 
