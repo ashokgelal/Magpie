@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.Serialization;
@@ -11,6 +12,7 @@ namespace Magpie.Models
         [DataMember(Name = "version", IsRequired = true)]
         private string _version;
         public Version Version { get; protected set; }
+        public Dictionary<string, object> RawDictionary { get; internal set; }
 
         // Dates example:
         // e.g. January 30, 2015 18:15:00 +0200

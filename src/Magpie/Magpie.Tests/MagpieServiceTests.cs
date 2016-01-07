@@ -29,6 +29,7 @@ namespace Magpie.Tests
             Assert.IsNotNull(appcast);
             Assert.AreEqual("Magpie", appcast.Title);
             Assert.AreEqual(new Version(0, 0, 1), appcast.Version);
+            Assert.AreEqual(5, appcast.RawDictionary.Count);
         }
 
         [TestMethod]

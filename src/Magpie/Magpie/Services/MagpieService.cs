@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.Serialization.Json;
@@ -134,12 +135,18 @@ namespace Magpie.Services
         private RemoteAppcast ParseAppcast(string content)
         {
             _logger.Log("Started deserializing remote appcast content");
-            var serializer = new DataContractJsonSerializer(typeof(RemoteAppcast));
-            var ms = new MemoryStream(Encoding.ASCII.GetBytes(content));
-            var appcast = (RemoteAppcast)serializer.ReadObject(ms);
-            ms.Close();
-            _logger.Log("Finished deserializing remote appcast content");
-            return appcast;
+            using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(content)))
+            {
+                var settings = new DataContractJsonSerializerSettings { UseSimpleDictionaryFormat = true };
+                var serializer = new DataContractJsonSerializer(typeof(RemoteAppcast), settings);
+                var appcast = (RemoteAppcast)serializer.ReadObject(ms);
+
+                ms.Seek(0, SeekOrigin.Begin);
+                serializer = new DataContractJsonSerializer(typeof(Dictionary<string, object>), settings);
+                appcast.RawDictionary = (Dictionary<string, object>)serializer.ReadObject(ms);
+                _logger.Log("Finished deserializing remote appcast content");
+                return appcast;
+            }
         }
 
         protected virtual void OnRemoteAppcastAvailableEvent(SingleEventArgs<RemoteAppcast> args)
