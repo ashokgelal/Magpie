@@ -1,4 +1,4 @@
-## Magpie
+# Magpie
 
 A modern software update framework for .net applications.
 
@@ -10,27 +10,28 @@ A modern software update framework for .net applications.
 
 ![Download Screenshot](https://github.com/ashokgelal/Magpie/blob/master/screenshots/lp_download_screenshot.png)
 
-### Features:
+## Features:
 
 * **Based on WPF** - modern, beautiful and stylish
-* **JSON based appcast** - no ugly xml
+* **JSON based appcast** - no fugly xml
 * **Markdown based release notes** - because there is no reason to use any other format
 * **Looks great out of the box** - no need to write your own CSS
-* **Very simple APIs** - needs 2 lines of extra code to get started
+* **Easy integration** - install via nuget and add two lines of code
 * **Very flexible APIs** - provides plenty of hooks and raises right events at the right time
 * **Built-in logging for quick debugging** - plug-in a logger of your choice to see what's going on behind the scene
 * **Built-in analytics** - measure the effectiveness of your updates by plugging-in your analytics logger to capture important events
-* **Minimal dependencies** - one 1 external dependency (for Markdown parsing)
+* **Signature Verification** - DSA signatures for secure updates. Comes with an utility app for generating keys, creating a signature and verifying an artifact
+* **Minimal dependencies** - only one 1 external dependency (for Markdown parsing)
 
-### Installing
+## Installing
 
 Use [Magpie nuget package](https://www.nuget.org/packages/Magpie/1.0.7-beta):
 
 `PM> Install-Package Magpie -Pre`
 
-### Using Magpie:
+## Using Magpie:
 
-To use Magpie in your project, you only need to interact with `MagpieService` class. Here are basic steps:
+To use Magpie in your project, you only need to interact with `MagpieUpdater` class. Here are basic steps:
 
 1) Create an instance of `AppInfo` class:
 
@@ -41,18 +42,19 @@ var appInfo = new AppInfo("<url to appcast.json>");
 2) Now, to run Magpie in the background:
 
 ```csharp
-new MagpieService(appInfo).CheckInBackground();
+new MagpieUpdater(appInfo).CheckInBackground();
 ```
 
-3) To force check for updates (like via a 'Check for Updates' menu item):
+3) *(Optional)* To force check for updates (like via a 'Check for Updates' menu item):
 
 ```csharp
-new MagpieService(appInfo).ForceCheckInBackground();
+new MagpieUpdater(appInfo).ForceCheckInBackground();
 ```
+---
 
 #### Publishing updates:
 
-You add some basic information to a json file and publish it somewhere publicly accessible. The json appcast should contain atlas the following information:
+Add some basic information to a valid json file and publish it somewhere publicly accessible. The appcast file should contain at least following keys:
 
 ```json
 {
@@ -63,7 +65,46 @@ You add some basic information to a json file and publish it somewhere publicly 
 }
 ```
 
-Obviously, `release_notes_url` and `artifact_url` should be somewhere publicly accessible as well. You can add extra information to this appcast file and can access those values later from `RemoteAppcast`'s `RawDictionary` property. 
+Obviously, `release_notes_url` and `artifact_url` should be somewhere publicly accessible as well. You can add extra information to this appcast file and can access those values later from `RemoteAppcast`'s `RawDictionary` property.
+
+---
+
+#### Signing Updates:
+
+For security reasons, it's a good idea to sign your updates before publishing. With Magpie and it's companion [Magpie Signature Verifier](https://github.com/ashokgelal/Magpie-SignatureGenerator) app, it only takes couple of minutes to generate your keys and create a signature. Once you generate the keys, the subsequent signing tasks should only take few seconds.
+
+This is what you need to do to sign your updates:
+
+##### Initial Keys Generation
+
+1) Download `MagpieVerifier.exe` from *utils* folder from this repo.
+
+2) From your command window, execute:
+
+```shell
+MagpieVerifier.exe generate
+```
+This creates two files: `MagpieDSA.priv` and `MagpieDSA.pub`.
+
+**IMPORTANT! Keep `MagpieDSA.priv` in a secure place. If you lose it, you won't be able to sign your updates again.**
+
+3) Drag-and-drop `MagpieDSA.pub` in your main project, select it, and from the `Properties` window, select **`Embedded Resource`** for `Build Action`.
+
+These first 3 steps should only be done once. Now to sign every new updates release:
+
+4) From you command window, execute:
+
+```shell
+MagpieVerifier.exe sign <updater_file> <private_key_file>
+```
+
+`updater_file` is the file you want to sign and `private_key_file` is the private DSA file you generated from step 2 above.
+
+This step will print a long signature string for you. Copy paste this signature string in your `appcast.json` file under `"dsa_signature"` key and you are all set.
+
+See [Magpie Signature Generator project](https://github.com/ashokgelal/Magpie-SignatureGenerator) for more information.
+
+---
 
 #### Providing a logo:
 
@@ -79,13 +120,15 @@ var appInfo = new AppInfo("<url to appcast.json>");
 appInfo.SetAppIcon("<namespace of your project>", "<yourlogo.png>");
 ```
 
-Look at `Magpie.Example` project for a demo application.
+Look into `Magpie.Example` project for a demo application.
+
+---
 
 #### Hooking up analytics:
 
-When instantiating MagpieService, you can also pass an instance `IAnalyticsLogger` if you want to log different user actions such as logging download, remind me later, skip etc. `Magpie` comes with an empty implementation of `IAnalyticsLogger` called `AnalyticsLogger` that you can extend and hook-in your own logic for actual logging of different events. We actually recommend that you extend `AnalyticsLogger` instead of extending `IAnalyticsLogger` interface. If we add more events to `IAnalyticsLogger`, and we will, it won't break your application.
+When instantiating `MagpieUpdater`, you can also pass an instance `IAnalyticsLogger` if you want to log different user actions such as logging download, remind me later, skip etc. `Magpie` comes with an empty implementation of `IAnalyticsLogger` called `AnalyticsLogger` that you can extend and hook-in your own logic for actual logging of different events. We actually recommend that you extend `AnalyticsLogger` instead of extending `IAnalyticsLogger` interface. If we add more events to `IAnalyticsLogger`, and we will, it won't break your application.
 
-### TODO
+## TODO
 
 - [x] Build on AppVeyor
 - [x] Markdown support for Release Notes
@@ -96,6 +139,6 @@ When instantiating MagpieService, you can also pass an instance `IAnalyticsLogge
 - [x] Create nuget package
 - [x] Add XML docs
 - [x] Analytics interface
-- [ ] Validate signature of download files (see: [issue #19](https://github.com/ashokgelal/Magpie/issues/19))
+- [x] Validate signature of download files (see: [issue #19](https://github.com/ashokgelal/Magpie/issues/19))
 - [ ] Implement a debugging window
 - [ ] Add more tests
