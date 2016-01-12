@@ -8,12 +8,12 @@ namespace Magpie.Example
         public MainWindow()
         {
             InitializeComponent();
-            new MagpieService(MakeAppInfo()).CheckInBackground();
+            new MagpieUpdater(MakeAppInfo()).CheckInBackground();
         }
 
         private void ForceCheck_OnClick(object sender, RoutedEventArgs e)
         {
-            new MagpieService(MakeAppInfo()).ForceCheckInBackground();
+            new MagpieUpdater(MakeAppInfo()).ForceCheckInBackground();
         }
 
         private static AppInfo MakeAppInfo()

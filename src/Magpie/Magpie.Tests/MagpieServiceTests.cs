@@ -12,20 +12,20 @@ namespace Magpie.Tests
     [TestClass]
     public class MagpieServiceTests
     {
-        private MockMagpieService _mockMagpieService;
+        private MockMagpieUpdater _mockMagpieUpdater;
 
         [TestInitialize]
         public void Initialize()
         {
             AssemblyInjector.Inject();
-            _mockMagpieService = new MockMagpieService("validContentUrl");
+            _mockMagpieUpdater = new MockMagpieUpdater("validContentUrl");
         }
 
         [TestMethod]
         public void TestValidJson()
         {
-            _mockMagpieService.CheckInBackground();
-            var appcast = _mockMagpieService.RemoteAppcast;
+            _mockMagpieUpdater.CheckInBackground();
+            var appcast = _mockMagpieUpdater.RemoteAppcast;
             Assert.IsNotNull(appcast);
             Assert.AreEqual("Magpie", appcast.Title);
             Assert.AreEqual(new Version(0, 0, 1), appcast.Version);
@@ -36,8 +36,8 @@ namespace Magpie.Tests
         public void TestAppcastAvailableRaiseEvent()
         {
             var raised = false;
-            _mockMagpieService.RemoteAppcastAvailableEvent += (s, a) => { raised = true; };
-            _mockMagpieService.CheckInBackground();
+            _mockMagpieUpdater.RemoteAppcastAvailableEvent += (s, a) => { raised = true; };
+            _mockMagpieUpdater.CheckInBackground();
             Assert.IsTrue(raised);
         }
 
@@ -46,9 +46,9 @@ namespace Magpie.Tests
         {
             var updateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
             updateDecider.ShouldUpdate(Arg.Any<RemoteAppcast>(), true).Returns(false);
-            _mockMagpieService.UpdateDecider = updateDecider;
-            _mockMagpieService.ForceCheckInBackground();
-            Assert.IsTrue(_mockMagpieService._showNoUpdatesWindowFlag);
+            _mockMagpieUpdater.UpdateDecider = updateDecider;
+            _mockMagpieUpdater.ForceCheckInBackground();
+            Assert.IsTrue(_mockMagpieUpdater._showNoUpdatesWindowFlag);
         }
 
         [TestMethod]
@@ -56,36 +56,36 @@ namespace Magpie.Tests
         {
             var updateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
             updateDecider.ShouldUpdate(Arg.Any<RemoteAppcast>()).Returns(false);
-            _mockMagpieService.UpdateDecider = updateDecider;
-            _mockMagpieService.CheckInBackground();
-            Assert.IsFalse(_mockMagpieService._showNoUpdatesWindowFlag);
+            _mockMagpieUpdater.UpdateDecider = updateDecider;
+            _mockMagpieUpdater.CheckInBackground();
+            Assert.IsFalse(_mockMagpieUpdater._showNoUpdatesWindowFlag);
         }
 
         [TestMethod]
         public void TestUpdateWindowShown()
         {
-            _mockMagpieService.UpdateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
-            _mockMagpieService.UpdateDecider.ShouldUpdate(Arg.Any<RemoteAppcast>(), true).Returns(true);
-            _mockMagpieService.ForceCheckInBackground();
-            Assert.IsTrue(_mockMagpieService._showUpdateWindowFlag);
+            _mockMagpieUpdater.UpdateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
+            _mockMagpieUpdater.UpdateDecider.ShouldUpdate(Arg.Any<RemoteAppcast>(), true).Returns(true);
+            _mockMagpieUpdater.ForceCheckInBackground();
+            Assert.IsTrue(_mockMagpieUpdater._showUpdateWindowFlag);
         }
 
         [TestMethod]
         public void TestForceCheckOverridingAppCastUrl()
         {
-            _mockMagpieService.UpdateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
-            _mockMagpieService.UpdateDecider.ShouldUpdate(Arg.Any<RemoteAppcast>(), true).Returns(true);
-            _mockMagpieService.ForceCheckInBackground("alternateUrl");
-            _mockMagpieService._remoteContentDownloader.Received(1).DownloadStringContent("alternateUrl");
+            _mockMagpieUpdater.UpdateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
+            _mockMagpieUpdater.UpdateDecider.ShouldUpdate(Arg.Any<RemoteAppcast>(), true).Returns(true);
+            _mockMagpieUpdater.ForceCheckInBackground("alternateUrl");
+            _mockMagpieUpdater._remoteContentDownloader.Received(1).DownloadStringContent("alternateUrl");
         }
 
         [TestMethod]
         public void TestBackgroundCheckOverridingAppCastUrl()
         {
-            _mockMagpieService.UpdateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
-            _mockMagpieService.UpdateDecider.ShouldUpdate(Arg.Any<RemoteAppcast>(), true).Returns(true);
-            _mockMagpieService.CheckInBackground("alternateUrl");
-            _mockMagpieService._remoteContentDownloader.Received(1).DownloadStringContent("alternateUrl");
+            _mockMagpieUpdater.UpdateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
+            _mockMagpieUpdater.UpdateDecider.ShouldUpdate(Arg.Any<RemoteAppcast>(), true).Returns(true);
+            _mockMagpieUpdater.CheckInBackground("alternateUrl");
+            _mockMagpieUpdater._remoteContentDownloader.Received(1).DownloadStringContent("alternateUrl");
         }
     }
 

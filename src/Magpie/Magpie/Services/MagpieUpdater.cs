@@ -13,7 +13,7 @@ using Magpie.Views;
 
 namespace Magpie.Services
 {
-    public class MagpieService : IMagpieService
+    public class MagpieUpdater : IMagpieService
     {
         private readonly AppInfo _appInfo;
         private readonly IDebuggingInfoLogger _logger;
@@ -23,7 +23,7 @@ namespace Magpie.Services
         public event EventHandler<SingleEventArgs<RemoteAppcast>> RemoteAppcastAvailableEvent;
         public event EventHandler<SingleEventArgs<string>> ArtifactDownloadedEvent;
 
-        public MagpieService(AppInfo appInfo, IDebuggingInfoLogger debuggingInfoLogger = null, IAnalyticsLogger analyticsLogger = null)
+        public MagpieUpdater(AppInfo appInfo, IDebuggingInfoLogger debuggingInfoLogger = null, IAnalyticsLogger analyticsLogger = null)
         {
             _appInfo = appInfo;
             _logger = debuggingInfoLogger ?? new DebuggingWindowViewModel();

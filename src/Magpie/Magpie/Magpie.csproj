@@ -70,7 +70,7 @@
     <Compile Include="ViewModels\DownloadWindowViewModel.cs" />
     <Compile Include="Services\Helpers.cs" />
     <Compile Include="Services\MagicStrings.cs" />
-    <Compile Include="Services\MagpieService.cs" />
+    <Compile Include="Services\MagpieUpdater.cs" />
     <Compile Include="Services\RegistryIO.cs" />
     <Compile Include="Services\UpdateDecider.cs" />
     <Compile Include="ViewModels\BindableBase.cs" />

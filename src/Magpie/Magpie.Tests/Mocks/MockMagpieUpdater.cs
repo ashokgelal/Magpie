@@ -6,7 +6,7 @@ using NSubstitute;
 
 namespace Magpie.Tests.Mocks
 {
-    internal class MockMagpieService : MagpieService
+    internal class MockMagpieUpdater : MagpieUpdater
     {
         private const string VALID_JSON = @"{ 'title': 'Magpie', 'version': '0.0.1', 'build_date': '10/03/2015', 'release_notes_url': '', 'artifact_url': 'https://dl.dropboxusercontent.com/u/83257/Updaters/Magpie/appcast.zip' }";
         internal RemoteAppcast RemoteAppcast { get; private set; }
@@ -14,7 +14,7 @@ namespace Magpie.Tests.Mocks
         internal bool _showNoUpdatesWindowFlag;
         internal IRemoteContentDownloader _remoteContentDownloader;
 
-        public MockMagpieService(string validUrl, IDebuggingInfoLogger infoLogger = null) : base(new AppInfo(validUrl), infoLogger)
+        public MockMagpieUpdater(string validUrl, IDebuggingInfoLogger infoLogger = null) : base(new AppInfo(validUrl), infoLogger)
         {
             var validJson = VALID_JSON.Replace("'", "\"");
             _remoteContentDownloader = Substitute.For<IRemoteContentDownloader>();
