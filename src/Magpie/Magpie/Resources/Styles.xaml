@@ -9,6 +9,7 @@
     <SolidColorBrush x:Key="_magpieMetadataLblFgBrush" Color="#777777" />
     <SolidColorBrush x:Key="_magpieMetadataValueFgBrush" Color="#222222" />
     <SolidColorBrush x:Key="_magpieSeparatorFillBrush" Color="#DCDCDC" />
+    <SolidColorBrush x:Key="_magpieInvalidSignatureFgBrush" Color="Crimson" />
 
     <FontFamily x:Key="_magpieHeaderFont">Trebuchet MS</FontFamily>
     <Style x:Key="_magpieButtonBase" TargetType="Button">
@@ -92,5 +93,10 @@
         <Setter Property="FontSize" Value="18" />
         <Setter Property="FontWeight" Value="SemiBold" />
         <Setter Property="Foreground" Value="{DynamicResource _magpieMetadataLblFgBrush}" />
+    </Style>
+    <Style x:Key="_magpieInvalidSignatureTitle" TargetType="TextBlock">
+        <Setter Property="FontSize" Value="13" />
+        <Setter Property="TextWrapping" Value="Wrap" />
+        <Setter Property="Foreground" Value="{DynamicResource _magpieInvalidSignatureFgBrush}" />
     </Style>
 </ResourceDictionary>

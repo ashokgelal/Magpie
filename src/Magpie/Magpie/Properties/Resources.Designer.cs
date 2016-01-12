@@ -61,7 +61,7 @@ namespace Magpie.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Downloading {0} Installer....
+        ///   Looks up a localized string similar to Downloading {0} Updates....
         /// </summary>
         public static string DownloadingInstaller {
             get {
@@ -106,6 +106,15 @@ namespace Magpie.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to OK.
+        /// </summary>
+        public static string OK {
+            get {
+                return ResourceManager.GetString("OK", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Powered by Magpie.
         /// </summary>
         public static string PoweredByMagpie {
@@ -138,6 +147,24 @@ namespace Magpie.Properties {
         public static string RunInstaller {
             get {
                 return ResourceManager.GetString("RunInstaller", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Error verifying updater&apos;s signature. No updates will be installed..
+        /// </summary>
+        public static string SignatureErrorMsg {
+            get {
+                return ResourceManager.GetString("SignatureErrorMsg", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to {0} Signature Error.
+        /// </summary>
+        public static string SignatureErrorTitle {
+            get {
+                return ResourceManager.GetString("SignatureErrorTitle", resourceCulture);
             }
         }
         

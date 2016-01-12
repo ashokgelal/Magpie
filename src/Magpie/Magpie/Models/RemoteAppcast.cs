@@ -22,6 +22,9 @@ namespace Magpie.Models
         private string _buildDate;
         public DateTime BuildDate { get; private set; }
 
+        [DataMember(Name = "dsa_signature", IsRequired = false)]
+        public string DSASignature { get; private set; }
+
         [DataMember(Name = "artifact_url", IsRequired = true)]
         public string ArtifactUrl { get; private set; }
 

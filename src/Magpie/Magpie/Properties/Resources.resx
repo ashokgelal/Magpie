@@ -118,7 +118,7 @@
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="DownloadingInstaller" xml:space="preserve">
-    <value>Downloading {0} Installer...</value>
+    <value>Downloading {0} Updates...</value>
   </data>
   <data name="DownloadNow" xml:space="preserve">
     <value>Download Now</value>
@@ -156,5 +156,14 @@
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="style" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\style.css;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>
+  </data>
+  <data name="OK" xml:space="preserve">
+    <value>OK</value>
+  </data>
+  <data name="SignatureErrorMsg" xml:space="preserve">
+    <value>Error verifying updater's signature. No updates will be installed.</value>
+  </data>
+  <data name="SignatureErrorTitle" xml:space="preserve">
+    <value>{0} Signature Error</value>
   </data>
 </root>

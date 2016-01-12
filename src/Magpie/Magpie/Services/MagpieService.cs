@@ -103,19 +103,51 @@ namespace Magpie.Services
         protected virtual void ShowDownloadWindow(RemoteAppcast appcast)
         {
             var viewModel = new DownloadWindowViewModel(_appInfo, _logger, RemoteContentDownloader);
-            var destinationPath = CreateTempPath(appcast.ArtifactUrl);
+            var artifactPath = CreateTempPath(appcast.ArtifactUrl);
             var window = new DownloadWindow { DataContext = viewModel };
             viewModel.ContinueWithInstallationCommand = new DelegateCommand(e =>
             {
                 _logger.Log("Continue after downloading artifact");
                 _analyticsLogger.LogContinueWithInstallation();
-                OnArtifactDownloadedEvent(new SingleEventArgs<string>(destinationPath));
+                OnArtifactDownloadedEvent(new SingleEventArgs<string>(artifactPath));
                 window.Close();
-                OpenArtifact(destinationPath);
+                if (ShouldOpenArtifact(appcast, artifactPath))
+                {
+                    OpenArtifact(artifactPath);
+                    _logger.Log("Opened artifact");
+                }
             });
             SetOwner(window);
-            viewModel.StartAsync(appcast, destinationPath);
+            viewModel.StartAsync(appcast, artifactPath);
             window.ShowDialog();
+        }
+
+        private bool ShouldOpenArtifact(RemoteAppcast appcast, string artifactPath)
+        {
+            if (string.IsNullOrEmpty(appcast.DSASignature))
+            {
+                _logger.Log("No DSASignature provided. Skipping signature verification");
+                return true;
+            }
+            _logger.Log("DSASignature provided. Verifying artifact's signature");
+            if (VerifyArtifact(appcast, artifactPath))
+            {
+                _logger.Log("Successfully verified artifact's signature");
+                return true;
+            }
+            _logger.Log("Couldn't verify artifact's signature. The artifact will now be deleted.");
+            var signatureWindowViewModel = new SignatureVerificationWindowViewModel(_appInfo, appcast);
+            var signatureWindow = new SignatureVerificationWindow {DataContext = signatureWindowViewModel};
+            signatureWindowViewModel.ContinueCommand = new DelegateCommand(e=> {signatureWindow.Close();});
+            SetOwner(signatureWindow);
+            signatureWindow.ShowDialog();
+            return false;
+        }
+
+        protected virtual bool VerifyArtifact(RemoteAppcast appcast, string artifactPath)
+        {
+            var verifer = new SignatureVerifier(_appInfo.PublicSignatureFilename);
+            return verifer.VerifyDSASignature(appcast.DSASignature, artifactPath);
         }
 
         protected virtual void OpenArtifact(string artifactPath)
