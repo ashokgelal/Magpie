@@ -71,7 +71,7 @@ Obviously, `release_notes_url` and `artifact_url` should be somewhere publicly a
 
 #### Signing Updates:
 
-For security reasons, it's a good idea to sign your updates before publishing. With Magpie and it's companion [Magpie Signature Verifier](https://github.com/ashokgelal/Magpie-SignatureGenerator) app, it only takes couple of minutes to generate your keys and create a signature. Once you generate the keys, the subsequent signing tasks should only take few seconds.
+For security reasons, it's a good idea to sign your updates before publishing. With Magpie and its companion [Magpie Signature Verifier](https://github.com/ashokgelal/Magpie-SignatureGenerator) app, it only takes couple of minutes to generate your keys and create a signature. Once you generate the keys, the subsequent signing tasks should only take few seconds.
 
 This is what you need to do to sign your updates:
 
@@ -139,6 +139,6 @@ When instantiating `MagpieUpdater`, you can also pass an instance `IAnalyticsLog
 - [x] Create nuget package
 - [x] Add XML docs
 - [x] Analytics interface
-- [x] Validate signature of download files (see: [issue #19](https://github.com/ashokgelal/Magpie/issues/19))
+- [x] Validate signature of payloads (see: [issue #19](https://github.com/ashokgelal/Magpie/issues/19))
 - [ ] Implement a debugging window
 - [ ] Add more tests
