@@ -14,7 +14,7 @@ A modern software update framework for .net applications.
 
 * **Based on WPF** - modern, beautiful and stylish
 * **JSON based appcast** - no fugly xml
-* **Markdown based release notes** - because there is no reason to use any other format
+* **Markdown based release notes** - because there is no reason to use any other formats
 * **Looks great out of the box** - no need to write your own CSS
 * **Easy integration** - install via nuget and add two lines of code
 * **Very flexible APIs** - provides plenty of hooks and raises right events at the right time
