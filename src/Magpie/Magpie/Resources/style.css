@@ -1,12 +1,13 @@
 body {
 	margin: 5px 10px;
-	padding: 0;
+	padding: 5px 10px;
+	font-size: 1em;
 	font-family: 'Segoe UI', Verdana, sans;
 }
 .content {
 	color: #333;
 	font-size: 12px;
-	line-height: 1.3em;
+	line-height: 1em;
 	margin: 0;
 	padding: 10px 15px;
 }
@@ -18,7 +19,7 @@ a:hover {
 	text-decoration: underline;
 }
 h1 {
-	font-size: 1.3em;
+	font-size: 1.2em;
 	font-weight: 400;
 	color: #24a6a2;
 	margin-bottom: 10px;
@@ -28,7 +29,7 @@ h1 + ul {
 	margin-bottom: 20px;
 }
 h2 {
-	font-size: 1.2em;
+	font-size: 1em;
 	font-weight: 400;
 	color: #35BBB7;
 	margin-bottom: 10px;
@@ -66,5 +67,4 @@ hr {
 
 code {
 	font-family: 'Courier New', 'Monaco', fixed;
-	font-size: 11px;
 }
