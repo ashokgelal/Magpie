@@ -67,6 +67,7 @@
     <Compile Include="Services\AppInfo.cs" />
     <Compile Include="Services\AssemblyAccessor.cs" />
     <Compile Include="Services\DefaultRemoteContentDownloader.cs" />
+    <Compile Include="Services\MainAssembly.cs" />
     <Compile Include="Services\SignatureVerifier.cs" />
     <Compile Include="ViewModels\DownloadWindowViewModel.cs" />
     <Compile Include="Services\Helpers.cs" />

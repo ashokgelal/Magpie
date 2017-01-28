@@ -1,5 +1,4 @@
 using System.Windows.Input;
-using Magpie.Models;
 using Magpie.Services;
 
 namespace Magpie.ViewModels
@@ -20,10 +19,10 @@ namespace Magpie.ViewModels
             set { SetProperty(ref _appIconPath, value); }
         }
 
-        public SignatureVerificationWindowViewModel(AppInfo appInfo, RemoteAppcast appcast)
+        public SignatureVerificationWindowViewModel(AppInfo appInfo)
         {
             AppIconPath = appInfo.AppIconPath;
-            Title = string.Format(Properties.Resources.SignatureErrorTitle, appcast.Title);
+            Title = string.Format(Properties.Resources.SignatureErrorTitle, MainAssembly.ProductName);
         }
     }
 }

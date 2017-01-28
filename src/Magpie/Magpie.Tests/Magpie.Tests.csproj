@@ -55,6 +55,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="AssemblyInjector.cs" />
     <Compile Include="RemoteAppCastTest.cs" />
     <Compile Include="HelpersTests.cs" />
     <Compile Include="MagpieServiceTests.cs" />
@@ -64,6 +65,7 @@
     <Compile Include="Mocks\MockRemoteAppcast.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VersionExtensionsTests.cs" />
+    <Compile Include="ViewModels\SignatureVerificationViewModelTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
