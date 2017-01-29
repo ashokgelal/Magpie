@@ -3,7 +3,7 @@ using Magpie.ViewModels;
 
 namespace Magpie.Views
 {
-    public partial class SignatureVerificationWindow 
+    public partial class SignatureVerificationWindow
     {
         public SignatureVerificationWindow()
         {

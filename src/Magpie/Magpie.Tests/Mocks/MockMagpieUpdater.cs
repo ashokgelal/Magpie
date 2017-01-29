@@ -9,13 +9,17 @@ namespace Magpie.Tests.Mocks
 {
     internal class MockMagpieUpdater : Magpie.Services.MagpieUpdater
     {
-        private readonly string VALID_JSON = @"{'foo': 'bar', 'channels': [{ 'id': 2, 'version': '5.8.8', 'release_notes_url': 'release_notes_url_http', 'artifact_url': 'artifact_url_http', 'build_date': '01/28/2017'}]}".MakeJson();
+        private readonly string VALID_JSON =
+            @"{'foo': 'bar', 'channels': [{ 'id': 2, 'version': '5.8.8', 'release_notes_url': 'release_notes_url_http', 'artifact_url': 'artifact_url_http', 'build_date': '01/28/2017'}]}"
+                .MakeJson();
+
         internal RemoteAppcast RemoteAppcast { get; private set; }
         internal bool _showUpdateWindowFlag;
         internal bool _showNoUpdatesWindowFlag;
         internal IRemoteContentDownloader _remoteContentDownloader;
 
-        public MockMagpieUpdater(string validUrl, IDebuggingInfoLogger infoLogger = null) : base(new AppInfo(validUrl), infoLogger)
+        public MockMagpieUpdater(string validUrl, IDebuggingInfoLogger infoLogger = null)
+            : base(new AppInfo(validUrl), infoLogger)
         {
             _remoteContentDownloader = Substitute.For<IRemoteContentDownloader>();
             _remoteContentDownloader.DownloadStringContent(validUrl).Returns(Task.FromResult(VALID_JSON));

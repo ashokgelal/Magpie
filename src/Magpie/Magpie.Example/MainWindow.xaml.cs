@@ -22,7 +22,7 @@ namespace Magpie.Example
         public MainWindow()
         {
             InitializeComponent();
-            CurrentVersion.Content ="Current version: " + Assembly.GetEntryAssembly().GetName().Version;
+            CurrentVersion.Content = "Current version: " + Assembly.GetEntryAssembly().GetName().Version;
             SelectedChannel = 1;
             _magpieUpdater = new Services.MagpieUpdater(MakeAppInfo(SelectedChannel));
             _magpieUpdater.CheckInBackground();

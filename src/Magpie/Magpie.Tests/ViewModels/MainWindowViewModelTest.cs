@@ -23,7 +23,8 @@ namespace Magpie.Tests.ViewModels
             var appInfo = new AppInfo("valid_url");
             _channel = new MockChannel(1, "1.0");
             AssemblyInjector.Inject();
-            _mainWindowViewModel = new MockMainWindowViewModel(appInfo, debuggingInfoLogger, remoteContentDownloader, _analyticsLogger);
+            _mainWindowViewModel = new MockMainWindowViewModel(appInfo, debuggingInfoLogger, remoteContentDownloader,
+                _analyticsLogger);
         }
 
         [TestMethod]

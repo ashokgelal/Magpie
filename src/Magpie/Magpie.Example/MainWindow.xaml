@@ -9,8 +9,8 @@
         SizeToContent="Height"
         mc:Ignorable="d">
     <StackPanel Margin="40">
-        <Label x:Name="SubscribedTo" Content="" FontSize="16"></Label>
-        <Label x:Name="CurrentVersion" Content="" FontSize="16"></Label>
+        <Label x:Name="SubscribedTo" Content="" FontSize="16" />
+        <Label x:Name="CurrentVersion" Content="" FontSize="16" />
         <Button Width="150" Margin="0 20 0 0"
                 Height="32"
                 Click="ForceCheck_OnClick"

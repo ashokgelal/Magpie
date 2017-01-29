@@ -15,7 +15,8 @@ namespace Magpie.Services
             var accessor = new AssemblyAccessor();
             if (string.IsNullOrWhiteSpace(accessor.Company) || string.IsNullOrWhiteSpace(accessor.Product))
             {
-                throw new FormatException("Your main assembly is missing company and/or product name. Both fields are required.");
+                throw new FormatException(
+                    "Your main assembly is missing company and/or product name. Both fields are required.");
             }
             _magpieRegistryPath = string.Format(MagicStrings.REG_ROOT_PATH, accessor.Company, accessor.Product);
         }

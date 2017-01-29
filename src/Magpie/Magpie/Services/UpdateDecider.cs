@@ -12,10 +12,7 @@ namespace Magpie.Services
 
         protected virtual string SkipVersion
         {
-            get
-            {
-                return _registryIO.ReadFromRegistry(MagicStrings.SKIP_VERSION_KEY, string.Empty);
-            }
+            get { return _registryIO.ReadFromRegistry(MagicStrings.SKIP_VERSION_KEY, string.Empty); }
         }
 
         protected virtual bool IsThisFirstRun
@@ -32,11 +29,12 @@ namespace Magpie.Services
         {
             get
             {
-                var date = _registryIO.ReadFromRegistry(MagicStrings.LAST_CHECK_DATE, DateTime.MinValue.ToString(CultureInfo.InvariantCulture));
+                var date = _registryIO.ReadFromRegistry(MagicStrings.LAST_CHECK_DATE,
+                    DateTime.MinValue.ToString(CultureInfo.InvariantCulture));
                 return Convert.ToDateTime(date);
             }
         }
-            
+
         public UpdateDecider(IDebuggingInfoLogger debuggingInfoLogger) : this(debuggingInfoLogger, new RegistryIO())
         {
         }
@@ -116,7 +114,8 @@ namespace Magpie.Services
 
         protected virtual void UpdateCheckDate()
         {
-            _registryIO.WriteToRegistry(MagicStrings.LAST_CHECK_DATE, DateTime.Now.ToString(CultureInfo.InvariantCulture));
+            _registryIO.WriteToRegistry(MagicStrings.LAST_CHECK_DATE,
+                DateTime.Now.ToString(CultureInfo.InvariantCulture));
         }
     }
 }

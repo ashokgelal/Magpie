@@ -15,8 +15,7 @@ namespace Magpie.Models
         [DataMember(Name = "build", IsRequired = false)]
         public string Build { get; private set; }
 
-        [DataMember(Name = "version", IsRequired = true)]
-        private string _version;
+        [DataMember(Name = "version", IsRequired = true)] private string _version;
         public Version Version { get; protected set; }
 
         [DataMember(Name = "release_notes_url", IsRequired = true)]
@@ -32,8 +31,7 @@ namespace Magpie.Models
         // e.g. January 30, 2015 18:15:00 +0200
         // 10/03/2015
         // 2015-10-03
-        [DataMember(Name = "build_date", IsRequired = false)]
-        private string _buildDate;
+        [DataMember(Name = "build_date", IsRequired = false)] private string _buildDate;
         public DateTime BuildDate { get; private set; }
 
         public Dictionary<string, object> RawDictionary { get; internal set; }
@@ -62,7 +60,8 @@ namespace Magpie.Models
         {
             if (string.IsNullOrWhiteSpace(_buildDate)) return;
             DateTime buildDate;
-            if (DateTime.TryParse(_buildDate, CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces, out buildDate))
+            if (DateTime.TryParse(_buildDate, CultureInfo.InvariantCulture, DateTimeStyles.AllowWhiteSpaces,
+                out buildDate))
             {
                 BuildDate = buildDate;
             }

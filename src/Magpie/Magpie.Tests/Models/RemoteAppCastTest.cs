@@ -7,13 +7,19 @@ namespace Magpie.Tests.Models
     [TestClass]
     public class RemoteAppCastTest
     {
-        private readonly string _oneChannelJson = @"{'foo': 'bar', 'channels': [{ 'id': 2, 'version': '5.8.8', 'release_notes_url': 'release_notes_url_http', 'artifact_url': 'artifact_url_http', 'build_date': '01/28/2017'}]}".MakeJson();
-        private readonly string _twoChannelJson = @"{'channels': [{ 'id': 2, 'version': '5.8.8', 'release_notes_url': 'release_notes_url_http', 'artifact_url': 'artifact_url_http', 'build_date': '01/28/2017'},
-                                                    { 'id': 3, 'version': '5.9.9', 'release_notes_url': 'release_notes_url_http_3', 'artifact_url': 'artifact_url_http_3', 'build_date': '02/18/2017'}]}".MakeJson();
+        private readonly string _oneChannelJson =
+            @"{'foo': 'bar', 'channels': [{ 'id': 2, 'version': '5.8.8', 'release_notes_url': 'release_notes_url_http', 'artifact_url': 'artifact_url_http', 'build_date': '01/28/2017'}]}"
+                .MakeJson();
+
+        private readonly string _twoChannelJson =
+            @"{'channels': [{ 'id': 2, 'version': '5.8.8', 'release_notes_url': 'release_notes_url_http', 'artifact_url': 'artifact_url_http', 'build_date': '01/28/2017'},
+                                                    { 'id': 3, 'version': '5.9.9', 'release_notes_url': 'release_notes_url_http_3', 'artifact_url': 'artifact_url_http_3', 'build_date': '02/18/2017'}]}"
+                .MakeJson();
+
         private readonly string _invalidJson = @"{'channels': [{ 'id': 2".MakeJson();
 
         [TestMethod]
-        public void CanBeSerializedFromJsonWithOnlyOneChannelInfo ()
+        public void CanBeSerializedFromJsonWithOnlyOneChannelInfo()
         {
             var appcast = RemoteAppcast.MakeFromJson(_oneChannelJson);
             Assert.AreEqual(1, appcast.Channels.Count);

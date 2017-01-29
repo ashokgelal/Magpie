@@ -22,7 +22,7 @@ namespace Magpie.Tests.Services
         public void ReturnsNullIfChannelListIsNull()
         {
             var sut = new BestChannelFinder(Substitute.For<IDebuggingInfoLogger>());
-            Assert.IsNull(sut.Find(1,null));
+            Assert.IsNull(sut.Find(1, null));
         }
 
         [TestMethod]
@@ -30,7 +30,7 @@ namespace Magpie.Tests.Services
         {
             var sut = new BestChannelFinder(Substitute.For<IDebuggingInfoLogger>());
             var channels = new List<Channel> {new MockChannel(2, "2.1.1"), new MockChannel(3, "1.1.1")};
-            var selectedChannel = sut.Find(1,channels);
+            var selectedChannel = sut.Find(1, channels);
             Assert.IsNotNull(selectedChannel);
             Assert.AreEqual(selectedChannel, channels[0]);
         }
@@ -39,7 +39,12 @@ namespace Magpie.Tests.Services
         public void ReturnsHighestVersionChannelIfMultipleChannelsMatchId()
         {
             var sut = new BestChannelFinder(Substitute.For<IDebuggingInfoLogger>());
-            var channels = new List<Channel> { new MockChannel(2, "2.1.1"), new MockChannel(2, "2.2.1"), new MockChannel(2, "1.1.1") };
+            var channels = new List<Channel>
+            {
+                new MockChannel(2, "2.1.1"),
+                new MockChannel(2, "2.2.1"),
+                new MockChannel(2, "1.1.1")
+            };
             var selectedChannel = sut.Find(2, channels);
             Assert.IsNotNull(selectedChannel);
             Assert.AreEqual(selectedChannel, channels[1]);
@@ -59,7 +64,12 @@ namespace Magpie.Tests.Services
         public void ReturnsTheBestChannelBasedOnVersionAndId()
         {
             var sut = new BestChannelFinder(Substitute.For<IDebuggingInfoLogger>());
-            var channels = new List<Channel> { new MockChannel(2, "1.1.1"), new MockChannel(3, "1.0.1") , new MockChannel(4, "1.2.1")};
+            var channels = new List<Channel>
+            {
+                new MockChannel(2, "1.1.1"),
+                new MockChannel(3, "1.0.1"),
+                new MockChannel(4, "1.2.1")
+            };
             var selectedChannel = sut.Find(4, channels);
             Assert.IsNotNull(selectedChannel);
             Assert.AreEqual(channels[2], selectedChannel);
@@ -69,7 +79,12 @@ namespace Magpie.Tests.Services
         public void ReturnsOnlyChannelLessThanEqualId()
         {
             var sut = new BestChannelFinder(Substitute.For<IDebuggingInfoLogger>());
-            var channels = new List<Channel> { new MockChannel(2, "1.1.1"), new MockChannel(3, "1.2.1"), new MockChannel(4, "2.2.2") };
+            var channels = new List<Channel>
+            {
+                new MockChannel(2, "1.1.1"),
+                new MockChannel(3, "1.2.1"),
+                new MockChannel(4, "2.2.2")
+            };
             var selectedChannel = sut.Find(3, channels);
             Assert.IsNotNull(selectedChannel);
             Assert.AreEqual(channels[1], selectedChannel);
@@ -79,7 +94,12 @@ namespace Magpie.Tests.Services
         public void ReturnsMoreStableVersionInCaseOfVersionMatch()
         {
             var sut = new BestChannelFinder(Substitute.For<IDebuggingInfoLogger>());
-            var channels = new List<Channel> { new MockChannel(2, "1.1.1"), new MockChannel(3, "2.2.2"), new MockChannel(4, "2.2.2") };
+            var channels = new List<Channel>
+            {
+                new MockChannel(2, "1.1.1"),
+                new MockChannel(3, "2.2.2"),
+                new MockChannel(4, "2.2.2")
+            };
             var selectedChannel = sut.Find(4, channels);
             Assert.IsNotNull(selectedChannel);
             Assert.AreEqual(channels[1], selectedChannel);

@@ -28,7 +28,7 @@ namespace Magpie.Tests
             var appcast = _mockMagpieUpdater.RemoteAppcast;
             Assert.IsNotNull(appcast);
             Assert.AreEqual("bar", appcast.RawDictionary["foo"]);
-            Assert.AreEqual(new Version(5, 8 ,8), appcast.Channels.First().Version);
+            Assert.AreEqual(new Version(5, 8, 8), appcast.Channels.First().Version);
             Assert.AreEqual(2, appcast.RawDictionary.Count);
         }
 

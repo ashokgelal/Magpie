@@ -21,7 +21,8 @@ namespace Magpie.Services
         public event EventHandler<SingleEventArgs<RemoteAppcast>> RemoteAppcastAvailableEvent;
         public event EventHandler<SingleEventArgs<string>> ArtifactDownloadedEvent;
 
-        public MagpieUpdater(AppInfo appInfo, IDebuggingInfoLogger debuggingInfoLogger = null, IAnalyticsLogger analyticsLogger = null)
+        public MagpieUpdater(AppInfo appInfo, IDebuggingInfoLogger debuggingInfoLogger = null,
+            IAnalyticsLogger analyticsLogger = null)
         {
             _appInfo = appInfo;
             _logger = debuggingInfoLogger ?? new DebuggingWindowViewModel();
@@ -33,12 +34,14 @@ namespace Magpie.Services
 
         public async void CheckInBackground(string appcastUrl = null, bool showDebuggingWindow = false)
         {
-            await Check(appcastUrl ?? _appInfo.AppCastUrl, _appInfo.SubscribedChannel, showDebuggingWindow).ConfigureAwait(false);
+            await Check(appcastUrl ?? _appInfo.AppCastUrl, _appInfo.SubscribedChannel, showDebuggingWindow)
+                .ConfigureAwait(false);
         }
 
         public async void ForceCheckInBackground(string appcastUrl = null, bool showDebuggingWindow = false)
         {
-            await Check(appcastUrl ?? _appInfo.AppCastUrl, _appInfo.SubscribedChannel, showDebuggingWindow, true).ConfigureAwait(false);
+            await Check(appcastUrl ?? _appInfo.AppCastUrl, _appInfo.SubscribedChannel, showDebuggingWindow, true)
+                .ConfigureAwait(false);
         }
 
         public async void SwitchSubscribedChannel(int channelId, bool showDebuggingWindow = false)
@@ -46,7 +49,8 @@ namespace Magpie.Services
             await Check(_appInfo.AppCastUrl, channelId, showDebuggingWindow, true).ConfigureAwait(false);
         }
 
-        private async Task Check(string appcastUrl, int channelId = 1, bool showDebuggingWindow = false, bool forceCheck = false)
+        private async Task Check(string appcastUrl, int channelId = 1, bool showDebuggingWindow = false,
+            bool forceCheck = false)
         {
             _logger.Log(string.Format("Starting fetching remote channel content from address: {0}", appcastUrl));
             try
@@ -78,7 +82,7 @@ namespace Magpie.Services
         {
             var viewModel = new MainWindowViewModel(_appInfo, _logger, RemoteContentDownloader, _analyticsLogger);
             await viewModel.StartAsync(channel).ConfigureAwait(true);
-            var window = new MainWindow { ViewModel = viewModel };
+            var window = new MainWindow {ViewModel = viewModel};
             viewModel.DownloadNowCommand = new DelegateCommand(e =>
             {
                 _analyticsLogger.LogDownloadNow();
@@ -109,7 +113,7 @@ namespace Magpie.Services
         {
             var viewModel = new DownloadWindowViewModel(_appInfo, _logger, RemoteContentDownloader);
             var artifactPath = CreateTempPath(channel.ArtifactUrl);
-            var window = new DownloadWindow { DataContext = viewModel };
+            var window = new DownloadWindow {DataContext = viewModel};
             viewModel.ContinueWithInstallationCommand = new DelegateCommand(e =>
             {
                 _logger.Log("Continue after downloading artifact");
@@ -143,7 +147,7 @@ namespace Magpie.Services
             _logger.Log("Couldn't verify artifact's signature. The artifact will now be deleted.");
             var signatureWindowViewModel = new SignatureVerificationWindowViewModel(_appInfo);
             var signatureWindow = new SignatureVerificationWindow {DataContext = signatureWindowViewModel};
-            signatureWindowViewModel.ContinueCommand = new DelegateCommand(e=> {signatureWindow.Close();});
+            signatureWindowViewModel.ContinueCommand = new DelegateCommand(e => { signatureWindow.Close(); });
             SetOwner(signatureWindow);
             signatureWindow.ShowDialog();
             return false;

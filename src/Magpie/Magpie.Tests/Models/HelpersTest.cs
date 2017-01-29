@@ -77,7 +77,6 @@ namespace Magpie.Tests.Models
             var lowerVersion = new Version(5, 4, 1, 6);
             Assert.IsTrue(higherVersion.IsHigherThan(lowerVersion));
             Assert.IsFalse(lowerVersion.IsHigherThan(higherVersion));
-        
         }
 
         [TestMethod]

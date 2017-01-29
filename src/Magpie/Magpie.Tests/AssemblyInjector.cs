@@ -18,11 +18,13 @@ namespace Magpie.Tests
         {
             assembly = assembly ?? Assembly.GetCallingAssembly();
             var manager = new AppDomainManager();
-            var entryAssemblyfield = manager.GetType().GetField("m_entryAssembly", BindingFlags.Instance | BindingFlags.NonPublic);
+            var entryAssemblyfield = manager.GetType()
+                .GetField("m_entryAssembly", BindingFlags.Instance | BindingFlags.NonPublic);
             if (entryAssemblyfield != null) entryAssemblyfield.SetValue(manager, assembly);
 
             var domain = AppDomain.CurrentDomain;
-            var domainManagerField = domain.GetType().GetField("_domainManager", BindingFlags.Instance | BindingFlags.NonPublic);
+            var domainManagerField = domain.GetType()
+                .GetField("_domainManager", BindingFlags.Instance | BindingFlags.NonPublic);
             if (domainManagerField != null) domainManagerField.SetValue(domain, manager);
         }
     }

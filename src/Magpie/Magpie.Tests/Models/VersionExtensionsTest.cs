@@ -33,6 +33,7 @@ namespace Magpie.Tests.Models
             Assert.IsTrue(version.IsHigherThan(otherVersion));
             Assert.IsFalse(otherVersion.IsHigherThan(version));
         }
+
         [TestMethod]
         public void TestMajor()
         {

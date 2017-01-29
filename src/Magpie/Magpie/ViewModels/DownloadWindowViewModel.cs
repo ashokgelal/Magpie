@@ -26,13 +26,15 @@ namespace Magpie.ViewModels
             get { return _progressPercent; }
             set { SetProperty(ref _progressPercent, value); }
         }
+
         public string AppIconPath
         {
             get { return _appIconPath; }
             set { SetProperty(ref _appIconPath, value); }
         }
 
-        internal DownloadWindowViewModel(AppInfo appInfo, IDebuggingInfoLogger logger, IRemoteContentDownloader contentDownloader)
+        internal DownloadWindowViewModel(AppInfo appInfo, IDebuggingInfoLogger logger,
+            IRemoteContentDownloader contentDownloader)
         {
             AppIconPath = appInfo.AppIconPath;
             _logger = logger;
@@ -48,7 +50,9 @@ namespace Magpie.ViewModels
         private async Task<string> DownloadArtifact(Channel channel, string destinationPath)
         {
             _logger.Log("Starting to download artifact");
-            var savedAt = await _contentDownloader.DownloadFile(channel.ArtifactUrl, destinationPath, p => ProgressPercent = p).ConfigureAwait(false);
+            var savedAt =
+                await _contentDownloader.DownloadFile(channel.ArtifactUrl, destinationPath, p => ProgressPercent = p)
+                    .ConfigureAwait(false);
             _logger.Log(string.Format("Artifact downloaded to {0}", destinationPath));
             return savedAt;
         }

@@ -6,7 +6,7 @@ namespace Magpie.Services
     {
         internal static bool IsHigherThan(this Version thisVersion, Version otherVersion)
         {
-             return thisVersion.CompareTo(otherVersion) > 0;
+            return thisVersion.CompareTo(otherVersion) > 0;
         }
     }
 }

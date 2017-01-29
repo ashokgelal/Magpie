@@ -50,7 +50,8 @@ namespace Magpie.Tests.Services
         public void ShouldDecideFalseIfLastCheckWasLessThanOneDay()
         {
             _registryIO.ReadFromRegistry(MagicStrings.IS_FIRST_RUN, Arg.Any<string>()).Returns("");
-            _registryIO.ReadFromRegistry(MagicStrings.LAST_CHECK_DATE, Arg.Any<string>()).Returns(DateTime.Now.Subtract(TimeSpan.FromMinutes(10)).ToShortDateString());
+            _registryIO.ReadFromRegistry(MagicStrings.LAST_CHECK_DATE, Arg.Any<string>())
+                .Returns(DateTime.Now.Subtract(TimeSpan.FromMinutes(10)).ToShortDateString());
             _registryIO.ReadFromRegistry(MagicStrings.SKIP_VERSION_KEY, Arg.Any<string>()).Returns("");
             Assert.IsFalse(_sut.ShouldUpdate(new MockChannel(1, "2.2")));
         }
@@ -59,7 +60,8 @@ namespace Magpie.Tests.Services
         public void ShouldDecideTrueIfLastCheckWasMoreThanOneDay()
         {
             _registryIO.ReadFromRegistry(MagicStrings.IS_FIRST_RUN, Arg.Any<string>()).Returns("");
-            _registryIO.ReadFromRegistry(MagicStrings.LAST_CHECK_DATE, Arg.Any<string>()).Returns(DateTime.Now.Subtract(TimeSpan.FromDays(1)).ToShortDateString());
+            _registryIO.ReadFromRegistry(MagicStrings.LAST_CHECK_DATE, Arg.Any<string>())
+                .Returns(DateTime.Now.Subtract(TimeSpan.FromDays(1)).ToShortDateString());
             _registryIO.ReadFromRegistry(MagicStrings.SKIP_VERSION_KEY, Arg.Any<string>()).Returns("");
             Assert.IsTrue(_sut.ShouldUpdate(new MockChannel(1, "2.2")));
         }
@@ -68,7 +70,8 @@ namespace Magpie.Tests.Services
         public void ShouldDecideTrueIfAvailableVersionIsHigherThanInstalledVersion()
         {
             _registryIO.ReadFromRegistry(MagicStrings.IS_FIRST_RUN, Arg.Any<string>()).Returns("");
-            _registryIO.ReadFromRegistry(MagicStrings.LAST_CHECK_DATE, Arg.Any<string>()).Returns(DateTime.Now.Subtract(TimeSpan.FromDays(1)).ToShortDateString());
+            _registryIO.ReadFromRegistry(MagicStrings.LAST_CHECK_DATE, Arg.Any<string>())
+                .Returns(DateTime.Now.Subtract(TimeSpan.FromDays(1)).ToShortDateString());
             _registryIO.ReadFromRegistry(MagicStrings.SKIP_VERSION_KEY, Arg.Any<string>()).Returns("");
             Assert.IsTrue(_sut.ShouldUpdate(new MockChannel(1, "2.2")));
         }
@@ -77,7 +80,8 @@ namespace Magpie.Tests.Services
         public void ShouldDecideFalseIfAvailableVersionIsLowerThanInstalledVersion()
         {
             _registryIO.ReadFromRegistry(MagicStrings.IS_FIRST_RUN, Arg.Any<string>()).Returns("");
-            _registryIO.ReadFromRegistry(MagicStrings.LAST_CHECK_DATE, Arg.Any<string>()).Returns(DateTime.Now.Subtract(TimeSpan.FromDays(1)).ToShortDateString());
+            _registryIO.ReadFromRegistry(MagicStrings.LAST_CHECK_DATE, Arg.Any<string>())
+                .Returns(DateTime.Now.Subtract(TimeSpan.FromDays(1)).ToShortDateString());
             _registryIO.ReadFromRegistry(MagicStrings.SKIP_VERSION_KEY, Arg.Any<string>()).Returns("");
             Assert.IsFalse(_sut.ShouldUpdate(new MockChannel(1, "0.2")));
         }
@@ -86,7 +90,8 @@ namespace Magpie.Tests.Services
         public void ShouldDecideFalseIfAvailableVersionIsEqualToInstalledVersion()
         {
             _registryIO.ReadFromRegistry(MagicStrings.IS_FIRST_RUN, Arg.Any<string>()).Returns("");
-            _registryIO.ReadFromRegistry(MagicStrings.LAST_CHECK_DATE, Arg.Any<string>()).Returns(DateTime.Now.Subtract(TimeSpan.FromDays(1)).ToShortDateString());
+            _registryIO.ReadFromRegistry(MagicStrings.LAST_CHECK_DATE, Arg.Any<string>())
+                .Returns(DateTime.Now.Subtract(TimeSpan.FromDays(1)).ToShortDateString());
             _registryIO.ReadFromRegistry(MagicStrings.SKIP_VERSION_KEY, Arg.Any<string>()).Returns("");
             Assert.IsFalse(_sut.ShouldUpdate(new MockChannel(1, "1.0.0")));
         }
@@ -95,7 +100,8 @@ namespace Magpie.Tests.Services
         public void LastCheckDateIsNotUpdatedInRegistryIfItIsLessThanOneDay()
         {
             _registryIO.ReadFromRegistry(MagicStrings.IS_FIRST_RUN, Arg.Any<string>()).Returns("");
-            _registryIO.ReadFromRegistry(MagicStrings.LAST_CHECK_DATE, Arg.Any<string>()).Returns(DateTime.Now.Subtract(TimeSpan.FromMinutes(1)).ToShortDateString());
+            _registryIO.ReadFromRegistry(MagicStrings.LAST_CHECK_DATE, Arg.Any<string>())
+                .Returns(DateTime.Now.Subtract(TimeSpan.FromMinutes(1)).ToShortDateString());
             _registryIO.ReadFromRegistry(MagicStrings.SKIP_VERSION_KEY, Arg.Any<string>()).Returns("");
             _sut.ShouldUpdate(new MockChannel(1, "2.2"));
             _registryIO.DidNotReceive().WriteToRegistry(MagicStrings.LAST_CHECK_DATE, Arg.Any<string>());
@@ -105,7 +111,8 @@ namespace Magpie.Tests.Services
         public void LastCheckDateIsUpdatedInRegistryIfMoreThanOneDay()
         {
             _registryIO.ReadFromRegistry(MagicStrings.IS_FIRST_RUN, Arg.Any<string>()).Returns("");
-            _registryIO.ReadFromRegistry(MagicStrings.LAST_CHECK_DATE, Arg.Any<string>()).Returns(DateTime.Now.Subtract(TimeSpan.FromDays(1)).ToShortDateString());
+            _registryIO.ReadFromRegistry(MagicStrings.LAST_CHECK_DATE, Arg.Any<string>())
+                .Returns(DateTime.Now.Subtract(TimeSpan.FromDays(1)).ToShortDateString());
             _registryIO.ReadFromRegistry(MagicStrings.SKIP_VERSION_KEY, Arg.Any<string>()).Returns("");
             _sut.ShouldUpdate(new MockChannel(1, "2.2"));
             _registryIO.Received(1).WriteToRegistry(MagicStrings.LAST_CHECK_DATE, Arg.Any<string>());
@@ -114,7 +121,8 @@ namespace Magpie.Tests.Services
         [TestMethod]
         public void IfForcedToDecideItIgnoresLastCheckDateSetting()
         {
-            _registryIO.ReadFromRegistry(MagicStrings.LAST_CHECK_DATE, Arg.Any<string>()).Returns(DateTime.Now.Subtract(TimeSpan.FromMinutes(1)).ToShortDateString());
+            _registryIO.ReadFromRegistry(MagicStrings.LAST_CHECK_DATE, Arg.Any<string>())
+                .Returns(DateTime.Now.Subtract(TimeSpan.FromMinutes(1)).ToShortDateString());
             _registryIO.ReadFromRegistry(MagicStrings.IS_FIRST_RUN, Arg.Any<string>()).Returns("");
             _registryIO.ReadFromRegistry(MagicStrings.SKIP_VERSION_KEY, Arg.Any<string>()).Returns("");
             Assert.IsTrue(_sut.ShouldUpdate(new MockChannel(1, "2.2"), true));
@@ -124,7 +132,8 @@ namespace Magpie.Tests.Services
         [TestMethod]
         public void IfForcedToDecideItIgnoresSkipVersionSetting()
         {
-            _registryIO.ReadFromRegistry(MagicStrings.LAST_CHECK_DATE, Arg.Any<string>()).Returns(DateTime.Now.Subtract(TimeSpan.FromDays(2)).ToShortDateString());
+            _registryIO.ReadFromRegistry(MagicStrings.LAST_CHECK_DATE, Arg.Any<string>())
+                .Returns(DateTime.Now.Subtract(TimeSpan.FromDays(2)).ToShortDateString());
             _registryIO.ReadFromRegistry(MagicStrings.IS_FIRST_RUN, Arg.Any<string>()).Returns("");
             _registryIO.ReadFromRegistry(MagicStrings.SKIP_VERSION_KEY, Arg.Any<string>()).Returns("2.2");
             Assert.IsTrue(_sut.ShouldUpdate(new MockChannel(1, "2.2"), true));
@@ -134,7 +143,8 @@ namespace Magpie.Tests.Services
         [TestMethod]
         public void IfForcedToDecideItIgnoresSkipFirstRunSetting()
         {
-            _registryIO.ReadFromRegistry(MagicStrings.LAST_CHECK_DATE, Arg.Any<string>()).Returns(DateTime.Now.Subtract(TimeSpan.FromMinutes(1)).ToShortDateString());
+            _registryIO.ReadFromRegistry(MagicStrings.LAST_CHECK_DATE, Arg.Any<string>())
+                .Returns(DateTime.Now.Subtract(TimeSpan.FromMinutes(1)).ToShortDateString());
             _registryIO.ReadFromRegistry(MagicStrings.IS_FIRST_RUN, Arg.Any<string>()).Returns("1");
             _registryIO.ReadFromRegistry(MagicStrings.SKIP_VERSION_KEY, Arg.Any<string>()).Returns("");
             Assert.IsTrue(_sut.ShouldUpdate(new MockChannel(1, "2.2"), true));

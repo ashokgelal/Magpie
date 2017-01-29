@@ -62,7 +62,8 @@ namespace Magpie.ViewModels
             set { SetProperty(ref _appIconPath, value); }
         }
 
-        public MainWindowViewModel(AppInfo appInfo, IDebuggingInfoLogger logger, IRemoteContentDownloader contentDownloader, IAnalyticsLogger analyticsLogger)
+        public MainWindowViewModel(AppInfo appInfo, IDebuggingInfoLogger logger,
+            IRemoteContentDownloader contentDownloader, IAnalyticsLogger analyticsLogger)
         {
             AppIconPath = appInfo.AppIconPath;
             _logger = logger;
@@ -107,7 +108,7 @@ namespace Magpie.ViewModels
             var registryIO = new RegistryIO();
             registryIO.WriteToRegistry(MagicStrings.SKIP_VERSION_KEY, _remoteVersion);
         }
-        
+
         private async Task<string> FetchReleaseNotesAsync(string releaseNotesUrl)
         {
             _logger.Log("Fetching release notes");
@@ -123,7 +124,9 @@ namespace Magpie.ViewModels
         private string CreateDefaultCssLink()
         {
             var stylesheet = GetStylesheet();
-            return string.IsNullOrWhiteSpace(stylesheet) ? string.Empty : string.Format("<style>{0}</style>", stylesheet);
+            return string.IsNullOrWhiteSpace(stylesheet)
+                ? string.Empty
+                : string.Format("<style>{0}</style>", stylesheet);
         }
 
         protected virtual string GetStylesheet()
