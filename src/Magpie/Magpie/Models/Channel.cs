@@ -10,7 +10,7 @@ namespace Magpie.Models
     public class Channel
     {
         [DataMember(Name = "id", IsRequired = true)]
-        public int Id { get; private set; }
+        public int Id { get; protected set; }
 
         [DataMember(Name = "build", IsRequired = false)]
         public string Build { get; private set; }

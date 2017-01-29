@@ -63,6 +63,7 @@
     <Compile Include="Interfaces\IMagpieService.cs" />
     <Compile Include="Interfaces\IRemoteContentDownloader.cs" />
     <Compile Include="Models\Channel.cs" />
+    <Compile Include="Services\BestChannelFinder.cs" />
     <Compile Include="Services\AnalyticsLogger.cs" />
     <Compile Include="Services\AppInfo.cs" />
     <Compile Include="Services\AssemblyAccessor.cs" />
