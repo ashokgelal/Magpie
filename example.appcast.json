@@ -1,0 +1,33 @@
+{
+  "channels": [
+    {
+      "id": 1,
+      "version": "1.0.0",
+      "release_notes_url": "<release_notes_url>",
+      "artifact_url": "<artifact_url>",
+      "build": "Stable",
+      "dsa_signature": "FFwCCWENuN5RfMG6lG76uZHktKHE7WUAShfRh88HrKQZreEMf4b8vnvUIIMEBB==",
+    },
+    {
+      "id": 2,
+      "version": "1.0.1",
+      "release_notes_url": "<beta_release_notes_url>",
+      "artifact_url": "<beta_artifact_url>",
+      "build": "Beta",
+    },
+    {
+      "id": 3,
+      "version": "1.1.1",
+      "release_notes_url": "<alpha_release_notes_url>",
+      "artifact_url": "<alpha_artifact_url>",
+      "build": "Alpha",
+    },
+    {
+      "id": 4,
+      "version": "1.1.1.42",
+      "release_notes_url": "<daily_build_release_notes_url>",
+      "artifact_url": "<aily_build_artifact_url>",
+      "build": "Daily"
+     }
+  ]
+}
