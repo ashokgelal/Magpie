@@ -40,6 +40,12 @@ namespace MagpieExample
             return appInfo;
         }
 
+        private void StableChannel_OnClick(object sender, RoutedEventArgs e)
+        {
+            SelectedChannel = 1;
+            _magpie.SwitchSubscribedChannel(SelectedChannel);
+        }
+
         private void BetaChannel_OnClick(object sender, RoutedEventArgs e)
         {
             SelectedChannel = 2;

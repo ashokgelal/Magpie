@@ -10,7 +10,7 @@ namespace Magpie.Tests.Mocks
     internal class MockMagpie : MagpieUpdater.Services.Magpie
     {
         private readonly string VALID_JSON =
-            @"{'foo': 'bar', 'channels': [{ 'id': 2, 'version': '5.8.8', 'release_notes_url': 'release_notes_url_http', 'artifact_url': 'artifact_url_http', 'build_date': '01/28/2017'}]}"
+            @"{'foo': 'bar', 'channels': [{ 'id': 2, 'version': '5.8.8', 'release_notes_url': 'release_notes_url_http', 'artifact_url': 'artifact_url_http', 'build_date': '01/28/2017'}, { 'id': 3, 'version': '6.8.8', 'release_notes_url': 'release_notes_url_http', 'artifact_url': 'artifact_url_http', 'build_date': '01/28/2017'}]}"
                 .MakeJson();
 
         internal RemoteAppcast RemoteAppcast { get; private set; }

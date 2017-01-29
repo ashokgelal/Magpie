@@ -20,7 +20,7 @@
                 Height="32"
                 Background="DarkGreen"
                 Foreground="White"
-                Click="ForceCheck_OnClick"
+                Click="StableChannel_OnClick"
                 Content="Switch to Stable Channel..."
                 FontSize="14" />
         <Button Width="210" Margin="0 20 0 0"

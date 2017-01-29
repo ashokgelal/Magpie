@@ -46,6 +46,7 @@ namespace MagpieUpdater.Services
 
         public async void SwitchSubscribedChannel(int channelId, bool showDebuggingWindow = false)
         {
+            _appInfo.SubscribedChannel = channelId;
             await Check(_appInfo.AppCastUrl, channelId, showDebuggingWindow, true).ConfigureAwait(false);
         }
 

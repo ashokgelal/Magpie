@@ -87,5 +87,26 @@ namespace Magpie.Tests.Services
             _mockMagpie.CheckInBackground("alternateUrl");
             _mockMagpie._remoteContentDownloader.Received(1).DownloadStringContent("alternateUrl");
         }
+
+        [TestMethod]
+        public void TestSwitchSubscribedChannelForceChecksForUpdates()
+        {
+            var updateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
+            updateDecider.ShouldUpdate(Arg.Any<Channel>(), true).Returns(false);
+            _mockMagpie.UpdateDecider = updateDecider;
+            _mockMagpie.SwitchSubscribedChannel(2);
+            updateDecider.Received(1).ShouldUpdate(Arg.Is<Channel>(e => e.Id == 2), true);
+        }
+
+        [TestMethod]
+        public void SwitchingSubscribedThenCallingForceUpdateChecksNewChannel()
+        {
+            var updateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
+            updateDecider.ShouldUpdate(Arg.Any<Channel>(), true).Returns(false);
+            _mockMagpie.UpdateDecider = updateDecider;
+            _mockMagpie.SwitchSubscribedChannel(3);
+            _mockMagpie.ForceCheckInBackground();
+            updateDecider.Received(2).ShouldUpdate(Arg.Is<Channel>(e => e.Id == 3), true);
+        }
     }
 }
