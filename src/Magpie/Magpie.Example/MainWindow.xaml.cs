@@ -2,7 +2,7 @@
 using System.Windows;
 using MagpieUpdater.Services;
 
-namespace Magpie.Example
+namespace MagpieExample
 {
     public partial class MainWindow
     {
@@ -16,7 +16,7 @@ namespace Magpie.Example
             }
         }
 
-        private MagpieUpdater.Services.MagpieUpdater _magpieUpdater;
+        private Magpie _magpie;
         private int _selectedChannel;
 
         public MainWindow()
@@ -24,13 +24,13 @@ namespace Magpie.Example
             InitializeComponent();
             CurrentVersion.Content = "Current version: " + Assembly.GetEntryAssembly().GetName().Version;
             SelectedChannel = 1;
-            _magpieUpdater = new MagpieUpdater.Services.MagpieUpdater(MakeAppInfo(SelectedChannel));
-            _magpieUpdater.CheckInBackground();
+            _magpie = new Magpie(MakeAppInfo(SelectedChannel));
+            _magpie.CheckInBackground();
         }
 
         private void ForceCheck_OnClick(object sender, RoutedEventArgs e)
         {
-            _magpieUpdater.ForceCheckInBackground();
+            _magpie.ForceCheckInBackground();
         }
 
         private static AppInfo MakeAppInfo(int id)
@@ -43,19 +43,19 @@ namespace Magpie.Example
         private void BetaChannel_OnClick(object sender, RoutedEventArgs e)
         {
             SelectedChannel = 2;
-            _magpieUpdater.SwitchSubscribedChannel(SelectedChannel);
+            _magpie.SwitchSubscribedChannel(SelectedChannel);
         }
 
         private void AlphaChannel_OnClick(object sender, RoutedEventArgs e)
         {
             SelectedChannel = 3;
-            _magpieUpdater.SwitchSubscribedChannel(SelectedChannel);
+            _magpie.SwitchSubscribedChannel(SelectedChannel);
         }
 
         private void DailyBuildChannel_OnClick(object sender, RoutedEventArgs e)
         {
             SelectedChannel = 4;
-            _magpieUpdater.SwitchSubscribedChannel(SelectedChannel);
+            _magpie.SwitchSubscribedChannel(SelectedChannel);
         }
     }
 }

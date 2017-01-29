@@ -60,7 +60,7 @@
     <Compile Include="Models\AppInfoTest.cs" />
     <Compile Include="Models\RemoteAppCastTest.cs" />
     <Compile Include="Models\HelpersTest.cs" />
-    <Compile Include="MagpieServiceTests.cs" />
+    <Compile Include="Services\MagpieTest.cs" />
     <Compile Include="Services\UpdateDeciderTest.cs" />
     <Compile Include="ViewModels\MainWindowViewModelTest.cs" />
     <Compile Include="Mocks\MockMagpie.cs" />
