@@ -2,13 +2,14 @@
 using Magpie.Interfaces;
 using Magpie.Models;
 using Magpie.Services;
+using Magpie.Tests.Models;
 using NSubstitute;
 
 namespace Magpie.Tests.Mocks
 {
-    internal class MockMagpieUpdater : MagpieUpdater
+    internal class MockMagpieUpdater : Magpie.Services.MagpieUpdater
     {
-        private const string VALID_JSON = @"{ 'title': 'Magpie', 'version': '0.0.1', 'build_date': '10/03/2015', 'release_notes_url': '', 'artifact_url': 'https://dl.dropboxusercontent.com/u/83257/Updaters/Magpie/appcast.zip' }";
+        private readonly string VALID_JSON = @"{'foo': 'bar', 'channels': [{ 'id': 2, 'version': '5.8.8', 'release_notes_url': 'release_notes_url_http', 'artifact_url': 'artifact_url_http', 'build_date': '01/28/2017'}]}".MakeJson();
         internal RemoteAppcast RemoteAppcast { get; private set; }
         internal bool _showUpdateWindowFlag;
         internal bool _showNoUpdatesWindowFlag;
@@ -16,9 +17,8 @@ namespace Magpie.Tests.Mocks
 
         public MockMagpieUpdater(string validUrl, IDebuggingInfoLogger infoLogger = null) : base(new AppInfo(validUrl), infoLogger)
         {
-            var validJson = VALID_JSON.Replace("'", "\"");
             _remoteContentDownloader = Substitute.For<IRemoteContentDownloader>();
-            _remoteContentDownloader.DownloadStringContent(validUrl).Returns(Task.FromResult(validJson));
+            _remoteContentDownloader.DownloadStringContent(validUrl).Returns(Task.FromResult(VALID_JSON));
             base.RemoteContentDownloader = _remoteContentDownloader;
         }
 
@@ -28,7 +28,7 @@ namespace Magpie.Tests.Mocks
             base.OnRemoteAppcastAvailableEvent(args);
         }
 
-        protected override void ShowUpdateWindow(RemoteAppcast appcast)
+        protected override void ShowUpdateWindow(Channel channel)
         {
             // can't do in tests
             _showUpdateWindowFlag = true;

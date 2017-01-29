@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Runtime.Serialization.Json;
-using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using Magpie.Interfaces;
@@ -19,6 +16,7 @@ namespace Magpie.Services
         private readonly IDebuggingInfoLogger _logger;
         private readonly IAnalyticsLogger _analyticsLogger;
         internal UpdateDecider UpdateDecider { get; set; }
+        internal BestChannelFinder BestChannelFinder { get; set; }
         internal IRemoteContentDownloader RemoteContentDownloader { get; set; }
         public event EventHandler<SingleEventArgs<RemoteAppcast>> RemoteAppcastAvailableEvent;
         public event EventHandler<SingleEventArgs<string>> ArtifactDownloadedEvent;
@@ -30,29 +28,36 @@ namespace Magpie.Services
             _analyticsLogger = analyticsLogger ?? new AnalyticsLogger();
             RemoteContentDownloader = new DefaultRemoteContentDownloader();
             UpdateDecider = new UpdateDecider(_logger);
+            BestChannelFinder = new BestChannelFinder(_logger);
         }
 
         public async void CheckInBackground(string appcastUrl = null, bool showDebuggingWindow = false)
         {
-            await Check(appcastUrl ?? _appInfo.AppCastUrl, showDebuggingWindow).ConfigureAwait(false);
+            await Check(appcastUrl ?? _appInfo.AppCastUrl, _appInfo.SubscribedChannel, showDebuggingWindow).ConfigureAwait(false);
         }
 
         public async void ForceCheckInBackground(string appcastUrl = null, bool showDebuggingWindow = false)
         {
-            await Check(appcastUrl ?? _appInfo.AppCastUrl, showDebuggingWindow, true).ConfigureAwait(false);
+            await Check(appcastUrl ?? _appInfo.AppCastUrl, _appInfo.SubscribedChannel, showDebuggingWindow, true).ConfigureAwait(false);
         }
 
-        private async Task Check(string appcastUrl, bool showDebuggingWindow = false, bool forceCheck = false)
+        public async void SwitchSubscribedChannel(int channelId, bool showDebuggingWindow = false)
         {
-            _logger.Log(string.Format("Starting fetching remote appcast content from address: {0}", appcastUrl));
+            await Check(_appInfo.AppCastUrl, channelId, showDebuggingWindow, true).ConfigureAwait(false);
+        }
+
+        private async Task Check(string appcastUrl, int channelId = 1, bool showDebuggingWindow = false, bool forceCheck = false)
+        {
+            _logger.Log(string.Format("Starting fetching remote channel content from address: {0}", appcastUrl));
             try
             {
                 var data = await RemoteContentDownloader.DownloadStringContent(appcastUrl).ConfigureAwait(true);
                 var appcast = ParseAppcast(data);
                 OnRemoteAppcastAvailableEvent(new SingleEventArgs<RemoteAppcast>(appcast));
-                if (UpdateDecider.ShouldUpdate(appcast, forceCheck))
+                var channelToUpdateFrom = BestChannelFinder.Find(channelId, appcast.Channels);
+                if (UpdateDecider.ShouldUpdate(channelToUpdateFrom, forceCheck))
                 {
-                    ShowUpdateWindow(appcast);
+                    ShowUpdateWindow(channelToUpdateFrom);
                 }
                 else if (forceCheck)
                 {
@@ -61,25 +66,25 @@ namespace Magpie.Services
             }
             catch (Exception ex)
             {
-                _logger.Log(string.Format("Error parsing remote appcast: {0}", ex.Message));
+                _logger.Log(string.Format("Error parsing remote channel: {0}", ex.Message));
             }
             finally
             {
-                _logger.Log("Finished fetching remote appcast content");
+                _logger.Log("Finished fetching remote channel content");
             }
         }
 
-        protected virtual async void ShowUpdateWindow(RemoteAppcast appcast)
+        protected virtual async void ShowUpdateWindow(Channel channel)
         {
             var viewModel = new MainWindowViewModel(_appInfo, _logger, RemoteContentDownloader, _analyticsLogger);
-            await viewModel.StartAsync(appcast).ConfigureAwait(true);
+            await viewModel.StartAsync(channel).ConfigureAwait(true);
             var window = new MainWindow { ViewModel = viewModel };
             viewModel.DownloadNowCommand = new DelegateCommand(e =>
             {
                 _analyticsLogger.LogDownloadNow();
                 _logger.Log("Continuing with downloading the artifact");
                 window.Close();
-                ShowDownloadWindow(appcast);
+                ShowDownloadWindow(channel);
             });
             SetOwner(window);
             window.ShowDialog();
@@ -100,10 +105,10 @@ namespace Magpie.Services
             return Path.Combine(path, fileName);
         }
 
-        protected virtual void ShowDownloadWindow(RemoteAppcast appcast)
+        protected virtual void ShowDownloadWindow(Channel channel)
         {
             var viewModel = new DownloadWindowViewModel(_appInfo, _logger, RemoteContentDownloader);
-            var artifactPath = CreateTempPath(appcast.ArtifactUrl);
+            var artifactPath = CreateTempPath(channel.ArtifactUrl);
             var window = new DownloadWindow { DataContext = viewModel };
             viewModel.ContinueWithInstallationCommand = new DelegateCommand(e =>
             {
@@ -111,32 +116,32 @@ namespace Magpie.Services
                 _analyticsLogger.LogContinueWithInstallation();
                 OnArtifactDownloadedEvent(new SingleEventArgs<string>(artifactPath));
                 window.Close();
-                if (ShouldOpenArtifact(appcast, artifactPath))
+                if (ShouldOpenArtifact(channel, artifactPath))
                 {
                     OpenArtifact(artifactPath);
                     _logger.Log("Opened artifact");
                 }
             });
             SetOwner(window);
-            viewModel.StartAsync(appcast, artifactPath);
+            viewModel.StartAsync(channel, artifactPath);
             window.ShowDialog();
         }
 
-        private bool ShouldOpenArtifact(RemoteAppcast appcast, string artifactPath)
+        private bool ShouldOpenArtifact(Channel channel, string artifactPath)
         {
-            if (string.IsNullOrEmpty(appcast.DSASignature))
+            if (string.IsNullOrEmpty(channel.DSASignature))
             {
                 _logger.Log("No DSASignature provided. Skipping signature verification");
                 return true;
             }
             _logger.Log("DSASignature provided. Verifying artifact's signature");
-            if (VerifyArtifact(appcast, artifactPath))
+            if (VerifyArtifact(channel, artifactPath))
             {
                 _logger.Log("Successfully verified artifact's signature");
                 return true;
             }
             _logger.Log("Couldn't verify artifact's signature. The artifact will now be deleted.");
-            var signatureWindowViewModel = new SignatureVerificationWindowViewModel(_appInfo, appcast);
+            var signatureWindowViewModel = new SignatureVerificationWindowViewModel(_appInfo);
             var signatureWindow = new SignatureVerificationWindow {DataContext = signatureWindowViewModel};
             signatureWindowViewModel.ContinueCommand = new DelegateCommand(e=> {signatureWindow.Close();});
             SetOwner(signatureWindow);
@@ -144,10 +149,10 @@ namespace Magpie.Services
             return false;
         }
 
-        protected virtual bool VerifyArtifact(RemoteAppcast appcast, string artifactPath)
+        protected virtual bool VerifyArtifact(Channel channel, string artifactPath)
         {
             var verifer = new SignatureVerifier(_appInfo.PublicSignatureFilename);
-            return verifer.VerifyDSASignature(appcast.DSASignature, artifactPath);
+            return verifer.VerifyDSASignature(channel.DSASignature, artifactPath);
         }
 
         protected virtual void OpenArtifact(string artifactPath)
@@ -166,19 +171,10 @@ namespace Magpie.Services
 
         private RemoteAppcast ParseAppcast(string content)
         {
-            _logger.Log("Started deserializing remote appcast content");
-            using (var ms = new MemoryStream(Encoding.UTF8.GetBytes(content)))
-            {
-                var settings = new DataContractJsonSerializerSettings { UseSimpleDictionaryFormat = true };
-                var serializer = new DataContractJsonSerializer(typeof(RemoteAppcast), settings);
-                var appcast = (RemoteAppcast)serializer.ReadObject(ms);
-
-                ms.Seek(0, SeekOrigin.Begin);
-                serializer = new DataContractJsonSerializer(typeof(Dictionary<string, object>), settings);
-                appcast.RawDictionary = (Dictionary<string, object>)serializer.ReadObject(ms);
-                _logger.Log("Finished deserializing remote appcast content");
-                return appcast;
-            }
+            _logger.Log("Started deserializing remote channel content");
+            var appcast = RemoteAppcast.MakeFromJson(content);
+            _logger.Log("Finished deserializing remote channel content");
+            return appcast;
         }
 
         protected virtual void OnRemoteAppcastAvailableEvent(SingleEventArgs<RemoteAppcast> args)
