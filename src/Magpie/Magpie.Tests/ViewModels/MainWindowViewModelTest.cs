@@ -1,18 +1,17 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Magpie.Interfaces;
 using Magpie.Services;
 using Magpie.Tests.Mocks;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 
-namespace Magpie.Tests
+namespace Magpie.Tests.ViewModels
 {
     [TestClass]
     public class MainWindowViewModelTests
     {
         private MockMainWindowViewModel _mainWindowViewModel;
-        private MockRemoteAppcast _appCast;
+        private MockChannel _channel;
         private IAnalyticsLogger _analyticsLogger;
 
         [TestInitialize]
@@ -22,7 +21,8 @@ namespace Magpie.Tests
             _analyticsLogger = Substitute.For<IAnalyticsLogger>();
             var remoteContentDownloader = Substitute.For<IRemoteContentDownloader>();
             var appInfo = new AppInfo("valid_url");
-            _appCast = new MockRemoteAppcast(new Version(1, 0));
+            _channel = new MockChannel(1, "1.0");
+            AssemblyInjector.Inject();
             _mainWindowViewModel = new MockMainWindowViewModel(appInfo, debuggingInfoLogger, remoteContentDownloader, _analyticsLogger);
         }
 
@@ -30,7 +30,7 @@ namespace Magpie.Tests
         public async Task TestReleaseNotesGetsDefaultCssFile()
         {
             _mainWindowViewModel.Stylesheet = "body{color:red;}";
-            await _mainWindowViewModel.StartAsync(_appCast);
+            await _mainWindowViewModel.StartAsync(_channel);
 
             Assert.IsTrue(_mainWindowViewModel.ReleaseNotes.Contains("<style>body{color:red;}</style>"));
         }
@@ -39,7 +39,7 @@ namespace Magpie.Tests
         public async Task TestReleaseNotesDoNotGetStyledIfCannotFindDefaultCssFile()
         {
             _mainWindowViewModel.Stylesheet = string.Empty;
-            await _mainWindowViewModel.StartAsync(_appCast);
+            await _mainWindowViewModel.StartAsync(_channel);
 
             Assert.IsFalse(_mainWindowViewModel.ReleaseNotes.Contains("<style>"));
         }
@@ -66,24 +66,10 @@ namespace Magpie.Tests
         }
 
         [TestMethod]
-        public void TestLogOldVersion()
+        public async Task TestTitleIsProperlySet()
         {
-            _mainWindowViewModel.OldVersion = "1.0.0";
-            _analyticsLogger.Received().LogOldVersion("1.0.0");
-        }
-
-        [TestMethod]
-        public void TestLogNewVersion()
-        {
-            _mainWindowViewModel.NewVersion = "1.0.1";
-            _analyticsLogger.Received().LogNewVersion("1.0.1");
-        }
-
-        [TestMethod]
-        public void TestLogAppTitle()
-        {
-            _mainWindowViewModel.Title = "My Super Awesome App";
-            _analyticsLogger.Received().LogAppTitle("My Super Awesome App");
+            await _mainWindowViewModel.StartAsync(_channel);
+            Assert.AreEqual("A NEW VERSION OF MAGPIE.TESTS IS AVAILABLE", _mainWindowViewModel.Title);
         }
 
         [TestMethod]
@@ -92,6 +78,5 @@ namespace Magpie.Tests
             _mainWindowViewModel.CancelUpdate();
             _analyticsLogger.Received().LogUpdateCancelled();
         }
-
     }
 }

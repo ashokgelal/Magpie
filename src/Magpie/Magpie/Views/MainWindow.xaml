@@ -64,6 +64,12 @@
                        ContentStringFormat="{}{0}:"
                        Style="{DynamicResource _magpieMetadataLbl}" />
                 <Label Content="{Binding NewVersion}" Style="{DynamicResource _magpieMetadataValue}" />
+                <StackPanel Orientation="Horizontal" Visibility="{Binding Build, TargetNullValue=Collapsed}">
+                    <Label Content="{x:Static prop:Resources.Build}"
+                           ContentStringFormat="{}{0}:"
+                           Style="{DynamicResource _magpieMetadataLbl}" />
+                    <Label Content="{Binding Build}" Style="{DynamicResource _magpieMetadataValue}" />
+                </StackPanel>
             </StackPanel>
         </Grid>
 

@@ -166,4 +166,7 @@
   <data name="SignatureErrorTitle" xml:space="preserve">
     <value>{0} Signature Error</value>
   </data>
+  <data name="Build" xml:space="preserve">
+    <value>Build</value>
+  </data>
 </root>
