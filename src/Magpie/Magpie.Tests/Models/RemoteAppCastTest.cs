@@ -2,7 +2,7 @@
 using Magpie.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Magpie.Tests
+namespace Magpie.Tests.Models
 {
     [TestClass]
     public class RemoteAppCastTest

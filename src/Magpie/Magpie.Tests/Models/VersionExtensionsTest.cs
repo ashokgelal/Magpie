@@ -2,10 +2,10 @@
 using Magpie.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Magpie.Tests
+namespace Magpie.Tests.Models
 {
     [TestClass]
-    public class VersionExtensionsTests
+    public class VersionExtensionsTest
     {
         [TestMethod]
         public void TestRevision()

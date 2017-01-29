@@ -58,8 +58,8 @@
     <Compile Include="AssemblyInjector.cs" />
     <Compile Include="Mocks\MockChannel.cs" />
     <Compile Include="Models\AppInfoTest.cs" />
-    <Compile Include="RemoteAppCastTest.cs" />
-    <Compile Include="HelpersTests.cs" />
+    <Compile Include="Models\RemoteAppCastTest.cs" />
+    <Compile Include="Models\HelpersTest.cs" />
     <Compile Include="MagpieServiceTests.cs" />
     <Compile Include="ViewModels\MainWindowViewModelTest.cs" />
     <Compile Include="Mocks\MockMagpieUpdater.cs" />
@@ -67,7 +67,7 @@
     <Compile Include="Mocks\MockRemoteAppcast.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BestChannelFinderTest.cs" />
-    <Compile Include="VersionExtensionsTests.cs" />
+    <Compile Include="Models\VersionExtensionsTest.cs" />
     <Compile Include="ViewModels\SignatureVerificationViewModelTest.cs" />
     <Compile Include="ViewModels\DownloadWindowViewModelTest.cs" />
   </ItemGroup>

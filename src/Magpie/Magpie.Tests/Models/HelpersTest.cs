@@ -2,10 +2,10 @@
 using Magpie.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Magpie.Tests
+namespace Magpie.Tests.Models
 {
     [TestClass]
-    public class HelpersTests
+    public class HelpersTest
     {
         [TestMethod]
         public void TestVersionsAreEqual()
