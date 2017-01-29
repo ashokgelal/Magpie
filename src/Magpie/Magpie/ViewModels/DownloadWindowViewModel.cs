@@ -1,4 +1,3 @@
-using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Input;
 using Magpie.Interfaces;
@@ -40,22 +39,18 @@ namespace Magpie.ViewModels
             _contentDownloader = contentDownloader;
         }
 
-        internal async void StartAsync(RemoteAppcast appcast, string destinationPath)
+        internal async Task<string> StartAsync(Channel channel, string destinationPath)
         {
-            Title = string.Format(Properties.Resources.DownloadingInstaller, appcast.Title);
-            await DownloadArtifact(appcast, destinationPath).ConfigureAwait(true);
+            Title = string.Format(Properties.Resources.DownloadingInstaller, MainAssembly.ProductName);
+            return await DownloadArtifact(channel, destinationPath).ConfigureAwait(true);
         }
 
-        private async Task DownloadArtifact(RemoteAppcast appcast, string destinationPath)
+        private async Task<string> DownloadArtifact(Channel channel, string destinationPath)
         {
             _logger.Log("Starting to download artifact");
-            using (var client = new WebClient())
-            {
-                client.DownloadProgressChanged += (sender, args) => { ProgressPercent = args.ProgressPercentage; };
-                await _contentDownloader.DownloadFile(appcast.ArtifactUrl, destinationPath, client).ConfigureAwait(false);
-                _logger.Log(string.Format("Artifact downloaded to {0}", destinationPath));
-            }
+            var savedAt = await _contentDownloader.DownloadFile(channel.ArtifactUrl, destinationPath, p => ProgressPercent = p).ConfigureAwait(false);
+            _logger.Log(string.Format("Artifact downloaded to {0}", destinationPath));
+            return savedAt;
         }
-
     }
 }

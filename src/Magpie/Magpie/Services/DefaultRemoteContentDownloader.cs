@@ -15,13 +15,15 @@ namespace Magpie.Services
             }
         }
 
-        public async Task<string> DownloadFile(string sourceUrl, string destinationPath, WebClient client)
+        public async Task<string> DownloadFile(string sourceUrl, string destinationPath, Action<int> onProgressChanged)
         {
-            var uri = new Uri(sourceUrl);
-            await client.DownloadFileTaskAsync(uri, destinationPath).ConfigureAwait(false);
-            return destinationPath;
+            using (var client = new WebClient())
+            {
+                client.DownloadProgressChanged += (s, e) => onProgressChanged(e.ProgressPercentage);
+                var uri = new Uri(sourceUrl);
+                await client.DownloadFileTaskAsync(uri, destinationPath).ConfigureAwait(false);
+                return destinationPath;
+            }
         }
-
-
     }
 }

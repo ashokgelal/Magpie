@@ -69,6 +69,7 @@
     <Compile Include="Services\BestChannelFinderTest.cs" />
     <Compile Include="VersionExtensionsTests.cs" />
     <Compile Include="ViewModels\SignatureVerificationViewModelTest.cs" />
+    <Compile Include="ViewModels\DownloadWindowViewModelTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

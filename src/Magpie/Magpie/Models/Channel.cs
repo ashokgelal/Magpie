@@ -23,7 +23,7 @@ namespace Magpie.Models
         public string ReleaseNotesUrl { get; private set; }
 
         [DataMember(Name = "artifact_url", IsRequired = true)]
-        public string ArtifactUrl { get; private set; }
+        public string ArtifactUrl { get; protected set; }
 
         [DataMember(Name = "dsa_signature", IsRequired = false)]
         public string DSASignature { get; private set; }
