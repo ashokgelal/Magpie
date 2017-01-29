@@ -1,9 +1,9 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using Magpie.Interfaces;
-using Magpie.Models;
+using MagpieUpdater.Interfaces;
+using MagpieUpdater.Models;
 
-namespace Magpie.Services
+namespace MagpieUpdater.Services
 {
     /// <summary>
     /// Class responsible for finding the best channel to check updates against.

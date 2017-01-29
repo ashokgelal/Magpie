@@ -1,6 +1,6 @@
-using Magpie.Interfaces;
+using MagpieUpdater.Interfaces;
 
-namespace Magpie.Services
+namespace MagpieUpdater.Services
 {
     public class AnalyticsLogger : IAnalyticsLogger
     {

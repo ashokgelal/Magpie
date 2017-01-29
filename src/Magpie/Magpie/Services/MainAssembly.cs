@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Reflection;
 
-namespace Magpie.Services
+namespace MagpieUpdater.Services
 {
     internal static class MainAssembly
     {

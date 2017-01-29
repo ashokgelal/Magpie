@@ -1,7 +1,7 @@
 using System.Windows.Input;
-using Magpie.Services;
+using MagpieUpdater.Services;
 
-namespace Magpie.ViewModels
+namespace MagpieUpdater.ViewModels
 {
     internal class SignatureVerificationWindowViewModel : BindableBase
     {

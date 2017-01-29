@@ -1,6 +1,6 @@
-﻿using Magpie.Interfaces;
-using Magpie.Services;
-using Magpie.ViewModels;
+﻿using MagpieUpdater.Interfaces;
+using MagpieUpdater.Services;
+using MagpieUpdater.ViewModels;
 
 namespace Magpie.Tests.Mocks
 {

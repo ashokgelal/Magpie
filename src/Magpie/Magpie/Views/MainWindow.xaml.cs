@@ -5,9 +5,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Navigation;
-using Magpie.ViewModels;
+using MagpieUpdater.ViewModels;
 
-namespace Magpie.Views
+namespace MagpieUpdater.Views
 {
     public partial class MainWindow
     {

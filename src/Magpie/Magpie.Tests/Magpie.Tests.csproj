@@ -63,7 +63,7 @@
     <Compile Include="MagpieServiceTests.cs" />
     <Compile Include="Services\UpdateDeciderTest.cs" />
     <Compile Include="ViewModels\MainWindowViewModelTest.cs" />
-    <Compile Include="Mocks\MockMagpieUpdater.cs" />
+    <Compile Include="Mocks\MockMagpie.cs" />
     <Compile Include="Mocks\MockMainWindowViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\BestChannelFinderTest.cs" />

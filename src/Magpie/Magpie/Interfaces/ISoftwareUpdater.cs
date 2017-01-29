@@ -1,6 +1,6 @@
-namespace Magpie.Interfaces
+namespace MagpieUpdater.Interfaces
 {
-    public interface IMagpieService
+    public interface ISoftwareUpdater
     {
         /// <summary>
         /// Retreives the AppCast data and either shows the UpdateWindow or NoUpdateWindow based on comparison with version and BuildDate of host application

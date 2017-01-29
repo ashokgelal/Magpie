@@ -4,7 +4,7 @@ using System.Runtime.Serialization;
 using System.Runtime.Serialization.Json;
 using System.Text;
 
-namespace Magpie.Models
+namespace MagpieUpdater.Models
 {
     [DataContract]
     public class RemoteAppcast

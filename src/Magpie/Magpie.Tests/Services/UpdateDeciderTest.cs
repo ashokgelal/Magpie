@@ -1,7 +1,7 @@
 ﻿using System;
-using Magpie.Interfaces;
-using Magpie.Services;
 using Magpie.Tests.Mocks;
+using MagpieUpdater.Interfaces;
+using MagpieUpdater.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 

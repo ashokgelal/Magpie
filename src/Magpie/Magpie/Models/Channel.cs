@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.Runtime.Serialization;
 
-namespace Magpie.Models
+namespace MagpieUpdater.Models
 {
     [DataContract]
     public class Channel

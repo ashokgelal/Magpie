@@ -1,5 +1,5 @@
 ﻿using System;
-using Magpie.Services;
+using MagpieUpdater.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Magpie.Tests.Models

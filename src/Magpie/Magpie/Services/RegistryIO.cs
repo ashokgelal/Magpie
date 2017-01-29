@@ -4,7 +4,7 @@ using System.IO;
 using System.Security;
 using Microsoft.Win32;
 
-namespace Magpie.Services
+namespace MagpieUpdater.Services
 {
     internal class RegistryIO
     {

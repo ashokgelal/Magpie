@@ -1,13 +1,13 @@
 ﻿using System.Threading.Tasks;
-using Magpie.Interfaces;
-using Magpie.Models;
-using Magpie.Services;
 using Magpie.Tests.Models;
+using MagpieUpdater.Interfaces;
+using MagpieUpdater.Models;
+using MagpieUpdater.Services;
 using NSubstitute;
 
 namespace Magpie.Tests.Mocks
 {
-    internal class MockMagpieUpdater : Magpie.Services.MagpieUpdater
+    internal class MockMagpie : MagpieUpdater.Services.Magpie
     {
         private readonly string VALID_JSON =
             @"{'foo': 'bar', 'channels': [{ 'id': 2, 'version': '5.8.8', 'release_notes_url': 'release_notes_url_http', 'artifact_url': 'artifact_url_http', 'build_date': '01/28/2017'}]}"
@@ -18,7 +18,7 @@ namespace Magpie.Tests.Mocks
         internal bool _showNoUpdatesWindowFlag;
         internal IRemoteContentDownloader _remoteContentDownloader;
 
-        public MockMagpieUpdater(string validUrl, IDebuggingInfoLogger infoLogger = null)
+        public MockMagpie(string validUrl, IDebuggingInfoLogger infoLogger = null)
             : base(new AppInfo(validUrl), infoLogger)
         {
             _remoteContentDownloader = Substitute.For<IRemoteContentDownloader>();

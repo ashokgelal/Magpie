@@ -1,7 +1,6 @@
 ﻿using System;
-using Magpie.Services;
-using Magpie.ViewModels;
-using Magpie.Views;
+using MagpieUpdater.Services;
+using MagpieUpdater.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Magpie.Tests.ViewModels

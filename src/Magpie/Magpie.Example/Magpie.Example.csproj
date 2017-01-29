@@ -96,14 +96,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="logo64x64.tiff" />
+    <EmbeddedResource Include="MagpieDSA.pub" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Magpie\Magpie.csproj">
       <Project>{a745a663-e35c-45cb-8502-021844a53f59}</Project>
       <Name>Magpie</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="logo64x64.tiff" />
-    <EmbeddedResource Include="MagpieDSA.pub" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

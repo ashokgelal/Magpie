@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading.Tasks;
 
-namespace Magpie.Interfaces
+namespace MagpieUpdater.Interfaces
 {
     public interface IRemoteContentDownloader
     {

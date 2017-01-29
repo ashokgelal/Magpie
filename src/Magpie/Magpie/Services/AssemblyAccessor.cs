@@ -1,7 +1,7 @@
 using System.IO;
 using System.Reflection;
 
-namespace Magpie.Services
+namespace MagpieUpdater.Services
 {
     internal class AssemblyAccessor
     {

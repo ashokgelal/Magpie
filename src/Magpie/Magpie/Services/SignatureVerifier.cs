@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 
-namespace Magpie.Services
+namespace MagpieUpdater.Services
 {
     /// <summary>
     /// Class to verify a DSA signature.

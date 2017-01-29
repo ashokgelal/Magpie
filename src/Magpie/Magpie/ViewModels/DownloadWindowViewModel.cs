@@ -1,10 +1,10 @@
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Magpie.Interfaces;
-using Magpie.Models;
-using Magpie.Services;
+using MagpieUpdater.Interfaces;
+using MagpieUpdater.Models;
+using MagpieUpdater.Services;
 
-namespace Magpie.ViewModels
+namespace MagpieUpdater.ViewModels
 {
     internal class DownloadWindowViewModel : BindableBase
     {

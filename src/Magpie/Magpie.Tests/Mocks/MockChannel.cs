@@ -1,5 +1,5 @@
 ﻿using System;
-using Magpie.Models;
+using MagpieUpdater.Models;
 
 namespace Magpie.Tests.Mocks
 {

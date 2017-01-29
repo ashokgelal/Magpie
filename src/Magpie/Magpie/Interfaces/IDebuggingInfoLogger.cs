@@ -1,4 +1,4 @@
-﻿namespace Magpie.Interfaces
+﻿namespace MagpieUpdater.Interfaces
 {
     public interface IDebuggingInfoLogger
     {

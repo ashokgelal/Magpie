@@ -2,12 +2,12 @@
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Magpie.Interfaces;
-using Magpie.Models;
-using Magpie.Properties;
-using Magpie.Services;
+using MagpieUpdater.Interfaces;
+using MagpieUpdater.Models;
+using MagpieUpdater.Properties;
+using MagpieUpdater.Services;
 
-namespace Magpie.ViewModels
+namespace MagpieUpdater.ViewModels
 {
     internal class MainWindowViewModel : BindableBase
     {

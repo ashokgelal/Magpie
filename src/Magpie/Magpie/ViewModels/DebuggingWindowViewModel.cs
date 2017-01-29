@@ -1,7 +1,7 @@
 ﻿using System.Diagnostics;
-using Magpie.Interfaces;
+using MagpieUpdater.Interfaces;
 
-namespace Magpie.ViewModels
+namespace MagpieUpdater.ViewModels
 {
     internal class DebuggingWindowViewModel : IDebuggingInfoLogger
     {

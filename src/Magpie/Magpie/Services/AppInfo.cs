@@ -1,6 +1,6 @@
 using System;
 
-namespace Magpie.Services
+namespace MagpieUpdater.Services
 {
     public class AppInfo
     {

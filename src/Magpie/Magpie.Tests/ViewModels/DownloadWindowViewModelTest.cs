@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Magpie.Interfaces;
-using Magpie.Services;
 using Magpie.Tests.Mocks;
-using Magpie.ViewModels;
+using MagpieUpdater.Interfaces;
+using MagpieUpdater.Services;
+using MagpieUpdater.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
 

@@ -1,6 +1,6 @@
 ﻿using System.Reflection;
 using System.Windows;
-using Magpie.Services;
+using MagpieUpdater.Services;
 
 namespace Magpie.Example
 {
@@ -16,7 +16,7 @@ namespace Magpie.Example
             }
         }
 
-        private Services.MagpieUpdater _magpieUpdater;
+        private MagpieUpdater.Services.MagpieUpdater _magpieUpdater;
         private int _selectedChannel;
 
         public MainWindow()
@@ -24,7 +24,7 @@ namespace Magpie.Example
             InitializeComponent();
             CurrentVersion.Content = "Current version: " + Assembly.GetEntryAssembly().GetName().Version;
             SelectedChannel = 1;
-            _magpieUpdater = new Services.MagpieUpdater(MakeAppInfo(SelectedChannel));
+            _magpieUpdater = new MagpieUpdater.Services.MagpieUpdater(MakeAppInfo(SelectedChannel));
             _magpieUpdater.CheckInBackground();
         }
 

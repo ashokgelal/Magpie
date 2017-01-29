@@ -1,5 +1,5 @@
 ﻿using System.Linq;
-using Magpie.Models;
+using MagpieUpdater.Models;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace Magpie.Tests.Models

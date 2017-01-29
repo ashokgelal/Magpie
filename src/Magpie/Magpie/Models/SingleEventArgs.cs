@@ -1,6 +1,6 @@
 using System;
 
-namespace Magpie.Models
+namespace MagpieUpdater.Models
 {
     public class SingleEventArgs<T> : EventArgs
     {

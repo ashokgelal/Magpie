@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Net;
 using System.Threading.Tasks;
-using Magpie.Interfaces;
+using MagpieUpdater.Interfaces;
 
-namespace Magpie.Services
+namespace MagpieUpdater.Services
 {
     internal class DefaultRemoteContentDownloader : IRemoteContentDownloader
     {

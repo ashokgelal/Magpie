@@ -3,14 +3,14 @@ using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
 using System.Windows;
-using Magpie.Interfaces;
-using Magpie.Models;
-using Magpie.ViewModels;
-using Magpie.Views;
+using MagpieUpdater.Interfaces;
+using MagpieUpdater.Models;
+using MagpieUpdater.ViewModels;
+using MagpieUpdater.Views;
 
-namespace Magpie.Services
+namespace MagpieUpdater.Services
 {
-    public class MagpieUpdater : IMagpieService
+    public class Magpie : ISoftwareUpdater
     {
         private readonly AppInfo _appInfo;
         private readonly IDebuggingInfoLogger _logger;
@@ -21,7 +21,7 @@ namespace Magpie.Services
         public event EventHandler<SingleEventArgs<RemoteAppcast>> RemoteAppcastAvailableEvent;
         public event EventHandler<SingleEventArgs<string>> ArtifactDownloadedEvent;
 
-        public MagpieUpdater(AppInfo appInfo, IDebuggingInfoLogger debuggingInfoLogger = null,
+        public Magpie(AppInfo appInfo, IDebuggingInfoLogger debuggingInfoLogger = null,
             IAnalyticsLogger analyticsLogger = null)
         {
             _appInfo = appInfo;

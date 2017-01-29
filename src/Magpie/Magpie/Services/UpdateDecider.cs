@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Globalization;
-using Magpie.Interfaces;
-using Magpie.Models;
+using MagpieUpdater.Interfaces;
+using MagpieUpdater.Models;
 
-namespace Magpie.Services
+namespace MagpieUpdater.Services
 {
     public class UpdateDecider
     {
