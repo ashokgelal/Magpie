@@ -61,6 +61,7 @@
     <Compile Include="Models\RemoteAppCastTest.cs" />
     <Compile Include="Models\HelpersTest.cs" />
     <Compile Include="MagpieServiceTests.cs" />
+    <Compile Include="Services\UpdateDeciderTest.cs" />
     <Compile Include="ViewModels\MainWindowViewModelTest.cs" />
     <Compile Include="Mocks\MockMagpieUpdater.cs" />
     <Compile Include="Mocks\MockMainWindowViewModel.cs" />

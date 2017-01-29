@@ -20,7 +20,7 @@ namespace Magpie.Services
             _magpieRegistryPath = string.Format(MagicStrings.REG_ROOT_PATH, accessor.Company, accessor.Product);
         }
 
-        internal string ReadFromRegistry(string key, string defaultValue = "")
+        internal virtual string ReadFromRegistry(string key, string defaultValue = "")
         {
             try
             {
@@ -50,7 +50,7 @@ namespace Magpie.Services
             return null;
         }
 
-        internal void WriteToRegistry(string key, string value)
+        internal virtual void WriteToRegistry(string key, string value)
         {
             try
             {

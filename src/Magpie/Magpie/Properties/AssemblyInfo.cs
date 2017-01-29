@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Magpie")]
-[assembly: AssemblyCopyright("Ashok Gelal Copyright ©  2015-2016")]
+[assembly: AssemblyCopyright("Ashok Gelal Copyright ©  2015-2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -54,3 +54,4 @@ using System.Windows;
 [assembly: AssemblyVersion("0.0.8.0")]
 [assembly: AssemblyFileVersion("0.0.8.0")]
 [assembly: InternalsVisibleTo("Magpie.Tests")]
+[assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]

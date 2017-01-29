@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Globalization;
-using System.Reflection;
 using Magpie.Interfaces;
 using Magpie.Models;
 
@@ -37,39 +36,44 @@ namespace Magpie.Services
                 return Convert.ToDateTime(date);
             }
         }
-
-        public UpdateDecider(IDebuggingInfoLogger debuggingInfoLogger)
+            
+        public UpdateDecider(IDebuggingInfoLogger debuggingInfoLogger) : this(debuggingInfoLogger, new RegistryIO())
         {
-            _logger = debuggingInfoLogger;
-            _registryIO = new RegistryIO();
         }
 
-        internal bool ShouldUpdate(RemoteAppcast appcast, bool shouldIgnoreRegistryChecks = false)
+        internal UpdateDecider(IDebuggingInfoLogger debuggingInfoLogger, RegistryIO registryIO)
         {
-            if (!shouldIgnoreRegistryChecks)
+            _logger = debuggingInfoLogger;
+            _registryIO = registryIO ?? new RegistryIO();
+        }
+
+        internal virtual bool ShouldUpdate(Channel channel, bool shouldIgnoreRegistryChecks = false)
+        {
+            if (channel == null) return false;
+            if (shouldIgnoreRegistryChecks)
+            {
+                _logger.Log("Skipping registry checks. This probably means we are doing forced update checks.");
+            }
+            else
             {
                 _logger.Log("Checking registry entries for updates.");
-                if (!CheckRegistry(appcast))
+                if (!CheckRegistry(channel))
                 {
                     _logger.Log("Registry entries says not to tell if there is an update available.");
                     return false;
                 }
                 _logger.Log("Registry entries says go and tell if there is an update available.");
             }
-            else
-            {
-                _logger.Log("Skipping registry checks. This probably means we are doing forced update checks.");
-            }
             UpdateCheckDate();
-            var higherVersion = CheckVersion(appcast);
+            var higherVersion = CheckVersion(channel);
             return higherVersion;
         }
 
-        protected virtual bool CheckRegistry(RemoteAppcast appcast)
+        protected virtual bool CheckRegistry(Channel channel)
         {
             if (IsThisFirstRun)
             {
-                EnsureNotFirstRun();
+                MakeFirstRunFlagForNextTime();
                 _logger.Log("App is running for the first time. Skipping further checks.");
                 return false;
             }
@@ -79,7 +83,7 @@ namespace Magpie.Services
             if (!string.IsNullOrWhiteSpace(skipVersion))
             {
                 Version ver;
-                if (Version.TryParse(skipVersion, out ver) && appcast.Version == ver)
+                if (Version.TryParse(skipVersion, out ver) && channel.Version == ver)
                 {
                     _logger.Log(string.Format("User has asked to skip version: {0}. Skipping further checks.", ver));
                     return false;
@@ -97,15 +101,15 @@ namespace Magpie.Services
             return true;
         }
 
-        protected virtual bool CheckVersion(RemoteAppcast appcast)
+        protected virtual bool CheckVersion(Channel channel)
         {
-            var curVer = Assembly.GetEntryAssembly().GetName().Version;
-            var isHigherVersionAvailable = appcast.Version.IsHigherThan(curVer);
+            var curVer = MainAssembly.Version;
+            var isHigherVersionAvailable = channel.Version.IsHigherThan(curVer);
             _logger.Log(string.Format("Higher version of app is {0}available", isHigherVersionAvailable ? "" : "not "));
             return isHigherVersionAvailable;
         }
 
-        protected virtual void EnsureNotFirstRun()
+        protected virtual void MakeFirstRunFlagForNextTime()
         {
             _registryIO.WriteToRegistry(MagicStrings.IS_FIRST_RUN, "false");
         }
