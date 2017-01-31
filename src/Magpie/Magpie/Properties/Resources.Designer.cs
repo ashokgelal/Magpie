@@ -88,7 +88,7 @@ namespace MagpieUpdater.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Please make sure that you are connected to the Internet and that your appcast.json file is valid..
+        ///   Looks up a localized string similar to Please make sure that you are connected to the Internet..
         /// </summary>
         public static string ErrorMessage {
             get {

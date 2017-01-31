@@ -148,7 +148,7 @@ namespace MagpieUpdater.Services
             SetOwner(window);
             window.Show();
 
-            var savedAt = await viewModel.StartAsync(channel, artifactPath).ConfigureAwait(false);
+            var savedAt = await viewModel.StartAsync(channel, artifactPath).ConfigureAwait(true);
             finishedDownloading[0] = true;
             ((DelegateCommand)viewModel.ContinueWithInstallationCommand).RaiseCanExecuteChanged();
 
