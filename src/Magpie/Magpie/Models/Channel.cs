@@ -9,7 +9,7 @@ namespace MagpieUpdater.Models
     [DataContract]
     public class Channel
     {
-        [DataMember(Name = "id", IsRequired = true)]
+        [DataMember(Name = "id", IsRequired = false)] private int? _id;
         public int Id { get; protected set; }
 
         [DataMember(Name = "build", IsRequired = false)]
@@ -39,8 +39,14 @@ namespace MagpieUpdater.Models
         [OnDeserialized]
         private void SetValuesOnDeserialized(StreamingContext context)
         {
+            ParseId();
             ParseVersion();
             ParseBuildDate();
+        }
+
+        private void ParseId()
+        {
+            Id = _id ?? int.MaxValue;
         }
 
         private void ParseVersion()
