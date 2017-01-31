@@ -13,7 +13,7 @@ using System.Windows;
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Magpie")]
-[assembly: AssemblyCopyright("Ashok Gelal Copyright ©  2015-2017")]
+[assembly: AssemblyCopyright("MetaGeek, LLC ©  2015-2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -54,7 +54,7 @@ using System.Windows;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("0.0.9.0")]
-[assembly: AssemblyFileVersion("0.0.9.0")]
+[assembly: AssemblyVersion("0.0.10.1")]
+[assembly: AssemblyFileVersion("0.0.10.1")]
 [assembly: InternalsVisibleTo("Magpie.Tests")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
