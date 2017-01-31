@@ -6,6 +6,7 @@ using MagpieUpdater.Interfaces;
 using MagpieUpdater.Models;
 using MagpieUpdater.Properties;
 using MagpieUpdater.Services;
+using Markdig;
 
 namespace MagpieUpdater.ViewModels
 {
@@ -115,9 +116,11 @@ namespace MagpieUpdater.ViewModels
             var notes = await _contentDownloader.DownloadStringContent(releaseNotesUrl).ConfigureAwait(false);
             _logger.Log("Finished fetching release notes");
             _logger.Log("Converting release notes from markdown to html");
-            var htmlNotes = CommonMark.CommonMarkConverter.Convert(notes);
+            var pipeline = new MarkdownPipelineBuilder().UseTaskLists().UseAutoLinks().UseEmojiAndSmiley().UseGenericAttributes().Build();
+            var htmlNotes = Markdown.ToHtml(notes, pipeline);
             htmlNotes = CreateDefaultCssLink() + htmlNotes;
             _logger.Log("Finished converting release notes from markdown to html");
+            htmlNotes = "<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>" + htmlNotes;
             return htmlNotes;
         }
 

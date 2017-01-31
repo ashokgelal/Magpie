@@ -5,6 +5,8 @@ body {
 	font-family: 'Segoe UI', Verdana, sans;
 }
 
+li.task-list-item{list-style:none}
+
 .content {
 	color: #333;
 	font-size: 12px;
