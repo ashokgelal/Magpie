@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Linq;
 using Magpie.Tests.Mocks;
+using MagpieUpdater.Interfaces;
 using MagpieUpdater.Models;
 using MagpieUpdater.Services;
 using MagpieUpdater.ViewModels;
@@ -76,7 +77,7 @@ namespace Magpie.Tests.Services
             _mockMagpie.UpdateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
             _mockMagpie.UpdateDecider.ShouldUpdate(Arg.Any<Channel>(), true).Returns(true);
             _mockMagpie.ForceCheckInBackground("alternateUrl");
-            _mockMagpie._remoteContentDownloader.Received(1).DownloadStringContent("alternateUrl");
+            _mockMagpie._remoteContentDownloader.Received(1).DownloadStringContent("alternateUrl", Arg.Any<IDebuggingInfoLogger>());
         }
 
         [TestMethod]
@@ -85,7 +86,7 @@ namespace Magpie.Tests.Services
             _mockMagpie.UpdateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
             _mockMagpie.UpdateDecider.ShouldUpdate(Arg.Any<Channel>(), true).Returns(true);
             _mockMagpie.CheckInBackground("alternateUrl");
-            _mockMagpie._remoteContentDownloader.Received(1).DownloadStringContent("alternateUrl");
+            _mockMagpie._remoteContentDownloader.Received(1).DownloadStringContent("alternateUrl", Arg.Any<IDebuggingInfoLogger>());
         }
 
         [TestMethod]

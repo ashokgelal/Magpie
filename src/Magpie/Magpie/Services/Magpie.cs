@@ -56,13 +56,22 @@ namespace MagpieUpdater.Services
             _logger.Log(string.Format("Starting fetching remote channel content from address: {0}", appcastUrl));
             try
             {
-                var data = await RemoteContentDownloader.DownloadStringContent(appcastUrl).ConfigureAwait(true);
+                var data = await RemoteContentDownloader.DownloadStringContent(appcastUrl, _logger).ConfigureAwait(true);
+                if (string.IsNullOrWhiteSpace(data))
+                {
+                    if (forceCheck)
+                    {
+                        ShowErrorWindow();
+                    }
+                    return;
+                }
+
                 var appcast = ParseAppcast(data);
                 OnRemoteAppcastAvailableEvent(new SingleEventArgs<RemoteAppcast>(appcast));
                 var channelToUpdateFrom = BestChannelFinder.Find(channelId, appcast.Channels);
                 if (UpdateDecider.ShouldUpdate(channelToUpdateFrom, forceCheck))
                 {
-                    ShowUpdateWindow(channelToUpdateFrom);
+                    await ShowUpdateWindow(channelToUpdateFrom);
                 }
                 else if (forceCheck)
                 {
@@ -79,17 +88,17 @@ namespace MagpieUpdater.Services
             }
         }
 
-        protected virtual async void ShowUpdateWindow(Channel channel)
+        protected virtual async Task ShowUpdateWindow(Channel channel)
         {
             var viewModel = new MainWindowViewModel(_appInfo, _logger, RemoteContentDownloader, _analyticsLogger);
             await viewModel.StartAsync(channel).ConfigureAwait(true);
             var window = new MainWindow {ViewModel = viewModel};
-            viewModel.DownloadNowCommand = new DelegateCommand(e =>
+            viewModel.DownloadNowCommand = new DelegateCommand(async e =>
             {
                 _analyticsLogger.LogDownloadNow();
                 _logger.Log("Continuing with downloading the artifact");
                 window.Close();
-                ShowDownloadWindow(channel);
+                await ShowDownloadWindow(channel);
             });
             SetOwner(window);
             window.ShowDialog();
@@ -102,6 +111,13 @@ namespace MagpieUpdater.Services
             window.ShowDialog();
         }
 
+        protected virtual void ShowErrorWindow()
+        {
+            var window = new ErrorWindow();
+            SetOwner(window);
+            window.ShowDialog();
+        }
+
         private static string CreateTempPath(string url)
         {
             var uri = new Uri(url);
@@ -110,11 +126,12 @@ namespace MagpieUpdater.Services
             return Path.Combine(path, fileName);
         }
 
-        protected virtual void ShowDownloadWindow(Channel channel)
+        protected virtual async Task ShowDownloadWindow(Channel channel)
         {
             var viewModel = new DownloadWindowViewModel(_appInfo, _logger, RemoteContentDownloader);
             var artifactPath = CreateTempPath(channel.ArtifactUrl);
             var window = new DownloadWindow {DataContext = viewModel};
+            bool[] finishedDownloading = {false};
             viewModel.ContinueWithInstallationCommand = new DelegateCommand(e =>
             {
                 _logger.Log("Continue after downloading artifact");
@@ -126,10 +143,20 @@ namespace MagpieUpdater.Services
                     OpenArtifact(artifactPath);
                     _logger.Log("Opened artifact");
                 }
-            });
+            }, o => finishedDownloading[0]);
+
             SetOwner(window);
-            viewModel.StartAsync(channel, artifactPath);
-            window.ShowDialog();
+            window.Show();
+
+            var savedAt = await viewModel.StartAsync(channel, artifactPath).ConfigureAwait(false);
+            finishedDownloading[0] = true;
+            ((DelegateCommand)viewModel.ContinueWithInstallationCommand).RaiseCanExecuteChanged();
+
+            if (string.IsNullOrWhiteSpace(savedAt))
+            {
+                window.Close();
+                ShowErrorWindow();
+            }
         }
 
         private bool ShouldOpenArtifact(Channel channel, string artifactPath)

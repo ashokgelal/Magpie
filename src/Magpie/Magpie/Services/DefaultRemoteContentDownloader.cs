@@ -7,22 +7,44 @@ namespace MagpieUpdater.Services
 {
     internal class DefaultRemoteContentDownloader : IRemoteContentDownloader
     {
-        public async Task<string> DownloadStringContent(string url)
+        public async Task<string> DownloadStringContent(string url, IDebuggingInfoLogger logger = null)
         {
-            using (var client = new WebClient())
+            try
             {
-                return await client.DownloadStringTaskAsync(new Uri(url)).ConfigureAwait(false);
+                using (var client = new WebClient())
+                {
+                    return await client.DownloadStringTaskAsync(new Uri(url)).ConfigureAwait(false);
+                }
+            }
+            catch (Exception e)
+            {
+                if (logger != null)
+                {
+                    logger.Log(e.Message);
+                }
+                return string.Empty;
             }
         }
 
-        public async Task<string> DownloadFile(string sourceUrl, string destinationPath, Action<int> onProgressChanged)
+        public async Task<string> DownloadFile(string sourceUrl, string destinationPath, Action<int> onProgressChanged, IDebuggingInfoLogger logger = null)
         {
-            using (var client = new WebClient())
+            try
             {
-                client.DownloadProgressChanged += (s, e) => onProgressChanged(e.ProgressPercentage);
-                var uri = new Uri(sourceUrl);
-                await client.DownloadFileTaskAsync(uri, destinationPath).ConfigureAwait(false);
-                return destinationPath;
+                using (var client = new WebClient())
+                {
+                    client.DownloadProgressChanged += (s, e) => onProgressChanged(e.ProgressPercentage);
+                    var uri = new Uri(sourceUrl);
+                    await client.DownloadFileTaskAsync(uri, destinationPath).ConfigureAwait(false);
+                    return destinationPath;
+                }
+            }
+            catch (Exception e)
+            {
+                if (logger != null)
+                {
+                    logger.Log(e.Message);
+                }
+                return string.Empty;
             }
         }
     }

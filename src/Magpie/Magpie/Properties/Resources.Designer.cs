@@ -88,6 +88,24 @@ namespace MagpieUpdater.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please make sure that you are connected to the Internet and that your appcast.json file is valid..
+        /// </summary>
+        public static string ErrorMessage {
+            get {
+                return ResourceManager.GetString("ErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An Error Occurred.
+        /// </summary>
+        public static string ErrorTitle {
+            get {
+                return ResourceManager.GetString("ErrorTitle", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to New Version.
         /// </summary>
         public static string NewVersion {

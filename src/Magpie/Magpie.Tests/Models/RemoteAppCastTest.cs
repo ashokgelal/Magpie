@@ -65,6 +65,15 @@ namespace Magpie.Tests.Models
             Assert.AreEqual(0, appcast.Channels.Count);
             Assert.AreEqual(0, appcast.RawDictionary.Count);
         }
+
+        [TestMethod]
+        public void MakeFromJsonReturnsEmptyAppcastForEmptyJson()
+        {
+            var appcast = RemoteAppcast.MakeFromJson(string.Empty);
+            Assert.IsNotNull(appcast);
+            Assert.AreEqual(0, appcast.Channels.Count);
+            Assert.AreEqual(0, appcast.RawDictionary.Count);
+        }
     }
 
     internal static class StringExtension

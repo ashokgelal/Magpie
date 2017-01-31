@@ -51,7 +51,7 @@ namespace MagpieUpdater.ViewModels
         {
             _logger.Log("Starting to download artifact");
             var savedAt =
-                await _contentDownloader.DownloadFile(channel.ArtifactUrl, destinationPath, p => ProgressPercent = p)
+                await _contentDownloader.DownloadFile(channel.ArtifactUrl, destinationPath, p => ProgressPercent = p, _logger)
                     .ConfigureAwait(false);
             _logger.Log(string.Format("Artifact downloaded to {0}", destinationPath));
             return savedAt;

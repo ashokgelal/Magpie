@@ -14,6 +14,7 @@ namespace Magpie.Tests.ViewModels
     {
         private DownloadWindowViewModel _sut;
         private IRemoteContentDownloader _remoteContentDownloader;
+        private IDebuggingInfoLogger _debuggingInfoLogger;
 
         [TestInitialize]
         public void Initialize()
@@ -38,11 +39,10 @@ namespace Magpie.Tests.ViewModels
         {
             var mockChannel = new MockChannel(1, "1.0");
             mockChannel.SetArtifactUrl("artifact_url");
-            _remoteContentDownloader.DownloadFile("artifact_url", "dest_path", Arg.Any<Action<int>>())
-                .Returns("saved_dest_path");
+            _remoteContentDownloader.DownloadFile("artifact_url", "dest_path", Arg.Any<Action<int>>(), Arg.Any<IDebuggingInfoLogger>()).Returns("saved_dest_path");
 
             var savedAt = await _sut.StartAsync(mockChannel, "dest_path");
-            await _remoteContentDownloader.Received().DownloadFile("artifact_url", "dest_path", Arg.Any<Action<int>>());
+            await _remoteContentDownloader.Received().DownloadFile("artifact_url", "dest_path", Arg.Any<Action<int>>(), Arg.Any<IDebuggingInfoLogger>());
             Assert.AreEqual("saved_dest_path", savedAt);
         }
 
@@ -55,7 +55,7 @@ namespace Magpie.Tests.ViewModels
                 {
                     a(50);
                     a(75);
-                }))
+                }), Arg.Any<IDebuggingInfoLogger>())
                 .Returns("saved_dest_path");
 
             await _sut.StartAsync(mockChannel, "dest_path");

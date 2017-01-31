@@ -22,7 +22,7 @@ namespace Magpie.Tests.Mocks
             : base(new AppInfo(validUrl), infoLogger)
         {
             _remoteContentDownloader = Substitute.For<IRemoteContentDownloader>();
-            _remoteContentDownloader.DownloadStringContent(validUrl).Returns(Task.FromResult(VALID_JSON));
+            _remoteContentDownloader.DownloadStringContent(validUrl, Arg.Any<IDebuggingInfoLogger>()).Returns(Task.FromResult(VALID_JSON));
             base.RemoteContentDownloader = _remoteContentDownloader;
         }
 
@@ -32,7 +32,7 @@ namespace Magpie.Tests.Mocks
             base.OnRemoteAppcastAvailableEvent(args);
         }
 
-        protected override void ShowUpdateWindow(Channel channel)
+        protected override async Task ShowUpdateWindow(Channel channel)
         {
             // can't do in tests
             _showUpdateWindowFlag = true;
@@ -42,6 +42,11 @@ namespace Magpie.Tests.Mocks
         {
             // can't do in tests
             _showNoUpdatesWindowFlag = true;
+        }
+
+        protected override void ShowErrorWindow()
+        {
+
         }
     }
 }
