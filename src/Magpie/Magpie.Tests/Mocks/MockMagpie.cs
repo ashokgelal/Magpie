@@ -23,7 +23,7 @@ namespace Magpie.Tests.Mocks
         {
             _remoteContentDownloader = Substitute.For<IRemoteContentDownloader>();
             _remoteContentDownloader.DownloadStringContent(validUrl, Arg.Any<IDebuggingInfoLogger>()).Returns(Task.FromResult(VALID_JSON));
-            base.RemoteContentDownloader = _remoteContentDownloader;
+            RemoteContentDownloader = _remoteContentDownloader;
         }
 
         protected override void OnRemoteAppcastAvailableEvent(SingleEventArgs<RemoteAppcast> args)

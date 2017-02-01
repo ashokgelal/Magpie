@@ -12,7 +12,7 @@ using System.Windows;
 [assembly: AssemblyDescription("An example app for Magpie")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("MagpieBird, LLC")]
-[assembly: AssemblyProduct("Magpie.Example")]
+[assembly: AssemblyProduct("Example Magpie Product")]
 [assembly: AssemblyCopyright("Ashok Gelal Copyright ©  2015-2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]

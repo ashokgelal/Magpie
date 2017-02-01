@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Reflection;
 
 namespace MagpieUpdater.Services
@@ -7,7 +8,17 @@ namespace MagpieUpdater.Services
     {
         internal static string ProductName
         {
-            get { return Assembly.GetEntryAssembly().GetName().Name; }
+            get
+            {
+                var assemblyProductAttribute
+                    = Assembly.GetEntryAssembly()
+                        .GetCustomAttributes(typeof(AssemblyProductAttribute))
+                        .OfType<AssemblyProductAttribute>()
+                        .FirstOrDefault();
+                return assemblyProductAttribute != null
+                    ? assemblyProductAttribute.Product
+                    : Assembly.GetEntryAssembly().GetName().Name;
+            }
         }
 
         internal static Version Version

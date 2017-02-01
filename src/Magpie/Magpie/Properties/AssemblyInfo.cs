@@ -54,7 +54,7 @@ using System.Windows;
 // by using the '*' as shown below:
 // [assembly: AssemblyVersion("1.0.*")]
 
-[assembly: AssemblyVersion("0.0.10.1")]
-[assembly: AssemblyFileVersion("0.0.10.1")]
+[assembly: AssemblyVersion("0.0.10.3")]
+[assembly: AssemblyFileVersion("0.0.10.3")]
 [assembly: InternalsVisibleTo("Magpie.Tests")]
 [assembly: InternalsVisibleTo("DynamicProxyGenAssembly2")]
