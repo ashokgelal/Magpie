@@ -12,7 +12,7 @@ namespace MagpieUpdater.Services
 {
     public class Magpie : ISoftwareUpdater
     {
-        private readonly AppInfo _appInfo;
+        public AppInfo AppInfo { get; private set; }
         private readonly IDebuggingInfoLogger _logger;
         private readonly IAnalyticsLogger _analyticsLogger;
         internal UpdateDecider UpdateDecider { get; set; }
@@ -24,7 +24,7 @@ namespace MagpieUpdater.Services
         public Magpie(AppInfo appInfo, IDebuggingInfoLogger debuggingInfoLogger = null,
             IAnalyticsLogger analyticsLogger = null)
         {
-            _appInfo = appInfo;
+            AppInfo = appInfo;
             _logger = debuggingInfoLogger ?? new DebuggingWindowViewModel();
             _analyticsLogger = analyticsLogger ?? new AnalyticsLogger();
             RemoteContentDownloader = new DefaultRemoteContentDownloader();
@@ -34,20 +34,20 @@ namespace MagpieUpdater.Services
 
         public async void CheckInBackground(string appcastUrl = null, bool showDebuggingWindow = false)
         {
-            await Check(appcastUrl ?? _appInfo.AppCastUrl, _appInfo.SubscribedChannel, showDebuggingWindow)
+            await Check(appcastUrl ?? AppInfo.AppCastUrl, AppInfo.SubscribedChannel, showDebuggingWindow)
                 .ConfigureAwait(false);
         }
 
         public async void ForceCheckInBackground(string appcastUrl = null, bool showDebuggingWindow = false)
         {
-            await Check(appcastUrl ?? _appInfo.AppCastUrl, _appInfo.SubscribedChannel, showDebuggingWindow, true)
+            await Check(appcastUrl ?? AppInfo.AppCastUrl, AppInfo.SubscribedChannel, showDebuggingWindow, true)
                 .ConfigureAwait(false);
         }
 
         public async void SwitchSubscribedChannel(int channelId, bool showDebuggingWindow = false)
         {
-            _appInfo.SubscribedChannel = channelId;
-            await Check(_appInfo.AppCastUrl, channelId, showDebuggingWindow, true).ConfigureAwait(false);
+            AppInfo.SubscribedChannel = channelId;
+            await Check(AppInfo.AppCastUrl, channelId, showDebuggingWindow, true).ConfigureAwait(false);
         }
 
         private async Task Check(string appcastUrl, int channelId = 1, bool showDebuggingWindow = false,
@@ -91,7 +91,7 @@ namespace MagpieUpdater.Services
 
         protected virtual async Task ShowUpdateWindow(Channel channel)
         {
-            var viewModel = new MainWindowViewModel(_appInfo, _logger, RemoteContentDownloader, _analyticsLogger);
+            var viewModel = new MainWindowViewModel(AppInfo, _logger, RemoteContentDownloader, _analyticsLogger);
             await viewModel.StartAsync(channel).ConfigureAwait(true);
             var window = new MainWindow {ViewModel = viewModel};
             viewModel.DownloadNowCommand = new DelegateCommand(async e =>
@@ -129,7 +129,7 @@ namespace MagpieUpdater.Services
 
         protected virtual async Task ShowDownloadWindow(Channel channel)
         {
-            var viewModel = new DownloadWindowViewModel(_appInfo, _logger, RemoteContentDownloader);
+            var viewModel = new DownloadWindowViewModel(AppInfo, _logger, RemoteContentDownloader);
             var artifactPath = CreateTempPath(channel.ArtifactUrl);
             var window = new DownloadWindow {DataContext = viewModel};
             bool[] finishedDownloading = {false};
@@ -174,7 +174,7 @@ namespace MagpieUpdater.Services
                 return true;
             }
             _logger.Log("Couldn't verify artifact's signature. The artifact will now be deleted.");
-            var signatureWindowViewModel = new SignatureVerificationWindowViewModel(_appInfo);
+            var signatureWindowViewModel = new SignatureVerificationWindowViewModel(AppInfo);
             var signatureWindow = new SignatureVerificationWindow {DataContext = signatureWindowViewModel};
             signatureWindowViewModel.ContinueCommand = new DelegateCommand(e => { signatureWindow.Close(); });
             SetOwner(signatureWindow);
@@ -184,7 +184,7 @@ namespace MagpieUpdater.Services
 
         protected virtual bool VerifyArtifact(Channel channel, string artifactPath)
         {
-            var verifer = new SignatureVerifier(_appInfo.PublicSignatureFilename);
+            var verifer = new SignatureVerifier(AppInfo.PublicSignatureFilename);
             return verifer.VerifyDSASignature(channel.DSASignature, artifactPath);
         }
 
