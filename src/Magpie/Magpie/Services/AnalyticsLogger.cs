@@ -1,4 +1,5 @@
 using MagpieUpdater.Interfaces;
+using MagpieUpdater.Models;
 
 namespace MagpieUpdater.Services
 {
@@ -8,7 +9,7 @@ namespace MagpieUpdater.Services
         {
         }
 
-        public virtual void LogSkipThisVersion()
+        public virtual void LogUserSkipsUpdate(Channel channel)
         {
         }
 
@@ -33,6 +34,10 @@ namespace MagpieUpdater.Services
         }
 
         public virtual void LogUpdateCancelled()
+        {
+        }
+
+        public virtual void LogUpdateAvailable(Channel channel)
         {
         }
     }

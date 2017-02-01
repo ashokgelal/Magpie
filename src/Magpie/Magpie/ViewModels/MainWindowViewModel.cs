@@ -22,6 +22,7 @@ namespace MagpieUpdater.ViewModels
         private string _build;
         private string _appIconPath;
         private string _remoteVersion;
+        private Channel _channel;
 
         public string ReleaseNotes
         {
@@ -90,6 +91,7 @@ namespace MagpieUpdater.ViewModels
         private void InitializeCommands(Channel channel)
         {
             _remoteVersion = channel.Version.ToString();
+            _channel = channel;
             SkipThisVersionCommand = new DelegateCommand(SkipThisVersionCommandHandler);
             RemindMeLaterCommand = new DelegateCommand(RemindMeLaterCommandHandler);
         }
@@ -105,7 +107,7 @@ namespace MagpieUpdater.ViewModels
         private void SkipThisVersionCommandHandler(object obj)
         {
             _logger.Log("Skip this version command invoked");
-            _analyticsLogger.LogSkipThisVersion();
+            _analyticsLogger.LogUserSkipsUpdate(_channel);
             var registryIO = new RegistryIO();
             registryIO.WriteToRegistry(MagicStrings.SKIP_VERSION_KEY, _remoteVersion);
         }

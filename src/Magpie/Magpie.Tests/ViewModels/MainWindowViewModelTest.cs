@@ -1,6 +1,7 @@
 ﻿using System.Threading.Tasks;
 using Magpie.Tests.Mocks;
 using MagpieUpdater.Interfaces;
+using MagpieUpdater.Models;
 using MagpieUpdater.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using NSubstitute;
@@ -56,7 +57,7 @@ namespace Magpie.Tests.ViewModels
         public void TestSkipThisVersionCommandLogsAnalytics()
         {
             _mainWindowViewModel.SkipThisVersionCommand.Execute(null);
-            _analyticsLogger.Received().LogSkipThisVersion();
+            _analyticsLogger.Received().LogUserSkipsUpdate(Arg.Any<Channel>());
         }
 
         [TestMethod]

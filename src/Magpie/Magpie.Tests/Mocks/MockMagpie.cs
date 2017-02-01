@@ -46,7 +46,6 @@ namespace Magpie.Tests.Mocks
 
         protected override void ShowErrorWindow()
         {
-
         }
     }
 }

@@ -1,6 +1,8 @@
 ﻿using MagpieUpdater.Interfaces;
+using MagpieUpdater.Models;
 using MagpieUpdater.Services;
 using MagpieUpdater.ViewModels;
+using NSubstitute;
 
 namespace Magpie.Tests.Mocks
 {
@@ -13,7 +15,7 @@ namespace Magpie.Tests.Mocks
             : base(appInfo, logger, contentDownloader, analyticsLogger)
         {
             DownloadNowCommand = new DelegateCommand(message => analyticsLogger.LogDownloadNow());
-            SkipThisVersionCommand = new DelegateCommand(message => analyticsLogger.LogSkipThisVersion());
+            SkipThisVersionCommand = new DelegateCommand(message => analyticsLogger.LogUserSkipsUpdate(new Channel()));
             RemindMeLaterCommand = new DelegateCommand(message => analyticsLogger.LogRemindMeLater());
         }
 

@@ -71,6 +71,7 @@ namespace MagpieUpdater.Services
                 var channelToUpdateFrom = BestChannelFinder.Find(channelId, appcast.Channels);
                 if (UpdateDecider.ShouldUpdate(channelToUpdateFrom, forceCheck))
                 {
+                    _analyticsLogger.LogUpdateAvailable(channelToUpdateFrom);
                     await ShowUpdateWindow(channelToUpdateFrom);
                 }
                 else if (forceCheck)
