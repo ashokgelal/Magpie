@@ -1,4 +1,6 @@
-﻿namespace Magpie.Interfaces
+﻿using MagpieUpdater.Models;
+
+namespace MagpieUpdater.Interfaces
 {
     public interface IAnalyticsLogger
     {
@@ -9,8 +11,9 @@
 
         /// <summary>
         /// Log analytics when user chooses to skip this version update.
+        /// <param name="channel">Channel user chose to skip update from.</param>
         /// </summary>
-        void LogSkipThisVersion();
+        void LogUserSkipsUpdate(Channel channel);
 
         /// <summary>
         /// Log analytics when user asks to remind them about the update later.
@@ -44,5 +47,11 @@
         /// Log analytics when the user cancels the update.
         /// </summary>
         void LogUpdateCancelled();
+
+        /// <summary>
+        /// Log analytics when update is available.
+        /// <param name="channel">Channel that has the latest update available.</param>
+        /// </summary>
+        void LogUpdateAvailable(Channel channel);
     }
 }

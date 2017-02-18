@@ -1,4 +1,4 @@
-namespace Magpie.Services
+namespace MagpieUpdater.Services
 {
     internal class MagicStrings
     {

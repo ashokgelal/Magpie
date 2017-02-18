@@ -1,15 +1,49 @@
-﻿<Window x:Class="Magpie.Example.MainWindow"
+﻿<Window x:Class="MagpieExample.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         Title="MainWindow"
+        ResizeMode="NoResize"
         Width="525"
-        Height="350"
+        SizeToContent="Height"
         mc:Ignorable="d">
-    <Button Width="150"
-            Height="32"
-            Click="ForceCheck_OnClick"
-            Content="Check for Updates..."
-            FontSize="14" />
+    <StackPanel Margin="40">
+        <Label x:Name="SubscribedTo" Content="" FontSize="16" />
+        <Label x:Name="CurrentVersion" Content="" FontSize="16" />
+        <Button Width="150" Margin="0 20 0 0"
+                Height="32"
+                Click="ForceCheck_OnClick"
+                Content="Check for Updates..."
+                FontSize="14" />
+        <Button Width="180" Margin="0 20 0 0"
+                Height="32"
+                Background="DarkGreen"
+                Foreground="White"
+                Click="StableChannel_OnClick"
+                Content="Switch to Stable Channel..."
+                FontSize="14" />
+        <Button Width="210" Margin="0 20 0 0"
+                Height="32"
+                Click="BetaChannel_OnClick"
+                Content="Switch to Beta Channel..."
+                Background="YellowGreen"
+                Foreground="Black"
+                FontSize="14" />
+        <Button Width="240" Margin="0 20 0 0"
+                Height="32"
+                Click="AlphaChannel_OnClick"
+                Content="Switch to Alpha Channel..."
+                Background="OrangeRed"
+                Foreground="Black"
+                FontSize="14" />
+
+        <Button Width="270" Margin="0 20 0 0"
+                Height="32"
+                Click="DailyBuildChannel_OnClick"
+                Content="Switch to Daily Build Channel..."
+                Background="Red"
+                Foreground="White"
+                FontSize="14" />
+    </StackPanel>
 </Window>

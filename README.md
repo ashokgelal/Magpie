@@ -1,6 +1,8 @@
 # Magpie
 
-A modern software update framework for .net applications.
+A smart modern software update framework for .net applications.
+
+> Magpies are birds of the crow family which is considered one of the most intelligent animals in the world, and the only non-mammal species able to recognize itself in a mirror test. They love collecting sparkly things for their nests
 
 #### Master Branch Status:
 
@@ -10,13 +12,14 @@ A modern software update framework for .net applications.
 
 ![Download Screenshot](https://github.com/ashokgelal/Magpie/blob/master/screenshots/lp_download_screenshot.png)
 
-## Features:
+### Features:
 
 * **Based on WPF** - modern, beautiful and stylish
 * **JSON based appcast** - no fugly xml
+* **Channels** - support for beta, alpha, stable etc. channels with a simple API to switch
 * **Markdown based release notes** - because there is no reason to use any other formats
 * **Looks great out of the box** - no need to write your own CSS
-* **Easy integration** - install via nuget and add two lines of code
+* **Easy integration** - install via Nuget and add two lines of code
 * **Very flexible APIs** - provides plenty of hooks and raises right events at the right time
 * **Built-in logging for quick debugging** - plug-in a logger of your choice to see what's going on behind the scene
 * **Built-in analytics** - measure the effectiveness of your updates by plugging-in your analytics logger to capture important events
@@ -31,7 +34,7 @@ Use [Magpie nuget package](https://www.nuget.org/packages/Magpie/1.0.7-beta):
 
 ## Using Magpie:
 
-To use Magpie in your project, you only need to interact with `MagpieUpdater` class. Here are basic steps:
+To use Magpie in your project, you only need to interact with `Magpie` class:
 
 1) Create an instance of `AppInfo` class:
 
@@ -42,26 +45,27 @@ var appInfo = new AppInfo("<url to appcast.json>");
 2) Now, to run Magpie in the background:
 
 ```csharp
-new MagpieUpdater(appInfo).CheckInBackground();
+new Magpie(appInfo).CheckInBackground();
 ```
 
 3) *(Optional)* To force check for updates (like via a 'Check for Updates' menu item):
 
 ```csharp
-new MagpieUpdater(appInfo).ForceCheckInBackground();
+new Magpie(appInfo).ForceCheckInBackground();
 ```
 ---
 
 #### Publishing updates:
 
-Add some basic information to a valid json file and publish it somewhere publicly accessible. The appcast file should contain at least following keys:
+Add some basic information to a valid json file and publish it somewhere publicly accessible. Because of out-of-the-box channel support, your build info should contain inside a `channels` field. Here is a basic example with all the required fields:
 
 ```json
 {
-  "title": "App Title",
-  "version": "x.y.z",
-  "release_notes_url": "https://raw.githubusercontent.com/ashokgelal/Magpie/master/README.md",
-  "artifact_url": "https://github.com/ashokgelal/Magpie/tree/master/installer.msi"
+	"channels": [{
+ 	  "version": "x.y.z",
+ 	  "release_notes_url": "https://raw.githubusercontent.com/ashokgelal/Magpie/master/README.md",
+ 	  "artifact_url": "https://github.com/ashokgelal/Magpie/tree/master/installer.msi"
+	}]
 }
 ```
 
@@ -133,12 +137,12 @@ When instantiating `MagpieUpdater`, you can also pass an instance `IAnalyticsLog
 - [x] Build on AppVeyor
 - [x] Markdown support for Release Notes
 - [x] Download installer and allow to open it
-- [x] Custom CSS Support (contributed by [mariannabudnikova](https://github.com/mariannabudnikova))
+- [x] Custom CSS Support
 - [x] Force check
-- [x] Notify "No Updates Available" (contributed by [antistrongguy](https://github.com/antistrongguy))
-- [x] Create nuget package
+- [x] Notify "No Updates Available"
+- [x] Create Nuget package
 - [x] Add XML docs
 - [x] Analytics interface
-- [x] Validate signature of payloads (see: [issue #19](https://github.com/ashokgelal/Magpie/issues/19))
+- [x] Validate signature of payloads
+- [x] Add more tests
 - [ ] Implement a debugging window
-- [ ] Add more tests

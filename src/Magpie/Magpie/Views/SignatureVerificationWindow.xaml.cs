@@ -1,9 +1,9 @@
 ﻿using System;
-using Magpie.ViewModels;
+using MagpieUpdater.ViewModels;
 
-namespace Magpie.Views
+namespace MagpieUpdater.Views
 {
-    public partial class SignatureVerificationWindow 
+    public partial class SignatureVerificationWindow
     {
         public SignatureVerificationWindow()
         {

@@ -1,11 +1,10 @@
-using System.Net;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Magpie.Interfaces;
-using Magpie.Models;
-using Magpie.Services;
+using MagpieUpdater.Interfaces;
+using MagpieUpdater.Models;
+using MagpieUpdater.Services;
 
-namespace Magpie.ViewModels
+namespace MagpieUpdater.ViewModels
 {
     internal class DownloadWindowViewModel : BindableBase
     {
@@ -27,35 +26,35 @@ namespace Magpie.ViewModels
             get { return _progressPercent; }
             set { SetProperty(ref _progressPercent, value); }
         }
+
         public string AppIconPath
         {
             get { return _appIconPath; }
             set { SetProperty(ref _appIconPath, value); }
         }
 
-        internal DownloadWindowViewModel(AppInfo appInfo, IDebuggingInfoLogger logger, IRemoteContentDownloader contentDownloader)
+        internal DownloadWindowViewModel(AppInfo appInfo, IDebuggingInfoLogger logger,
+            IRemoteContentDownloader contentDownloader)
         {
             AppIconPath = appInfo.AppIconPath;
             _logger = logger;
             _contentDownloader = contentDownloader;
         }
 
-        internal async void StartAsync(RemoteAppcast appcast, string destinationPath)
+        internal async Task<string> StartAsync(Channel channel, string destinationPath)
         {
-            Title = string.Format(Properties.Resources.DownloadingInstaller, appcast.Title);
-            await DownloadArtifact(appcast, destinationPath).ConfigureAwait(true);
+            Title = string.Format(Properties.Resources.DownloadingInstaller, MainAssembly.ProductName);
+            return await DownloadArtifact(channel, destinationPath).ConfigureAwait(true);
         }
 
-        private async Task DownloadArtifact(RemoteAppcast appcast, string destinationPath)
+        private async Task<string> DownloadArtifact(Channel channel, string destinationPath)
         {
             _logger.Log("Starting to download artifact");
-            using (var client = new WebClient())
-            {
-                client.DownloadProgressChanged += (sender, args) => { ProgressPercent = args.ProgressPercentage; };
-                await _contentDownloader.DownloadFile(appcast.ArtifactUrl, destinationPath, client).ConfigureAwait(false);
-                _logger.Log(string.Format("Artifact downloaded to {0}", destinationPath));
-            }
+            var savedAt =
+                await _contentDownloader.DownloadFile(channel.ArtifactUrl, destinationPath, p => ProgressPercent = p, _logger)
+                    .ConfigureAwait(false);
+            _logger.Log(string.Format("Artifact downloaded to {0}", destinationPath));
+            return savedAt;
         }
-
     }
 }

@@ -1,11 +1,11 @@
 ﻿using System;
-using Magpie.Services;
+using MagpieUpdater.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Magpie.Tests
+namespace Magpie.Tests.Models
 {
     [TestClass]
-    public class VersionExtensionsTests
+    public class VersionExtensionsTest
     {
         [TestMethod]
         public void TestRevision()
@@ -33,6 +33,7 @@ namespace Magpie.Tests
             Assert.IsTrue(version.IsHigherThan(otherVersion));
             Assert.IsFalse(otherVersion.IsHigherThan(version));
         }
+
         [TestMethod]
         public void TestMajor()
         {

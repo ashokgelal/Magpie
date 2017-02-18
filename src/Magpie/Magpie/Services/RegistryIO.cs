@@ -4,7 +4,7 @@ using System.IO;
 using System.Security;
 using Microsoft.Win32;
 
-namespace Magpie.Services
+namespace MagpieUpdater.Services
 {
     internal class RegistryIO
     {
@@ -15,12 +15,13 @@ namespace Magpie.Services
             var accessor = new AssemblyAccessor();
             if (string.IsNullOrWhiteSpace(accessor.Company) || string.IsNullOrWhiteSpace(accessor.Product))
             {
-                throw new FormatException("Your main assembly is missing company and/or product name. Both fields are required.");
+                throw new FormatException(
+                    "Your main assembly is missing company and/or product name. Both fields are required.");
             }
             _magpieRegistryPath = string.Format(MagicStrings.REG_ROOT_PATH, accessor.Company, accessor.Product);
         }
 
-        internal string ReadFromRegistry(string key, string defaultValue = "")
+        internal virtual string ReadFromRegistry(string key, string defaultValue = "")
         {
             try
             {
@@ -50,7 +51,7 @@ namespace Magpie.Services
             return null;
         }
 
-        internal void WriteToRegistry(string key, string value)
+        internal virtual void WriteToRegistry(string key, string value)
         {
             try
             {

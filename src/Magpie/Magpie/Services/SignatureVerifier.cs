@@ -3,7 +3,7 @@ using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 
-namespace Magpie.Services
+namespace MagpieUpdater.Services
 {
     /// <summary>
     /// Class to verify a DSA signature.
@@ -92,7 +92,9 @@ namespace Magpie.Services
             Stream data = null;
             foreach (var asm in AppDomain.CurrentDomain.GetAssemblies())
             {
-                var resourceName = asm.GetManifestResourceNames().FirstOrDefault(s => s.IndexOf(publicKey, StringComparison.OrdinalIgnoreCase) > -1);
+                var resourceName =
+                    asm.GetManifestResourceNames()
+                        .FirstOrDefault(s => s.IndexOf(publicKey, StringComparison.OrdinalIgnoreCase) > -1);
                 if (string.IsNullOrEmpty(resourceName))
                 {
                     continue;

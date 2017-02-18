@@ -166,4 +166,13 @@
   <data name="SignatureErrorTitle" xml:space="preserve">
     <value>{0} Signature Error</value>
   </data>
+  <data name="Build" xml:space="preserve">
+    <value>Build</value>
+  </data>
+  <data name="ErrorMessage" xml:space="preserve">
+    <value>Please make sure that you are connected to the Internet.</value>
+  </data>
+  <data name="ErrorTitle" xml:space="preserve">
+    <value>An Error Occurred</value>
+  </data>
 </root>

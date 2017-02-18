@@ -2,12 +2,13 @@
 using System.Globalization;
 using System.Threading.Tasks;
 using System.Windows.Input;
-using Magpie.Interfaces;
-using Magpie.Models;
-using Magpie.Properties;
-using Magpie.Services;
+using MagpieUpdater.Interfaces;
+using MagpieUpdater.Models;
+using MagpieUpdater.Properties;
+using MagpieUpdater.Services;
+using Markdig;
 
-namespace Magpie.ViewModels
+namespace MagpieUpdater.ViewModels
 {
     internal class MainWindowViewModel : BindableBase
     {
@@ -18,16 +19,15 @@ namespace Magpie.ViewModels
         private string _title;
         private string _oldVersion;
         private string _newVersion;
+        private string _build;
         private string _appIconPath;
         private string _remoteVersion;
+        private Channel _channel;
 
         public string ReleaseNotes
         {
             get { return _releaseNotes; }
-            set
-            {
-                SetProperty(ref _releaseNotes, value);
-            }
+            set { SetProperty(ref _releaseNotes, value); }
         }
 
         public ICommand DownloadNowCommand { get; set; }
@@ -37,31 +37,25 @@ namespace Magpie.ViewModels
         public string Title
         {
             get { return _title; }
-            set
-            {
-                SetProperty(ref _title, value);
-                _analyticsLogger.LogAppTitle(value);
-            }
+            set { SetProperty(ref _title, value); }
         }
 
         public string OldVersion
         {
             get { return _oldVersion; }
-            set
-            {
-                SetProperty(ref _oldVersion, value);
-                _analyticsLogger.LogOldVersion(value);
-            }
+            set { SetProperty(ref _oldVersion, value); }
         }
 
         public string NewVersion
         {
             get { return _newVersion; }
-            set
-            {
-                SetProperty(ref _newVersion, value);
-                _analyticsLogger.LogNewVersion(value);
-            }
+            set { SetProperty(ref _newVersion, value); }
+        }
+
+        public string Build
+        {
+            get { return _build; }
+            set { SetProperty(ref _build, value); }
         }
 
         public string AppIconPath
@@ -70,7 +64,8 @@ namespace Magpie.ViewModels
             set { SetProperty(ref _appIconPath, value); }
         }
 
-        public MainWindowViewModel(AppInfo appInfo, IDebuggingInfoLogger logger, IRemoteContentDownloader contentDownloader, IAnalyticsLogger analyticsLogger)
+        public MainWindowViewModel(AppInfo appInfo, IDebuggingInfoLogger logger,
+            IRemoteContentDownloader contentDownloader, IAnalyticsLogger analyticsLogger)
         {
             AppIconPath = appInfo.AppIconPath;
             _logger = logger;
@@ -78,13 +73,14 @@ namespace Magpie.ViewModels
             _analyticsLogger = analyticsLogger;
         }
 
-        internal async Task StartAsync(RemoteAppcast appcast)
+        internal async Task StartAsync(Channel channel)
         {
-            InitializeCommands(appcast);
-            Title = string.Format(Resources.NewVersionAvailable, appcast.Title).ToUpperInvariant();
+            InitializeCommands(channel);
+            Title = string.Format(Resources.NewVersionAvailable, MainAssembly.ProductName).ToUpperInvariant();
+            Build = channel.Build;
             OldVersion = GetOldVersion();
-            NewVersion = appcast.Version.ToString();
-            ReleaseNotes = await FetchReleaseNotesAsync(appcast.ReleaseNotesUrl).ConfigureAwait(false);
+            NewVersion = channel.Version.ToString();
+            ReleaseNotes = await FetchReleaseNotesAsync(channel.ReleaseNotesUrl).ConfigureAwait(false);
         }
 
         protected virtual string GetOldVersion()
@@ -92,9 +88,10 @@ namespace Magpie.ViewModels
             return new AssemblyAccessor().Version;
         }
 
-        private void InitializeCommands(RemoteAppcast appcast)
+        private void InitializeCommands(Channel channel)
         {
-            _remoteVersion = appcast.Version.ToString();
+            _remoteVersion = channel.Version.ToString();
+            _channel = channel;
             SkipThisVersionCommand = new DelegateCommand(SkipThisVersionCommandHandler);
             RemindMeLaterCommand = new DelegateCommand(RemindMeLaterCommandHandler);
         }
@@ -110,27 +107,31 @@ namespace Magpie.ViewModels
         private void SkipThisVersionCommandHandler(object obj)
         {
             _logger.Log("Skip this version command invoked");
-            _analyticsLogger.LogSkipThisVersion();
+            _analyticsLogger.LogUserSkipsUpdate(_channel);
             var registryIO = new RegistryIO();
             registryIO.WriteToRegistry(MagicStrings.SKIP_VERSION_KEY, _remoteVersion);
         }
-        
+
         private async Task<string> FetchReleaseNotesAsync(string releaseNotesUrl)
         {
             _logger.Log("Fetching release notes");
             var notes = await _contentDownloader.DownloadStringContent(releaseNotesUrl).ConfigureAwait(false);
             _logger.Log("Finished fetching release notes");
             _logger.Log("Converting release notes from markdown to html");
-            var htmlNotes = CommonMark.CommonMarkConverter.Convert(notes);
+            var pipeline = new MarkdownPipelineBuilder().UseTaskLists().UseAutoLinks().UseEmojiAndSmiley().UseGenericAttributes().Build();
+            var htmlNotes = Markdown.ToHtml(notes, pipeline);
             htmlNotes = CreateDefaultCssLink() + htmlNotes;
             _logger.Log("Finished converting release notes from markdown to html");
+            htmlNotes = "<meta http-equiv='Content-Type' content='text/html;charset=UTF-8'>" + htmlNotes;
             return htmlNotes;
         }
 
         private string CreateDefaultCssLink()
         {
             var stylesheet = GetStylesheet();
-            return string.IsNullOrWhiteSpace(stylesheet) ? string.Empty : string.Format("<style>{0}</style>", stylesheet);
+            return string.IsNullOrWhiteSpace(stylesheet)
+                ? string.Empty
+                : string.Format("<style>{0}</style>", stylesheet);
         }
 
         protected virtual string GetStylesheet()

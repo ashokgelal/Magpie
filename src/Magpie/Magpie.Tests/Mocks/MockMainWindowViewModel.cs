@@ -1,20 +1,24 @@
-﻿using Magpie.Interfaces;
-using Magpie.Services;
-using Magpie.ViewModels;
+﻿using MagpieUpdater.Interfaces;
+using MagpieUpdater.Models;
+using MagpieUpdater.Services;
+using MagpieUpdater.ViewModels;
+using NSubstitute;
 
 namespace Magpie.Tests.Mocks
 {
-    internal class MockMainWindowViewModel :MainWindowViewModel
+    internal class MockMainWindowViewModel : MainWindowViewModel
     {
         public string Stylesheet { get; set; }
 
-        public MockMainWindowViewModel(AppInfo appInfo, IDebuggingInfoLogger logger, IRemoteContentDownloader contentDownloader, IAnalyticsLogger analyticsLogger) : base(appInfo, logger, contentDownloader, analyticsLogger)
+        public MockMainWindowViewModel(AppInfo appInfo, IDebuggingInfoLogger logger,
+            IRemoteContentDownloader contentDownloader, IAnalyticsLogger analyticsLogger)
+            : base(appInfo, logger, contentDownloader, analyticsLogger)
         {
-            DownloadNowCommand = new DelegateCommand(message=> analyticsLogger.LogDownloadNow());
-            SkipThisVersionCommand = new DelegateCommand(message => analyticsLogger.LogSkipThisVersion());
+            DownloadNowCommand = new DelegateCommand(message => analyticsLogger.LogDownloadNow());
+            SkipThisVersionCommand = new DelegateCommand(message => analyticsLogger.LogUserSkipsUpdate(new Channel()));
             RemindMeLaterCommand = new DelegateCommand(message => analyticsLogger.LogRemindMeLater());
         }
-        
+
         protected override string GetOldVersion()
         {
             return "1.0";

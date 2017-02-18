@@ -7,7 +7,7 @@
     <ProjectGuid>{A745A663-E35C-45CB-8502-021844A53F59}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Magpie</RootNamespace>
+    <RootNamespace>MagpieUpdater</RootNamespace>
     <AssemblyName>Magpie</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -37,9 +37,8 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CommonMark, Version=0.1.0.0, Culture=neutral, PublicKeyToken=001ef8810438905d, processorArchitecture=MSIL">
-      <HintPath>..\packages\CommonMark.NET.0.9.1\lib\net45\CommonMark.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="Markdig, Version=0.10.4.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\Markdig.0.10.4\lib\net40\Markdig.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -60,17 +59,20 @@
   <ItemGroup>
     <Compile Include="Interfaces\IAnalyticsLogger.cs" />
     <Compile Include="Interfaces\IDebuggingInfoLogger.cs" />
-    <Compile Include="Interfaces\IMagpieService.cs" />
+    <Compile Include="Interfaces\ISoftwareUpdater.cs" />
     <Compile Include="Interfaces\IRemoteContentDownloader.cs" />
+    <Compile Include="Models\Channel.cs" />
+    <Compile Include="Services\BestChannelFinder.cs" />
     <Compile Include="Services\AnalyticsLogger.cs" />
     <Compile Include="Services\AppInfo.cs" />
     <Compile Include="Services\AssemblyAccessor.cs" />
     <Compile Include="Services\DefaultRemoteContentDownloader.cs" />
+    <Compile Include="Services\MainAssembly.cs" />
     <Compile Include="Services\SignatureVerifier.cs" />
     <Compile Include="ViewModels\DownloadWindowViewModel.cs" />
     <Compile Include="Services\Helpers.cs" />
     <Compile Include="Services\MagicStrings.cs" />
-    <Compile Include="Services\MagpieUpdater.cs" />
+    <Compile Include="Services\Magpie.cs" />
     <Compile Include="Services\RegistryIO.cs" />
     <Compile Include="Services\UpdateDecider.cs" />
     <Compile Include="ViewModels\BindableBase.cs" />
@@ -80,6 +82,9 @@
     <Compile Include="ViewModels\SignatureVerificationWindowViewModel.cs" />
     <Compile Include="Views\DownloadWindow.xaml.cs">
       <DependentUpon>DownloadWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\ErrorWindow.xaml.cs">
+      <DependentUpon>ErrorWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
@@ -125,6 +130,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\DownloadWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ErrorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

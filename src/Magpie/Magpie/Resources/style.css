@@ -1,42 +1,47 @@
 body {
 	margin: 5px 10px;
-	padding: 0;
+	padding: 5px 10px;
+	font-size: 1em;
 	font-family: 'Segoe UI', Verdana, sans;
 }
+
+li.task-list-item{list-style:none}
+
 .content {
 	color: #333;
 	font-size: 12px;
-	line-height: 1.3em;
+	line-height: 1em;
 	margin: 0;
 	padding: 10px 15px;
 }
+
 a {
 	color: #356FBB;
 	text-decoration: initial;
 }
-a:hover {
-	text-decoration: underline;
-}
+
+a:hover { text-decoration: underline; }
+
 h1 {
-	font-size: 1.3em;
+	font-size: 1.2em;
 	font-weight: 400;
 	color: #24a6a2;
 	margin-bottom: 10px;
 	margin-top: 0;
 }
-h1 + ul {
-	margin-bottom: 20px;
-}
+
+h1 + ul { margin-bottom: 20px; }
+
 h2 {
-	font-size: 1.2em;
+	font-size: 1em;
 	font-weight: 400;
 	color: #35BBB7;
 	margin-bottom: 10px;
 	margin-top: 0;
 }
-h2 + ul {
-	margin-bottom: 20px;
-}
+
+h2 + ul { margin-bottom: 20px; }
+
 ul {
 	list-style-type: disc;
 	margin: 0;
@@ -44,6 +49,7 @@ ul {
 	text-indent: 0;
 	margin: 0 5px 0 15px;
 }
+
 ul li {
 	padding: 0;
 	margin: 0;
@@ -51,6 +57,7 @@ ul li {
 	text-indent: 0;
 	font-size: 1.1em;
 }
+
 pre {
 	background-color: #eee;
 	border: 1px solid #ccc;
@@ -60,11 +67,6 @@ pre {
 	border-radius: 3px;
 }
 
-hr {
-	color: #eeeeee;
-}
+hr { color: #eeeeee; }
 
-code {
-	font-family: 'Courier New', 'Monaco', fixed;
-	font-size: 11px;
-}
+code { font-family: 'Courier New', 'Monaco', fixed; }

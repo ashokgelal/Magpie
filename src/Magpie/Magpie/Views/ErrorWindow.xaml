@@ -1,0 +1,28 @@
+﻿<Window x:Class="MagpieUpdater.Views.ErrorWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:prop="clr-namespace:MagpieUpdater.Properties"
+        Title="{x:Static prop:Resources.ErrorTitle}"
+        Width="300"
+        SizeToContent="Height"
+        ResizeMode="NoResize"
+        ShowInTaskbar="False"
+        UseLayoutRounding="True">
+    <Grid Margin="20, 20">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock TextWrapping="Wrap"
+                   Foreground="#cc0000"
+                   Text="{x:Static prop:Resources.ErrorMessage}" />
+        <Button Grid.Row="1"
+                Margin="0 10 0 0"
+                HorizontalAlignment="Center"
+                VerticalAlignment="Center"
+                Content="OK"
+                IsCancel="True"
+                Padding="20,4" />
+    </Grid>
+</Window>

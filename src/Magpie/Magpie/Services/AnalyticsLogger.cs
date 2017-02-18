@@ -1,6 +1,7 @@
-using Magpie.Interfaces;
+using MagpieUpdater.Interfaces;
+using MagpieUpdater.Models;
 
-namespace Magpie.Services
+namespace MagpieUpdater.Services
 {
     public class AnalyticsLogger : IAnalyticsLogger
     {
@@ -8,7 +9,7 @@ namespace Magpie.Services
         {
         }
 
-        public virtual void LogSkipThisVersion()
+        public virtual void LogUserSkipsUpdate(Channel channel)
         {
         }
 
@@ -33,6 +34,10 @@ namespace Magpie.Services
         }
 
         public virtual void LogUpdateCancelled()
+        {
+        }
+
+        public virtual void LogUpdateAvailable(Channel channel)
         {
         }
     }

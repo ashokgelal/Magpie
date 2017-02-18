@@ -5,9 +5,9 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Navigation;
-using Magpie.ViewModels;
+using MagpieUpdater.ViewModels;
 
-namespace Magpie.Views
+namespace MagpieUpdater.Views
 {
     public partial class MainWindow
     {
@@ -62,15 +62,15 @@ namespace Magpie.Views
     internal class BrowserBehavior
     {
         public static readonly DependencyProperty HtmlProperty = DependencyProperty.RegisterAttached(
-                "Html",
-                typeof(string),
-                typeof(BrowserBehavior),
-                new FrameworkPropertyMetadata(OnHtmlChanged));
+            "Html",
+            typeof(string),
+            typeof(BrowserBehavior),
+            new FrameworkPropertyMetadata(OnHtmlChanged));
 
         [AttachedPropertyBrowsableForType(typeof(WebBrowser))]
         public static string GetHtml(WebBrowser d)
         {
-            return (string)d.GetValue(HtmlProperty);
+            return (string) d.GetValue(HtmlProperty);
         }
 
         public static void SetHtml(WebBrowser d, string value)
@@ -85,6 +85,7 @@ namespace Magpie.Views
                 webBrowser.NavigateToString(e.NewValue as string ?? "&nbsp;");
         }
     }
+
     internal class NoIconBehavior
     {
         private const int GwlExstyle = -20;
@@ -95,16 +96,16 @@ namespace Magpie.Views
         private const int WsExDlgmodalframe = 0x0001;
 
         public static readonly DependencyProperty ShowIconProperty =
-          DependencyProperty.RegisterAttached(
-            "ShowIcon",
-            typeof(bool),
-            typeof(NoIconBehavior),
-            new FrameworkPropertyMetadata(true, new PropertyChangedCallback((d, e) => RemoveIcon((Window)d))));
+            DependencyProperty.RegisterAttached(
+                "ShowIcon",
+                typeof(bool),
+                typeof(NoIconBehavior),
+                new FrameworkPropertyMetadata(true, new PropertyChangedCallback((d, e) => RemoveIcon((Window) d))));
 
 
         public static Boolean GetShowIcon(UIElement element)
         {
-            return (Boolean)element.GetValue(ShowIconProperty);
+            return (Boolean) element.GetValue(ShowIconProperty);
         }
 
         public static void RemoveIcon(Window window)
@@ -120,7 +121,7 @@ namespace Magpie.Views
 
                 // Update the window's non-client area to reflect the changes
                 SetWindowPos(hwnd, IntPtr.Zero, 0, 0, 0, 0, SwpNomove |
-                  SwpNosize | SwpNozorder | SwpFramechanged);
+                                                            SwpNosize | SwpNozorder | SwpFramechanged);
             };
         }
 
@@ -134,13 +135,13 @@ namespace Magpie.Views
 
         [DllImport("user32.dll")]
         private static extern IntPtr SendMessage(IntPtr hwnd, uint msg,
-          IntPtr wParam, IntPtr lParam);
+            IntPtr wParam, IntPtr lParam);
 
         [DllImport("user32.dll")]
         private static extern int SetWindowLong(IntPtr hwnd, int index, int newStyle);
 
         [DllImport("user32.dll")]
         private static extern bool SetWindowPos(IntPtr hwnd, IntPtr hwndInsertAfter,
-          int x, int y, int width, int height, uint flags);
+            int x, int y, int width, int height, uint flags);
     }
 }

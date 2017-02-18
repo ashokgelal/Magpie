@@ -36,9 +36,8 @@
     <CodeAnalysisRuleSet>MinimumRecommendedRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="NSubstitute, Version=1.9.1.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
-      <HintPath>..\packages\NSubstitute.1.9.1.0\lib\net45\NSubstitute.dll</HintPath>
-      <Private>True</Private>
+    <Reference Include="NSubstitute, Version=1.10.0.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
+      <HintPath>..\packages\NSubstitute.1.10.0.0\lib\net45\NSubstitute.dll</HintPath>
     </Reference>
     <Reference Include="System" />
   </ItemGroup>
@@ -55,23 +54,30 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="HelpersTests.cs" />
-    <Compile Include="MagpieServiceTests.cs" />
-    <Compile Include="MainWindowViewModelTests.cs" />
-    <Compile Include="Mocks\MockMagpieUpdater.cs" />
+    <Compile Include="AssemblyInjector.cs" />
+    <Compile Include="Mocks\MockChannel.cs" />
+    <Compile Include="Models\AppInfoTest.cs" />
+    <Compile Include="Models\RemoteAppCastTest.cs" />
+    <Compile Include="Models\HelpersTest.cs" />
+    <Compile Include="Services\MagpieTest.cs" />
+    <Compile Include="Services\UpdateDeciderTest.cs" />
+    <Compile Include="ViewModels\MainWindowViewModelTest.cs" />
+    <Compile Include="Mocks\MockMagpie.cs" />
     <Compile Include="Mocks\MockMainWindowViewModel.cs" />
-    <Compile Include="Mocks\MockRemoteAppcast.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="VersionExtensionsTests.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
+    <Compile Include="Services\BestChannelFinderTest.cs" />
+    <Compile Include="Models\VersionExtensionsTest.cs" />
+    <Compile Include="ViewModels\SignatureVerificationViewModelTest.cs" />
+    <Compile Include="ViewModels\DownloadWindowViewModelTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Magpie\Magpie.csproj">
       <Project>{A745A663-E35C-45CB-8502-021844A53F59}</Project>
       <Name>Magpie</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

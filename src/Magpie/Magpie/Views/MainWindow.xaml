@@ -1,11 +1,11 @@
-﻿<Window x:Class="Magpie.Views.MainWindow"
+﻿<Window x:Class="MagpieUpdater.Views.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:prop="clr-namespace:Magpie.Properties"
-        xmlns:viewModels="clr-namespace:Magpie.ViewModels"
-        xmlns:views="clr-namespace:Magpie.Views"
+        xmlns:prop="clr-namespace:MagpieUpdater.Properties" 
+        xmlns:views="clr-namespace:MagpieUpdater.Views" 
+        xmlns:viewModels="clr-namespace:MagpieUpdater.ViewModels"
         Width="600"
         Height="520"
         Closed="MainWindow_OnClosed"
@@ -64,6 +64,12 @@
                        ContentStringFormat="{}{0}:"
                        Style="{DynamicResource _magpieMetadataLbl}" />
                 <Label Content="{Binding NewVersion}" Style="{DynamicResource _magpieMetadataValue}" />
+                <StackPanel Orientation="Horizontal" Visibility="{Binding Build, TargetNullValue=Collapsed}">
+                    <Label Content="{x:Static prop:Resources.Build}"
+                           ContentStringFormat="{}{0}:"
+                           Style="{DynamicResource _magpieMetadataLbl}" />
+                    <Label Content="{Binding Build}" Style="{DynamicResource _magpieMetadataValue}" />
+                </StackPanel>
             </StackPanel>
         </Grid>
 

@@ -1,7 +1,7 @@
 using System.IO;
 using System.Reflection;
 
-namespace Magpie.Services
+namespace MagpieUpdater.Services
 {
     internal class AssemblyAccessor
     {
@@ -19,7 +19,7 @@ namespace Magpie.Services
                 var attributes = _assembly.GetCustomAttributes(typeof(AssemblyTitleAttribute), false);
                 if (attributes.Length > 0)
                 {
-                    var titleAttribute = (AssemblyTitleAttribute)attributes[0];
+                    var titleAttribute = (AssemblyTitleAttribute) attributes[0];
                     if (!string.IsNullOrEmpty(titleAttribute.Title))
                     {
                         return titleAttribute.Title;
@@ -31,10 +31,7 @@ namespace Magpie.Services
 
         internal string Version
         {
-            get
-            {
-                return _assembly.GetName().Version.ToString();
-            }
+            get { return _assembly.GetName().Version.ToString(); }
         }
 
         internal string Product
@@ -42,7 +39,7 @@ namespace Magpie.Services
             get
             {
                 var attributes = _assembly.GetCustomAttributes(typeof(AssemblyProductAttribute), false);
-                return attributes.Length == 0 ? string.Empty : ((AssemblyProductAttribute)attributes[0]).Product;
+                return attributes.Length == 0 ? string.Empty : ((AssemblyProductAttribute) attributes[0]).Product;
             }
         }
 
@@ -51,7 +48,7 @@ namespace Magpie.Services
             get
             {
                 var attributes = _assembly.GetCustomAttributes(typeof(AssemblyCompanyAttribute), false);
-                return attributes.Length == 0 ? string.Empty : ((AssemblyCompanyAttribute)attributes[0]).Company;
+                return attributes.Length == 0 ? string.Empty : ((AssemblyCompanyAttribute) attributes[0]).Company;
             }
         }
     }

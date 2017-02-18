@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace Magpie.Properties {
+namespace MagpieUpdater.Properties {
     using System;
     
     
@@ -39,7 +39,7 @@ namespace Magpie.Properties {
         public static global::System.Resources.ResourceManager ResourceManager {
             get {
                 if (object.ReferenceEquals(resourceMan, null)) {
-                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("Magpie.Properties.Resources", typeof(Resources).Assembly);
+                    global::System.Resources.ResourceManager temp = new global::System.Resources.ResourceManager("MagpieUpdater.Properties.Resources", typeof(Resources).Assembly);
                     resourceMan = temp;
                 }
                 return resourceMan;
@@ -61,6 +61,15 @@ namespace Magpie.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Build.
+        /// </summary>
+        public static string Build {
+            get {
+                return ResourceManager.GetString("Build", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Downloading {0} Updates....
         /// </summary>
         public static string DownloadingInstaller {
@@ -75,6 +84,24 @@ namespace Magpie.Properties {
         public static string DownloadNow {
             get {
                 return ResourceManager.GetString("DownloadNow", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please make sure that you are connected to the Internet..
+        /// </summary>
+        public static string ErrorMessage {
+            get {
+                return ResourceManager.GetString("ErrorMessage", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to An Error Occurred.
+        /// </summary>
+        public static string ErrorTitle {
+            get {
+                return ResourceManager.GetString("ErrorTitle", resourceCulture);
             }
         }
         
@@ -180,41 +207,42 @@ namespace Magpie.Properties {
         /// <summary>
         ///   Looks up a localized string similar to body {
         ///	margin: 5px 10px;
-        ///	padding: 0;
+        ///	padding: 5px 10px;
+        ///	font-size: 1em;
         ///	font-family: &apos;Segoe UI&apos;, Verdana, sans;
         ///}
+        ///
         ///.content {
         ///	color: #333;
         ///	font-size: 12px;
-        ///	line-height: 1.3em;
+        ///	line-height: 1em;
         ///	margin: 0;
         ///	padding: 10px 15px;
         ///}
+        ///
         ///a {
         ///	color: #356FBB;
         ///	text-decoration: initial;
         ///}
-        ///a:hover {
-        ///	text-decoration: underline;
-        ///}
+        ///
+        ///a:hover { text-decoration: underline; }
+        ///
         ///h1 {
-        ///	font-size: 1.3em;
+        ///	font-size: 1.2em;
         ///	font-weight: 400;
         ///	color: #24a6a2;
         ///	margin-bottom: 10px;
         ///	margin-top: 0;
         ///}
-        ///h1 + ul {
-        ///	margin-bottom: 20px;
-        ///}
+        ///
+        ///h1 + ul { margin-bottom: 20px; }
+        ///
         ///h2 {
-        ///	font-size: 1.2em;
+        ///	font-size: 1em;
         ///	font-weight: 400;
         ///	color: #35BBB7;
         ///	margin-bottom: 10px;
-        ///	margin-top: 0;
-        ///}
-        ///h2 + u [rest of string was truncated]&quot;;.
+        /// [rest of string was truncated]&quot;;.
         /// </summary>
         public static string style {
             get {

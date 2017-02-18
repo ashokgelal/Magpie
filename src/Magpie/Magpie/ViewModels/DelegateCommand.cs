@@ -1,7 +1,7 @@
 using System;
 using System.Windows.Input;
 
-namespace Magpie.ViewModels
+namespace MagpieUpdater.ViewModels
 {
     public class DelegateCommand : ICommand
     {

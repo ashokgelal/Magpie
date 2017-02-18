@@ -1,11 +1,11 @@
 ﻿using System;
-using Magpie.Services;
+using MagpieUpdater.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace Magpie.Tests
+namespace Magpie.Tests.Models
 {
     [TestClass]
-    public class HelpersTests
+    public class HelpersTest
     {
         [TestMethod]
         public void TestVersionsAreEqual()
@@ -77,7 +77,6 @@ namespace Magpie.Tests
             var lowerVersion = new Version(5, 4, 1, 6);
             Assert.IsTrue(higherVersion.IsHigherThan(lowerVersion));
             Assert.IsFalse(lowerVersion.IsHigherThan(higherVersion));
-        
         }
 
         [TestMethod]

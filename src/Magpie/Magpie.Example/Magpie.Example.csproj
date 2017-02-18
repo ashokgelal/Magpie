@@ -7,8 +7,8 @@
     <ProjectGuid>{D30F01F9-2C4F-478E-9E2E-FAD64FBB7105}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Magpie.Example</RootNamespace>
-    <AssemblyName>Magpie.Example</AssemblyName>
+    <RootNamespace>MagpieExample</RootNamespace>
+    <AssemblyName>MagpieExample</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
@@ -96,14 +96,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="logo64x64.tiff" />
+    <EmbeddedResource Include="MagpieDSA.pub" />
+  </ItemGroup>
+  <ItemGroup>
     <ProjectReference Include="..\Magpie\Magpie.csproj">
       <Project>{a745a663-e35c-45cb-8502-021844a53f59}</Project>
       <Name>Magpie</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="logo64x64.tiff" />
-    <EmbeddedResource Include="MagpieDSA.pub" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
