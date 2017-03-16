@@ -5,6 +5,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Interop;
 using System.Windows.Navigation;
+using MagpieUpdater.Services;
 using MagpieUpdater.ViewModels;
 
 namespace MagpieUpdater.Views
@@ -12,6 +13,7 @@ namespace MagpieUpdater.Views
     public partial class MainWindow
     {
         private MainWindowViewModel _viewModel;
+        public static string CustomStylesFilename = "Resources/MagpieStyles.xaml";
 
         internal MainWindowViewModel ViewModel
         {
@@ -27,6 +29,24 @@ namespace MagpieUpdater.Views
         {
             InitializeComponent();
             SetValue(NoIconBehavior.ShowIconProperty, false);
+            AddCustomStyles();
+        }
+
+        private void AddCustomStyles()
+        {
+            try
+            {
+                var styles = string.Format("/{0};component/{1}", new AssemblyAccessor().AssemblyName, CustomStylesFilename);
+                var res = (ResourceDictionary) Application.LoadComponent(new Uri(styles, UriKind.Relative));
+                if (res != null)
+                {
+                    Resources.MergedDictionaries.Add(res);
+                }
+            }
+            catch (Exception)
+            {
+                // no problem
+            }
         }
 
         private void PoweredBy_RequestNavigate(object sender, RequestNavigateEventArgs e)

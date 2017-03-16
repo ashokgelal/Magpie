@@ -15,7 +15,12 @@
         d:DataContext="{d:DesignInstance d:Type=viewModels:MainWindowViewModel}"
         mc:Ignorable="d">
     <Window.Resources>
-        <ResourceDictionary Source="pack://application:,,,/Magpie;component/Resources/Styles.xaml" />
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/Magpie;component/Resources/Styles.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/Magpie;component/Resources/Strings.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+        </ResourceDictionary>
     </Window.Resources>
     <Grid Margin="5" Background="{DynamicResource _magpieContainerBgBrush}">
         <Grid.RowDefinitions>
@@ -95,20 +100,20 @@
                    LastChildFill="False">
             <Button Width="130"
                     Click="SkipThisVersion_OnClick"
-                    Content="{x:Static prop:Resources.SkipThisVersion}"
+                    Content="{DynamicResource _skipVersion}"
                     DockPanel.Dock="Left"
                     IsCancel="True"
                     Style="{DynamicResource _magpieSkipBtn}" />
             <Button HorizontalAlignment="Right"
                     Command="{Binding DownloadNowCommand}"
-                    Content="{x:Static prop:Resources.DownloadNow}"
+                    Content="{DynamicResource _downloadNow}"
                     DockPanel.Dock="Right"
                     Padding="4" />
             <Button Width="130"
                     Margin="10 0"
                     HorizontalAlignment="Right"
                     Click="RemindMeLater_OnClick"
-                    Content="{x:Static prop:Resources.RemindMeLater}"
+                    Content="{DynamicResource _remindMeLater}"
                     DockPanel.Dock="Right"
                     IsCancel="True"
                     Style="{DynamicResource _magpieRemindLaterBtn}" />
