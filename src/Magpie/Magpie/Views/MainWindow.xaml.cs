@@ -29,24 +29,8 @@ namespace MagpieUpdater.Views
         {
             InitializeComponent();
             SetValue(NoIconBehavior.ShowIconProperty, false);
-            AddCustomStyles();
-        }
-
-        private void AddCustomStyles()
-        {
-            try
-            {
-                var styles = string.Format("/{0};component/{1}", new AssemblyAccessor().AssemblyName, CustomStylesFilename);
-                var res = (ResourceDictionary) Application.LoadComponent(new Uri(styles, UriKind.Relative));
-                if (res != null)
-                {
-                    Resources.MergedDictionaries.Add(res);
-                }
-            }
-            catch (Exception)
-            {
-                // no problem
-            }
+            var styles = string.Format("/{0};component/{1}", new AssemblyAccessor().AssemblyName, CustomStylesFilename);
+            this.AddCustomStyles(styles);
         }
 
         private void PoweredBy_RequestNavigate(object sender, RequestNavigateEventArgs e)
@@ -103,6 +87,39 @@ namespace MagpieUpdater.Views
             var webBrowser = dependencyObject as WebBrowser;
             if (webBrowser != null)
                 webBrowser.NavigateToString(e.NewValue as string ?? "&nbsp;");
+        }
+    }
+
+    public static class WindowExtension
+    {
+        public static bool AddCustomStyles(this Window window, string styleResourceFile)
+        {
+            try
+            {
+                var res = (ResourceDictionary)Application.LoadComponent(new Uri(styleResourceFile, UriKind.Relative));
+                if (res != null)
+                {
+                    window.Resources.MergedDictionaries.Add(res);
+                }
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public static bool AddCustomResource(this Window window, string key, string value)
+        {
+            try
+            {
+                window.Resources[key] = value;
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
     }
 

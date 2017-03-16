@@ -99,7 +99,8 @@
                    Margin="10"
                    HorizontalAlignment="Stretch"
                    LastChildFill="False">
-            <Button Click="SkipThisVersion_OnClick"
+            <Button MinWidth="150"
+                    Click="SkipThisVersion_OnClick"
                     Content="{DynamicResource _skipVersion}"
                     DockPanel.Dock="Left"
                     IsCancel="True"

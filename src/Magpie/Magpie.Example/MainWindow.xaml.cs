@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using System.Windows;
+using MagpieUpdater.Interfaces;
 using MagpieUpdater.Services;
+using MagpieUpdater.Views;
 
 namespace MagpieExample
 {
@@ -24,7 +26,7 @@ namespace MagpieExample
             InitializeComponent();
             CurrentVersion.Content = "Current version: " + Assembly.GetEntryAssembly().GetName().Version;
             SelectedChannel = 1;
-            _magpie = new Magpie(MakeAppInfo(SelectedChannel));
+            _magpie = new ExampleMagpie(MakeAppInfo(SelectedChannel));
             _magpie.CheckInBackground();
         }
 
@@ -62,6 +64,20 @@ namespace MagpieExample
         {
             SelectedChannel = 4;
             _magpie.SwitchSubscribedChannel(SelectedChannel);
+        }
+    }
+
+    public class ExampleMagpie : Magpie
+    {
+        public ExampleMagpie(AppInfo appInfo, IDebuggingInfoLogger debuggingInfoLogger = null, IAnalyticsLogger analyticsLogger = null) 
+            : base(appInfo, debuggingInfoLogger, analyticsLogger)
+        {
+        }
+
+        protected override void SetOwner(Window window)
+        {
+            base.SetOwner(window);
+            window.AddCustomResource("_downloadNow", "What?");
         }
     }
 }
