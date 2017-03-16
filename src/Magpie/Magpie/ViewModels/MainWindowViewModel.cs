@@ -23,11 +23,18 @@ namespace MagpieUpdater.ViewModels
         private string _appIconPath;
         private string _remoteVersion;
         private Channel _channel;
+        private bool _enableMagpieBranding;
 
         public string ReleaseNotes
         {
             get { return _releaseNotes; }
             set { SetProperty(ref _releaseNotes, value); }
+        }
+
+        public bool EnableMagpieBranding
+        {
+            get { return _enableMagpieBranding; }
+            set { SetProperty(ref _enableMagpieBranding, value); }
         }
 
         public ICommand DownloadNowCommand { get; set; }
@@ -68,6 +75,7 @@ namespace MagpieUpdater.ViewModels
             IRemoteContentDownloader contentDownloader, IAnalyticsLogger analyticsLogger)
         {
             AppIconPath = appInfo.AppIconPath;
+            EnableMagpieBranding = !appInfo.DisableMagpieBranding;
             _logger = logger;
             _contentDownloader = contentDownloader;
             _analyticsLogger = analyticsLogger;

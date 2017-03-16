@@ -8,6 +8,7 @@ namespace MagpieUpdater.Services
         public string AppCastUrl { get; private set; }
         public string PublicSignatureFilename { get; set; }
         public int SubscribedChannel { get; set; }
+        public bool DisableMagpieBranding { get; set; }
 
         public void SetAppIcon(string imageNamespace, string imagePath)
         {

@@ -59,17 +59,5 @@
                 Command="{Binding ContinueWithInstallationCommand}"
                 Content="{x:Static prop:Resources.RunInstaller}"
                 Padding="4" />
-        <Label Grid.Row="3"
-               Grid.Column="0"
-               Grid.ColumnSpan="2"
-               HorizontalAlignment="Center"
-               FontSize="13">
-            <Hyperlink Foreground="#BBBBBB"
-                       NavigateUri="https://github.com/ashokgelal/Magpie"
-                       RequestNavigate="PoweredBy_RequestNavigate"
-                       TextDecorations="None">
-                <Run Text="{x:Static prop:Resources.PoweredByMagpie}" />
-            </Hyperlink>
-        </Label>
     </Grid>
 </Window>

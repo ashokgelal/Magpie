@@ -20,6 +20,7 @@
                 <ResourceDictionary Source="pack://application:,,,/Magpie;component/Resources/Styles.xaml" />
                 <ResourceDictionary Source="pack://application:,,,/Magpie;component/Resources/Strings.xaml" />
             </ResourceDictionary.MergedDictionaries>
+            <BooleanToVisibilityConverter x:Key="_boolToVisibilityConverter"/>
         </ResourceDictionary>
     </Window.Resources>
     <Grid Margin="5" Background="{DynamicResource _magpieContainerBgBrush}">
@@ -95,7 +96,7 @@
 
         <DockPanel Grid.Row="4"
                    Grid.Column="0"
-                   Margin="10 0"
+                   Margin="10"
                    HorizontalAlignment="Stretch"
                    LastChildFill="False">
             <Button Click="SkipThisVersion_OnClick"
@@ -122,7 +123,8 @@
 
         <Label Grid.Row="5"
                HorizontalAlignment="Center"
-               FontSize="13">
+               FontSize="13"
+               Visibility="{Binding EnableMagpieBranding, Converter={StaticResource _boolToVisibilityConverter}}">
             <Hyperlink Foreground="#BBBBBB"
                        NavigateUri="https://github.com/ashokgelal/Magpie"
                        RequestNavigate="PoweredBy_RequestNavigate"
