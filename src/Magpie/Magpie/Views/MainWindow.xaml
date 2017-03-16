@@ -98,23 +98,24 @@
                    Margin="10 0"
                    HorizontalAlignment="Stretch"
                    LastChildFill="False">
-            <Button Width="130"
-                    Click="SkipThisVersion_OnClick"
+            <Button Click="SkipThisVersion_OnClick"
                     Content="{DynamicResource _skipVersion}"
                     DockPanel.Dock="Left"
                     IsCancel="True"
                     Style="{DynamicResource _magpieSkipBtn}" />
             <Button HorizontalAlignment="Right"
                     Command="{Binding DownloadNowCommand}"
-                    Content="{DynamicResource _downloadNow}"
                     DockPanel.Dock="Right"
-                    Padding="4" />
-            <Button Width="130"
-                    Margin="10 0"
-                    HorizontalAlignment="Right"
+                    Style="{DynamicResource _magpieDownloadNowBtn}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="../Resources/download.png"/>
+                        <TextBlock Padding="5 0" Text="{DynamicResource _downloadNow}"/>
+                    </StackPanel>
+            </Button>
+            <Button HorizontalAlignment="Right"
                     Click="RemindMeLater_OnClick"
                     Content="{DynamicResource _remindMeLater}"
-                    DockPanel.Dock="Right"
+                    DockPanel.Dock="Left"
                     IsCancel="True"
                     Style="{DynamicResource _magpieRemindLaterBtn}" />
         </DockPanel>
