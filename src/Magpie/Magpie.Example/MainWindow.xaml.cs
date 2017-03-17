@@ -1,6 +1,9 @@
 ﻿using System.Reflection;
 using System.Windows;
+using MagpieUpdater.Interfaces;
+using MagpieUpdater.Models;
 using MagpieUpdater.Services;
+using MagpieUpdater.Views;
 
 namespace MagpieExample
 {
@@ -24,7 +27,7 @@ namespace MagpieExample
             InitializeComponent();
             CurrentVersion.Content = "Current version: " + Assembly.GetEntryAssembly().GetName().Version;
             SelectedChannel = 1;
-            _magpie = new Magpie(MakeAppInfo(SelectedChannel));
+            _magpie = new ExampleMagpie(MakeAppInfo(SelectedChannel));
             _magpie.CheckInBackground();
         }
 
@@ -35,7 +38,7 @@ namespace MagpieExample
 
         private static AppInfo MakeAppInfo(int id)
         {
-            var appInfo = new AppInfo("https://dl.dropboxusercontent.com/u/83257/Updaters/Magpie/appcast.json", id);
+            var appInfo = new AppInfo("https://dl.dropbox.com/s/j6i7s64ooice8rt/appcast.json", id);
             appInfo.SetAppIcon("Magpie.Example", "logo64x64.tiff");
             return appInfo;
         }
@@ -62,6 +65,19 @@ namespace MagpieExample
         {
             SelectedChannel = 4;
             _magpie.SwitchSubscribedChannel(SelectedChannel);
+        }
+    }
+
+    public class ExampleMagpie : Magpie
+    {
+        public ExampleMagpie(AppInfo appInfo, IDebuggingInfoLogger debuggingInfoLogger = null, IAnalyticsLogger analyticsLogger = null) 
+            : base(appInfo, debuggingInfoLogger, analyticsLogger)
+        {
+        }
+
+        protected override void OnWindowWillBeDisplayed(Window window, Channel channel = null)
+        {
+            window.AddCustomResource("_downloadNow", "What?");
         }
     }
 }

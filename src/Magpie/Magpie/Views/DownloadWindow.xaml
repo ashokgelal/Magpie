@@ -1,4 +1,5 @@
 ﻿<Window x:Class="MagpieUpdater.Views.DownloadWindow"
+        x:Name="DownloadingArtifact"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -59,17 +60,5 @@
                 Command="{Binding ContinueWithInstallationCommand}"
                 Content="{x:Static prop:Resources.RunInstaller}"
                 Padding="4" />
-        <Label Grid.Row="3"
-               Grid.Column="0"
-               Grid.ColumnSpan="2"
-               HorizontalAlignment="Center"
-               FontSize="13">
-            <Hyperlink Foreground="#BBBBBB"
-                       NavigateUri="https://github.com/ashokgelal/Magpie"
-                       RequestNavigate="PoweredBy_RequestNavigate"
-                       TextDecorations="None">
-                <Run Text="{x:Static prop:Resources.PoweredByMagpie}" />
-            </Hyperlink>
-        </Label>
     </Grid>
 </Window>

@@ -102,13 +102,19 @@ namespace MagpieUpdater.Services
                 await ShowDownloadWindow(channel);
             });
             SetOwner(window);
+            OnWindowWillBeDisplayed(window, channel);
             window.ShowDialog();
+        }
+
+        protected virtual void OnWindowWillBeDisplayed(Window window, Channel channel = null)
+        {
         }
 
         protected virtual void ShowNoUpdatesWindow()
         {
             var window = new NoUpdatesWindow();
             SetOwner(window);
+            OnWindowWillBeDisplayed(window);
             window.ShowDialog();
         }
 
@@ -116,6 +122,7 @@ namespace MagpieUpdater.Services
         {
             var window = new ErrorWindow();
             SetOwner(window);
+            OnWindowWillBeDisplayed(window);
             window.ShowDialog();
         }
 
@@ -147,6 +154,7 @@ namespace MagpieUpdater.Services
             }, o => finishedDownloading[0]);
 
             SetOwner(window);
+            OnWindowWillBeDisplayed(window, channel);
             window.Show();
 
             var savedAt = await viewModel.StartAsync(channel, artifactPath).ConfigureAwait(true);
@@ -178,6 +186,7 @@ namespace MagpieUpdater.Services
             var signatureWindow = new SignatureVerificationWindow {DataContext = signatureWindowViewModel};
             signatureWindowViewModel.ContinueCommand = new DelegateCommand(e => { signatureWindow.Close(); });
             SetOwner(signatureWindow);
+            OnWindowWillBeDisplayed(signatureWindow, channel);
             signatureWindow.ShowDialog();
             return false;
         }
@@ -195,11 +204,15 @@ namespace MagpieUpdater.Services
 
         protected virtual void SetOwner(Window window)
         {
-            if (Application.Current != null && !Application.Current.MainWindow.Equals(window))
+            if (AppInfo.InteropWithWinForm)
             {
-                window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-                window.Owner = Application.Current.MainWindow;
+                window.SetOwnerToTopMostWinForm();
             }
+            else
+            {
+                window.SetOwnerToTopMostWindow();
+            }
+            window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
         }
 
         private RemoteAppcast ParseAppcast(string content)
