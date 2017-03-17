@@ -1,6 +1,7 @@
 ﻿using System.Reflection;
 using System.Windows;
 using MagpieUpdater.Interfaces;
+using MagpieUpdater.Models;
 using MagpieUpdater.Services;
 using MagpieUpdater.Views;
 
@@ -74,9 +75,8 @@ namespace MagpieExample
         {
         }
 
-        protected override void SetOwner(Window window)
+        protected override void OnWindowWillBeDisplayed(Window window, Channel channel = null)
         {
-            base.SetOwner(window);
             window.AddCustomResource("_downloadNow", "What?");
         }
     }
