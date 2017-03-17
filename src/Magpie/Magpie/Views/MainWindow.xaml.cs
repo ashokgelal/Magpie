@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Runtime.InteropServices;
 using System.Windows;
-using System.Windows.Controls;
+using System.Windows.Forms;
 using System.Windows.Interop;
 using System.Windows.Navigation;
 using MagpieUpdater.Services;
 using MagpieUpdater.ViewModels;
+using Application = System.Windows.Application;
+using WebBrowser = System.Windows.Controls.WebBrowser;
 
 namespace MagpieUpdater.Views
 {
@@ -121,6 +124,78 @@ namespace MagpieUpdater.Views
                 return false;
             }
         }
+
+        public static void SetOwnerToTopMostWindow(this Window window)
+        {
+            if (Application.Current == null || Application.Current.MainWindow.Equals(window)) return;
+            window.Owner = Application.Current.MainWindow;
+        }
+
+        public static WindowInteropHelper SetOwnerToTopMostWinForm(this Window window, Form form = null)
+        {
+            if (form == null)
+            {
+                form = WindowWinFormInteropExtension.GetPossibleTopMostForm();
+            }
+            if (form != null)
+            {
+                form = WindowWinFormInteropExtension.GetTopMostWindow(form.Handle);
+            }
+            return form == null ? null : new WindowInteropHelper(window) { Owner = form.Handle };
+        }
+    }
+
+    // From: http://stackoverflow.com/a/1005815/33203
+    public static class WindowWinFormInteropExtension
+    {
+        public const int GW_HWNDNEXT = 2; // The next window is below the specified window
+        public const int GW_HWNDPREV = 3; // The previous window is above
+
+        [DllImport("user32.dll")]
+        static extern IntPtr GetTopWindow(IntPtr hWnd);
+
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool IsWindowVisible(IntPtr hWnd);
+
+        [DllImport("user32.dll", CharSet = CharSet.Auto, EntryPoint = "GetWindow", SetLastError = true)]
+        public static extern IntPtr GetNextWindow(IntPtr hwnd, [MarshalAs(UnmanagedType.U4)] int wFlag);
+
+
+        public static Form GetPossibleTopMostForm()
+        {
+            return System.Windows.Forms.Application.OpenForms.Cast<Form>().FirstOrDefault(x => x.Focused);
+        }
+
+        /// <summary>
+        /// Searches for the topmost visible form of your app in all the forms opened in the current Windows session.
+        /// </summary>
+        /// <param name="hWndMainFrm">Handle of the main form</param>
+        /// <returns>The Form that is currently TopMost, or null</returns>
+        public static Form GetTopMostWindow(IntPtr hWndMainFrm)
+        {
+
+            var hwnd = GetTopWindow((IntPtr)null);
+            if (hwnd == IntPtr.Zero) return null;
+
+            Form frm = null;
+            while ((!IsWindowVisible(hwnd) || frm == null) && hwnd != hWndMainFrm)
+            {
+                // Get next window under the current handler
+                hwnd = GetNextWindow(hwnd, GW_HWNDNEXT);
+
+                try
+                {
+                    frm = (Form)Form.FromHandle(hwnd);
+                }
+                catch
+                {
+                    // Weird behaviour: In some cases, trying to cast to a Form a handle of an object 
+                    // that isn't a form will just return null. In other cases, will throw an exception.
+                }
+            }
+            return frm;
+        }
     }
 
     internal class NoIconBehavior
@@ -140,9 +215,9 @@ namespace MagpieUpdater.Views
                 new FrameworkPropertyMetadata(true, new PropertyChangedCallback((d, e) => RemoveIcon((Window) d))));
 
 
-        public static Boolean GetShowIcon(UIElement element)
+        public static bool GetShowIcon(UIElement element)
         {
-            return (Boolean) element.GetValue(ShowIconProperty);
+            return (bool) element.GetValue(ShowIconProperty);
         }
 
         public static void RemoveIcon(Window window)
@@ -153,7 +228,7 @@ namespace MagpieUpdater.Views
                 var hwnd = new WindowInteropHelper(window).Handle;
 
                 // Change the extended window style to not show a window icon
-                int extendedStyle = GetWindowLong(hwnd, GwlExstyle);
+                var extendedStyle = GetWindowLong(hwnd, GwlExstyle);
                 SetWindowLong(hwnd, GwlExstyle, extendedStyle | WsExDlgmodalframe);
 
                 // Update the window's non-client area to reflect the changes
@@ -162,7 +237,7 @@ namespace MagpieUpdater.Views
             };
         }
 
-        public static void SetShowIcon(UIElement element, Boolean value)
+        public static void SetShowIcon(UIElement element, bool value)
         {
             element.SetValue(ShowIconProperty, value);
         }

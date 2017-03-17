@@ -204,11 +204,15 @@ namespace MagpieUpdater.Services
 
         protected virtual void SetOwner(Window window)
         {
-            if (Application.Current != null && !Application.Current.MainWindow.Equals(window))
+            if (AppInfo.InteropWithWinForm)
             {
-                window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
-                window.Owner = Application.Current.MainWindow;
+                window.SetOwnerToTopMostWinForm();
             }
+            else
+            {
+                window.SetOwnerToTopMostWindow();
+            }
+            window.WindowStartupLocation = WindowStartupLocation.CenterOwner;
         }
 
         private RemoteAppcast ParseAppcast(string content)
