@@ -79,15 +79,6 @@ namespace MagpieUpdater.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Download Now.
-        /// </summary>
-        public static string DownloadNow {
-            get {
-                return ResourceManager.GetString("DownloadNow", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Please make sure that you are connected to the Internet..
         /// </summary>
         public static string ErrorMessage {
@@ -160,15 +151,6 @@ namespace MagpieUpdater.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Remind Me Later.
-        /// </summary>
-        public static string RemindMeLater {
-            get {
-                return ResourceManager.GetString("RemindMeLater", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to Run Installer.
         /// </summary>
         public static string RunInstaller {
@@ -196,21 +178,14 @@ namespace MagpieUpdater.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Skip This Version.
-        /// </summary>
-        public static string SkipThisVersion {
-            get {
-                return ResourceManager.GetString("SkipThisVersion", resourceCulture);
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized string similar to body {
         ///	margin: 5px 10px;
         ///	padding: 5px 10px;
         ///	font-size: 1em;
         ///	font-family: &apos;Segoe UI&apos;, Verdana, sans;
         ///}
+        ///
+        ///li.task-list-item{list-style:none}
         ///
         ///.content {
         ///	color: #333;
@@ -240,9 +215,7 @@ namespace MagpieUpdater.Properties {
         ///h2 {
         ///	font-size: 1em;
         ///	font-weight: 400;
-        ///	color: #35BBB7;
-        ///	margin-bottom: 10px;
-        /// [rest of string was truncated]&quot;;.
+        ///	co [rest of string was truncated]&quot;;.
         /// </summary>
         public static string style {
             get {

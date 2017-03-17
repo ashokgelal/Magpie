@@ -120,9 +120,6 @@
   <data name="DownloadingInstaller" xml:space="preserve">
     <value>Downloading {0} Updates...</value>
   </data>
-  <data name="DownloadNow" xml:space="preserve">
-    <value>Download Now</value>
-  </data>
   <data name="NewVersion" xml:space="preserve">
     <value>New Version</value>
   </data>
@@ -138,14 +135,8 @@
   <data name="ReleaseNotes" xml:space="preserve">
     <value>RELEASE NOTES</value>
   </data>
-  <data name="RemindMeLater" xml:space="preserve">
-    <value>Remind Me Later</value>
-  </data>
   <data name="RunInstaller" xml:space="preserve">
     <value>Run Installer</value>
-  </data>
-  <data name="SkipThisVersion" xml:space="preserve">
-    <value>Skip This Version</value>
   </data>
   <data name="ThereAreNoUpdates" xml:space="preserve">
     <value>There are no updates available.</value>

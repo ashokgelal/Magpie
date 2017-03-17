@@ -51,5 +51,10 @@ namespace MagpieUpdater.Services
                 return attributes.Length == 0 ? string.Empty : ((AssemblyCompanyAttribute) attributes[0]).Company;
             }
         }
+
+        internal string AssemblyName
+        {
+            get { return _assembly.FullName; }
+        }
     }
 }
