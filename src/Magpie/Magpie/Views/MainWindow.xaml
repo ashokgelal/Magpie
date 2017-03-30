@@ -91,6 +91,7 @@
 
         <WebBrowser x:Name="ReleaseNotesBrowser"
                     Grid.Row="3"
+                    Navigating="ReleaseNotesBrowser_OnNavigating"
                     Height="280"
                     VerticalAlignment="Stretch"
                     views:BrowserBehavior.Html="{Binding ReleaseNotes}" />
