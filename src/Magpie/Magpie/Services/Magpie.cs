@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using MagpieUpdater.Interfaces;
@@ -34,24 +35,24 @@ namespace MagpieUpdater.Services
 
         public async void CheckInBackground(string appcastUrl = null, bool showDebuggingWindow = false)
         {
-            await Check(appcastUrl ?? AppInfo.AppCastUrl, AppInfo.SubscribedChannel, showDebuggingWindow)
-                .ConfigureAwait(false);
+            await Check(appcastUrl ?? AppInfo.AppCastUrl, CheckState.InBackground, AppInfo.SubscribedChannel,
+                showDebuggingWindow).ConfigureAwait(false);
         }
 
         public async void ForceCheckInBackground(string appcastUrl = null, bool showDebuggingWindow = false)
         {
-            await Check(appcastUrl ?? AppInfo.AppCastUrl, AppInfo.SubscribedChannel, showDebuggingWindow, true)
-                .ConfigureAwait(false);
+            await Check(appcastUrl ?? AppInfo.AppCastUrl, CheckState.Force, AppInfo.SubscribedChannel,
+                showDebuggingWindow).ConfigureAwait(false);
         }
 
         public async void SwitchSubscribedChannel(int channelId, bool showDebuggingWindow = false)
         {
             AppInfo.SubscribedChannel = channelId;
-            await Check(AppInfo.AppCastUrl, channelId, showDebuggingWindow, true).ConfigureAwait(false);
+            await Check(AppInfo.AppCastUrl, CheckState.ChannelSwitch, channelId, showDebuggingWindow)
+                .ConfigureAwait(false);
         }
 
-        private async Task Check(string appcastUrl, int channelId = 1, bool showDebuggingWindow = false,
-            bool forceCheck = false)
+        private async Task Check(string appcastUrl, CheckState checkState, int channelId = 1, bool showDebuggingWindow = false)
         {
             _logger.Log(string.Format("Starting fetching remote channel content from address: {0}", appcastUrl));
             try
@@ -59,7 +60,7 @@ namespace MagpieUpdater.Services
                 var data = await RemoteContentDownloader.DownloadStringContent(appcastUrl, _logger).ConfigureAwait(true);
                 if (string.IsNullOrWhiteSpace(data))
                 {
-                    if (forceCheck)
+                    if (checkState == CheckState.Force)
                     {
                         ShowErrorWindow();
                     }
@@ -68,13 +69,26 @@ namespace MagpieUpdater.Services
 
                 var appcast = ParseAppcast(data);
                 OnRemoteAppcastAvailableEvent(new SingleEventArgs<RemoteAppcast>(appcast));
+
+                if (checkState == CheckState.ChannelSwitch)
+                {
+                    var enrollment = Enroll(appcast, channelId);
+//                  OnEnrolledEvent(enrollment);
+                    if (enrollment.IsRequired && !enrollment.IsEnrolled)
+                    {
+                        // todo: return false
+                        return;
+                    }
+                }
+
                 var channelToUpdateFrom = BestChannelFinder.Find(channelId, appcast.Channels);
-                if (UpdateDecider.ShouldUpdate(channelToUpdateFrom, forceCheck))
+
+                if (UpdateDecider.ShouldUpdate(channelToUpdateFrom, checkState == CheckState.Force))
                 {
                     _analyticsLogger.LogUpdateAvailable(channelToUpdateFrom);
                     await ShowUpdateWindow(channelToUpdateFrom);
                 }
-                else if (forceCheck)
+                else if (checkState == CheckState.Force)
                 {
                     ShowNoUpdatesWindow();
                 }
@@ -87,6 +101,34 @@ namespace MagpieUpdater.Services
             {
                 _logger.Log("Finished fetching remote channel content");
             }
+        }
+
+        private Enrollment Enroll(RemoteAppcast appcast, int channelId)
+        {
+            var channel = appcast.Channels.FirstOrDefault(c => c.Id == channelId);
+            var enrollment = new Enrollment(channel);
+            if (channel == null)
+            {
+                return enrollment;
+            }
+
+            enrollment.IsRequired = channel.RequiresEnrollment;
+            if (enrollment.IsRequired)
+            {
+                ShowEnrollmentWindow(enrollment);
+            }
+
+            // check enrollment
+            return enrollment;
+        }
+
+        protected virtual void ShowEnrollmentWindow(Enrollment enrollment)
+        {
+            var viewModel = new EnrollmentViewModel(enrollment, AppInfo);
+            var window = new EnrollmentWindow { DataContext = viewModel };
+            SetOwner(window);
+            OnWindowWillBeDisplayed(window, enrollment.Channel);
+            window.ShowDialog();
         }
 
         protected virtual async Task ShowUpdateWindow(Channel channel)
@@ -159,7 +201,7 @@ namespace MagpieUpdater.Services
 
             var savedAt = await viewModel.StartAsync(channel, artifactPath).ConfigureAwait(true);
             finishedDownloading[0] = true;
-            ((DelegateCommand)viewModel.ContinueWithInstallationCommand).RaiseCanExecuteChanged();
+            ((DelegateCommand) viewModel.ContinueWithInstallationCommand).RaiseCanExecuteChanged();
 
             if (string.IsNullOrWhiteSpace(savedAt))
             {

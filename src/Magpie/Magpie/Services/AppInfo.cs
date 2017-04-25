@@ -10,6 +10,7 @@ namespace MagpieUpdater.Services
         public int SubscribedChannel { get; set; }
         public bool DisableMagpieBranding { get; set; }
         public bool InteropWithWinForm { get; set; }
+        public bool RequiresEnrollment { get; set; }
 
         public void SetAppIcon(string imageNamespace, string imagePath)
         {

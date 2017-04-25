@@ -27,6 +27,9 @@ namespace MagpieUpdater.Models
         [DataMember(Name = "dsa_signature", IsRequired = false)]
         public string DSASignature { get; private set; }
 
+        [DataMember(Name = "requires_enrollment", IsRequired = false)]
+        public bool RequiresEnrollment { get; private set; }
+
         // Dates example:
         // e.g. January 30, 2015 18:15:00 +0200
         // 10/03/2015

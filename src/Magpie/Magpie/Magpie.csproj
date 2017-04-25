@@ -67,9 +67,11 @@
     <Compile Include="Services\AnalyticsLogger.cs" />
     <Compile Include="Services\AppInfo.cs" />
     <Compile Include="Services\AssemblyAccessor.cs" />
+    <Compile Include="Services\CheckState.cs" />
     <Compile Include="Services\DefaultRemoteContentDownloader.cs" />
     <Compile Include="Services\MainAssembly.cs" />
     <Compile Include="Services\SignatureVerifier.cs" />
+    <Compile Include="Models\Enrollment.cs" />
     <Compile Include="ViewModels\DownloadWindowViewModel.cs" />
     <Compile Include="Services\Helpers.cs" />
     <Compile Include="Services\MagicStrings.cs" />
@@ -81,8 +83,12 @@
     <Compile Include="ViewModels\DelegateCommand.cs" />
     <Compile Include="ViewModels\MainWindowViewModel.cs" />
     <Compile Include="ViewModels\SignatureVerificationWindowViewModel.cs" />
+    <Compile Include="ViewModels\EnrollmentViewModel.cs" />
     <Compile Include="Views\DownloadWindow.xaml.cs">
       <DependentUpon>DownloadWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\EnrollmentWindow.xaml.cs">
+      <DependentUpon>EnrollmentWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\ErrorWindow.xaml.cs">
       <DependentUpon>ErrorWindow.xaml</DependentUpon>
@@ -138,6 +144,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Views\EnrollmentWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ErrorWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -163,6 +173,9 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="Resources\download.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Resources\mail.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

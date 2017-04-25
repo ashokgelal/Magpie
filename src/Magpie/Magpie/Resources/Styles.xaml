@@ -6,6 +6,8 @@
     <SolidColorBrush x:Key="_magpieSkipBtnFgBrush" Color="Crimson" />
     <SolidColorBrush x:Key="_magpieRemindLaterBtnBgBrush" Color="Transparent" />
     <SolidColorBrush x:Key="_magpieRemindLaterBtnFgBrush" Color="#404040" />
+    <SolidColorBrush x:Key="_magpieSecondaryBtnBgBrush" Color="Transparent" />
+    <SolidColorBrush x:Key="_magpieSecondaryBtnFgBrush" Color="#404040" />
     <SolidColorBrush x:Key="_magpieHeaderFgBrush" Color="Black" />
     <SolidColorBrush x:Key="_magpieMetadataLblFgBrush" Color="#777777" />
     <SolidColorBrush x:Key="_magpieMetadataValueFgBrush" Color="#222222" />
@@ -50,24 +52,32 @@
             </Setter.Value>
         </Setter>
     </Style>
+
     <Style x:Key="_magpiePrimaryBtn"
            BasedOn="{StaticResource _magpieButtonBase}"
            TargetType="Button">
         <Setter Property="Background" Value="{DynamicResource _magpiePrimaryBtnBgBrush}" />
         <Setter Property="IsDefault" Value="True" />
     </Style>
-    <Style x:Key="_magpieSkipBtn"
+
+    <Style x:Key="_magpieSecondaryBtn"
            BasedOn="{StaticResource _magpieButtonBase}"
            TargetType="Button">
         <Setter Property="FontSize" Value="14" />
+        <Setter Property="Background" Value="{DynamicResource _magpieSecondaryBtnBgBrush}" />
+        <Setter Property="Foreground" Value="{DynamicResource _magpieSecondaryBtnFgBrush}" />
+    </Style>
+
+    <Style x:Key="_magpieSkipBtn"
+           BasedOn="{StaticResource _magpieSecondaryBtn}"
+           TargetType="Button">
         <Setter Property="Background" Value="{DynamicResource _magpieSkipBtnBgBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource _magpieSkipBtnFgBrush}" />
     </Style>
 
     <Style x:Key="_magpieRemindLaterBtn"
-           BasedOn="{StaticResource _magpieButtonBase}"
+           BasedOn="{StaticResource _magpieSecondaryBtn}"
            TargetType="Button">
-        <Setter Property="FontSize" Value="14" />
         <Setter Property="Background" Value="{DynamicResource _magpieRemindLaterBtnBgBrush}" />
         <Setter Property="Foreground" Value="{DynamicResource _magpieRemindLaterBtnFgBrush}" />
     </Style>
@@ -75,8 +85,8 @@
     <Style x:Key="_magpieDownloadNowBtn"
            BasedOn="{StaticResource _magpiePrimaryBtn}"
            TargetType="Button">
-           <Setter Property="Padding" Value="10 6" />
-           <Setter Property="FontWeight" Value="500" />
+        <Setter Property="Padding" Value="10 6" />
+        <Setter Property="FontWeight" Value="500" />
     </Style>
 
     <Style x:Key="_magpieWindowHeader" TargetType="TextBlock">

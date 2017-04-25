@@ -38,8 +38,8 @@ namespace MagpieExample
 
         private static AppInfo MakeAppInfo(int id)
         {
-            var appInfo = new AppInfo("https://dl.dropbox.com/s/j6i7s64ooice8rt/appcast.json", id);
-            appInfo.SetAppIcon("Magpie.Example", "logo64x64.tiff");
+            var appInfo = new AppInfo("https://dl.dropbox.com/s/byii1f3d7qqliwx/appcast_email_enrollment.json?dl=0", id);
+            appInfo.SetAppIcon("MagpieExample", "magpie.png");
             return appInfo;
         }
 
