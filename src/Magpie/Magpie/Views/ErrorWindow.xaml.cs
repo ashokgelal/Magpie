@@ -5,6 +5,7 @@
         public ErrorWindow()
         {
             InitializeComponent();
+            SetValue(NoIconBehavior.ShowIconProperty, false);
         }
     }
 }
