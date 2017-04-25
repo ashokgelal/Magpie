@@ -210,7 +210,7 @@ namespace MagpieUpdater.Views
         }
     }
 
-    internal class NoIconBehavior
+    public class NoIconBehavior
     {
         private const int GwlExstyle = -20;
         private const int SwpFramechanged = 0x0020;
