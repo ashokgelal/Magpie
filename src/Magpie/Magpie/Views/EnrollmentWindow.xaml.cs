@@ -1,4 +1,7 @@
-﻿namespace MagpieUpdater.Views
+﻿using System.Diagnostics;
+using System.Windows.Navigation;
+
+namespace MagpieUpdater.Views
 {
     public partial class EnrollmentWindow
     {
@@ -11,6 +14,12 @@
         private void CloseWindow(object sender, System.Windows.RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void NavigateUri(object sender, RequestNavigateEventArgs e)
+        {
+            Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+            e.Handled = true;
         }
     }
 }

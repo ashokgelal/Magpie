@@ -17,6 +17,7 @@ namespace MagpieUpdater.ViewModels
         private readonly Enrollment _enrollment;
         private string _channelName;
         private string _appIconPath;
+        private string _enrollmentEulaUrl;
 
         public string AppIconPath
         {
@@ -46,6 +47,16 @@ namespace MagpieUpdater.ViewModels
             }
         }
 
+        public string EnrollmentEulaUrl
+        {
+            get { return _enrollmentEulaUrl; }
+            set
+            {
+                _enrollmentEulaUrl = value;
+                SetProperty(ref _enrollmentEulaUrl, value);
+            }
+        }
+
         public DelegateCommand EnrollCommand { get; set; }
 
         public EnrollmentViewModel(Enrollment enrollment, AppInfo appInfo)
@@ -53,6 +64,7 @@ namespace MagpieUpdater.ViewModels
             _enrollment = enrollment;
             AppIconPath = appInfo.AppIconPath;
             ChannelName = _enrollment.Channel.Build;
+            EnrollmentEulaUrl = _enrollment.Channel.EnrollmentEulaUrl;
             EnrollCommand = new DelegateCommand(EnrollCommandHandler, CanEnroll);
         }
 
