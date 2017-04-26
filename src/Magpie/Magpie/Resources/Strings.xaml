@@ -5,4 +5,8 @@
     <system:String x:Key="_downloadNow">Download Now</system:String>
     <system:String x:Key="_skipVersion">Skip this Version</system:String>
     <system:String x:Key="_remindMeLater">Remind Me Later</system:String>
+    <system:String x:Key="_dontEnroll">I don't want to</system:String>
+    <system:String x:Key="_enroll">I don't want to</system:String>
+    <system:String x:Key="_enrollMsg">Please provide your email address to join the {0} Program</system:String>
+    <system:String x:Key="_eulaMsg" xml:space="preserve">By enrolling in this program you agree with our </system:String>
 </ResourceDictionary>
