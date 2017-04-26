@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using MagpieUpdater.Models;
-using MagpieUpdater.Properties;
 using MagpieUpdater.Services;
 
 namespace MagpieUpdater.ViewModels
@@ -17,6 +11,7 @@ namespace MagpieUpdater.ViewModels
         private readonly Enrollment _enrollment;
         private string _channelName;
         private string _appIconPath;
+        private string _enrollmentEulaUrl;
 
         public string AppIconPath
         {
@@ -29,7 +24,6 @@ namespace MagpieUpdater.ViewModels
             get { return _emailAddress; }
             set
             {
-                _emailAddress = value;
                 SetProperty(ref _emailAddress, value);
                 EnrollCommand.RaiseCanExecuteChanged();
             }
@@ -38,21 +32,23 @@ namespace MagpieUpdater.ViewModels
         public string ChannelName
         {
             get { return _channelName; }
-            set
-            {
-                _channelName = value;
-                SetProperty(ref _channelName, value);
-                
-            }
+            set { SetProperty(ref _channelName, value); }
         }
 
-        public DelegateCommand EnrollCommand { get; set; }
+        public string EnrollmentEulaUrl
+        {
+            get { return _enrollmentEulaUrl; }
+            set { SetProperty(ref _enrollmentEulaUrl, value); }
+        }
+
+        public DelegateCommand EnrollCommand { get; private set; }
 
         public EnrollmentViewModel(Enrollment enrollment, AppInfo appInfo)
         {
             _enrollment = enrollment;
             AppIconPath = appInfo.AppIconPath;
             ChannelName = _enrollment.Channel.Build;
+            EnrollmentEulaUrl = _enrollment.Channel.EnrollmentEulaUrl;
             EnrollCommand = new DelegateCommand(EnrollCommandHandler, CanEnroll);
         }
 

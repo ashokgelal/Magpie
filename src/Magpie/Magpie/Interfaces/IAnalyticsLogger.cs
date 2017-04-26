@@ -50,8 +50,14 @@ namespace MagpieUpdater.Interfaces
 
         /// <summary>
         /// Log analytics when update is available.
-        /// <param name="channel">Channel that has the latest update available.</param>
+        /// <param name="channel">Channel that has the latest update available</param>
         /// </summary>
         void LogUpdateAvailable(Channel channel);
+
+        /// <summary>
+        /// Log enrollment status.
+        /// </summary>
+        /// <param name="enrollment">Enrollment status</param>
+        void LogEnrollment(Enrollment enrollment);
     }
 }

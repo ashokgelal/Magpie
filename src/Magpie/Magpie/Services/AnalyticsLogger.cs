@@ -40,5 +40,9 @@ namespace MagpieUpdater.Services
         public virtual void LogUpdateAvailable(Channel channel)
         {
         }
+
+        public void LogEnrollment(Enrollment enrollment)
+        {
+        }
     }
 }
