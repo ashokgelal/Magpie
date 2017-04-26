@@ -1,12 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Mail;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Input;
 using MagpieUpdater.Models;
-using MagpieUpdater.Properties;
 using MagpieUpdater.Services;
 
 namespace MagpieUpdater.ViewModels
@@ -30,7 +24,6 @@ namespace MagpieUpdater.ViewModels
             get { return _emailAddress; }
             set
             {
-                _emailAddress = value;
                 SetProperty(ref _emailAddress, value);
                 EnrollCommand.RaiseCanExecuteChanged();
             }
@@ -39,25 +32,16 @@ namespace MagpieUpdater.ViewModels
         public string ChannelName
         {
             get { return _channelName; }
-            set
-            {
-                _channelName = value;
-                SetProperty(ref _channelName, value);
-                
-            }
+            set { SetProperty(ref _channelName, value); }
         }
 
         public string EnrollmentEulaUrl
         {
             get { return _enrollmentEulaUrl; }
-            set
-            {
-                _enrollmentEulaUrl = value;
-                SetProperty(ref _enrollmentEulaUrl, value);
-            }
+            set { SetProperty(ref _enrollmentEulaUrl, value); }
         }
 
-        public DelegateCommand EnrollCommand { get; set; }
+        public DelegateCommand EnrollCommand { get; private set; }
 
         public EnrollmentViewModel(Enrollment enrollment, AppInfo appInfo)
         {

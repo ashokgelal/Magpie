@@ -13,7 +13,7 @@ namespace MagpieUpdater.Models
         public int Id { get; protected set; }
 
         [DataMember(Name = "build", IsRequired = false)]
-        public string Build { get; private set; }
+        public string Build { get; protected set; }
 
         [DataMember(Name = "version", IsRequired = true)] private string _version;
         public Version Version { get; protected set; }
@@ -31,7 +31,7 @@ namespace MagpieUpdater.Models
         public bool RequiresEnrollment { get; private set; }
 
         [DataMember(Name = "enrollment_eula_url", IsRequired = false)]
-        public string EnrollmentEulaUrl { get; private set; }
+        public string EnrollmentEulaUrl { get; protected set; }
 
         // Dates example:
         // e.g. January 30, 2015 18:15:00 +0200

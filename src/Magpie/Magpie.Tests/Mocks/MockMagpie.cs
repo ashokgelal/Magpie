@@ -10,16 +10,19 @@ namespace Magpie.Tests.Mocks
     internal class MockMagpie : MagpieUpdater.Services.Magpie
     {
         private readonly string VALID_JSON =
-            @"{'foo': 'bar', 'channels': [{ 'id': 2, 'version': '5.8.8', 'release_notes_url': 'release_notes_url_http', 'artifact_url': 'artifact_url_http', 'build_date': '01/28/2017'}, { 'id': 3, 'version': '6.8.8', 'release_notes_url': 'release_notes_url_http', 'artifact_url': 'artifact_url_http', 'build_date': '01/28/2017'}]}"
+            @"{'foo': 'bar', 'channels': [{ 'id': 2, 'version': '5.8.8', 'release_notes_url': 'release_notes_url_http', 'artifact_url': 'artifact_url_http', 'build_date': '01/28/2017'}, { 'id': 3, 'version': '6.8.8', 'release_notes_url': 'release_notes_url_http', 'artifact_url': 'artifact_url_http', 'build_date': '01/28/2017'}, { 'id': 4, 'version': '7.8.8', 'release_notes_url': 'release_notes_url_http', 'artifact_url': 'artifact_url_http', 'build_date': '01/28/2017', 'requires_enrollment': 'true', 'enrollment_eula_url': 'enrollment_url'}]}"
                 .MakeJson();
+
 
         internal RemoteAppcast RemoteAppcast { get; private set; }
         internal bool _showUpdateWindowFlag;
         internal bool _showNoUpdatesWindowFlag;
         internal IRemoteContentDownloader _remoteContentDownloader;
+        internal bool _showEnrollmentWindow;
+        internal Enrollment _enrollmentToReturn;
 
-        public MockMagpie(string validUrl, IDebuggingInfoLogger infoLogger = null)
-            : base(new AppInfo(validUrl), infoLogger)
+        public MockMagpie(string validUrl, IDebuggingInfoLogger infoLogger = null, IAnalyticsLogger analyticsLogger = null)
+            : base(new AppInfo(validUrl), infoLogger, analyticsLogger)
         {
             _remoteContentDownloader = Substitute.For<IRemoteContentDownloader>();
             _remoteContentDownloader.DownloadStringContent(validUrl, Arg.Any<IDebuggingInfoLogger>()).Returns(Task.FromResult(VALID_JSON));
@@ -46,6 +49,13 @@ namespace Magpie.Tests.Mocks
 
         protected override void ShowErrorWindow()
         {
+        }
+
+        protected override void ShowEnrollmentWindow(Enrollment enrollment)
+        {
+            _showEnrollmentWindow = true;
+            enrollment.IsEnrolled = _enrollmentToReturn.IsEnrolled;
+            enrollment.Email = _enrollmentToReturn.Email;
         }
     }
 }
