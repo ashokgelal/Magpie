@@ -14,12 +14,14 @@ namespace Magpie.Tests.Services
     public class MagpieTest
     {
         private MockMagpie _mockMagpie;
+        private IAnalyticsLogger _analyticsLogger;
 
         [TestInitialize]
         public void Initialize()
         {
             AssemblyInjector.Inject();
-            _mockMagpie = new MockMagpie("validContentUrl");
+            _analyticsLogger = Substitute.For<IAnalyticsLogger>();
+            _mockMagpie = new MockMagpie("validContentUrl", analyticsLogger: _analyticsLogger);
         }
 
         [TestMethod]
@@ -108,6 +110,98 @@ namespace Magpie.Tests.Services
             _mockMagpie.SwitchSubscribedChannel(3);
             _mockMagpie.ForceCheckInBackground();
             updateDecider.Received(2).ShouldUpdate(Arg.Is<Channel>(e => e.Id == 3), true);
+        }
+
+        [TestMethod]
+        public void SwitchingToChannelThatDoesNotRequireEnrollment_ChecksForUpdates()
+        {
+            var updateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
+            updateDecider.ShouldUpdate(Arg.Any<Channel>(), true).Returns(false);
+            _mockMagpie.UpdateDecider = updateDecider;
+            _mockMagpie.SwitchSubscribedChannel(3);
+            
+            Assert.IsFalse(_mockMagpie._showEnrollmentWindow);
+            updateDecider.Received(1).ShouldUpdate(Arg.Is<Channel>(e => e.Id == 3), true);
+        }
+
+        [TestMethod]
+        public void SwitchingToChannelThatRequiresEnrollment_ShowsEnrollmentWindow()
+        {
+            _mockMagpie.SwitchSubscribedChannel(4);
+            Assert.IsTrue(_mockMagpie._showEnrollmentWindow);
+        }
+
+        [TestMethod]
+        public void SwitchingChannel_FailingToEnroll_DoesNotCheckForUpdates()
+        {
+            var updateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
+            _mockMagpie.UpdateDecider = updateDecider;
+            _mockMagpie._enrollmentToReturn = new Enrollment(new Channel()){IsEnrolled = false};
+            _mockMagpie.SwitchSubscribedChannel(4);
+
+            Assert.IsTrue(_mockMagpie._showEnrollmentWindow);
+            updateDecider.DidNotReceive().ShouldUpdate(Arg.Any<Channel>(), Arg.Any<bool>());
+        }
+
+        [TestMethod]
+        public void SwitchingChannel_SuccessfullyEnrolled_CheckForUpdates()
+        {
+            var updateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
+            _mockMagpie.UpdateDecider = updateDecider;
+            updateDecider.ShouldUpdate(Arg.Any<Channel>(), true).Returns(false);
+            _mockMagpie._enrollmentToReturn = new Enrollment(new Channel()) { IsEnrolled = true };
+            _mockMagpie.SwitchSubscribedChannel(4);
+
+            Assert.IsTrue(_mockMagpie._showEnrollmentWindow);
+            updateDecider.Received(1).ShouldUpdate(Arg.Is<Channel>(e => e.Id == 4), true);
+        }
+
+        [TestMethod]
+        public void SwitchingChannel_LogsEnrollment()
+        {
+            _mockMagpie.SwitchSubscribedChannel(3);
+            _analyticsLogger.Received(1).LogEnrollment(Arg.Any<Enrollment>());
+        }
+
+        [TestMethod]
+        public void SwitchingChannel_EnrollmentAvailableEventGetsFired()
+        {
+            var raised = false;
+            _mockMagpie.EnrollmentAvailableEvent += (s, a) => { raised = true; };
+            _mockMagpie.SwitchSubscribedChannel(3);
+            Assert.IsTrue(raised);
+        }
+
+        [TestMethod]
+        public void SwitchingChannel_SuccessfullyEnrolled_UpdatesSubscribedChannel()
+        {
+            var updateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
+            _mockMagpie.UpdateDecider = updateDecider;
+            updateDecider.ShouldUpdate(Arg.Any<Channel>(), true).Returns(false);
+            _mockMagpie._enrollmentToReturn = new Enrollment(new Channel()) { IsEnrolled = true };
+            _mockMagpie.SwitchSubscribedChannel(4);
+
+            Assert.AreEqual(4, _mockMagpie.AppInfo.SubscribedChannel);
+        }
+
+        [TestMethod]
+        public void SwitchingChannel_FailingToEnroll_DoesNotUpdateSubscribedChannel()
+        {
+            _mockMagpie._enrollmentToReturn = new Enrollment(new Channel()) { IsEnrolled = false };
+            _mockMagpie.SwitchSubscribedChannel(4);
+
+            Assert.AreNotEqual(4, _mockMagpie.AppInfo.SubscribedChannel);
+        }
+
+        [TestMethod] 
+        public void SwitchingToChannelThatDoesNotRequireEnrollment_UpdatesSubscribedChannel()
+        {
+            var updateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
+            updateDecider.ShouldUpdate(Arg.Any<Channel>(), true).Returns(false);
+            _mockMagpie.UpdateDecider = updateDecider;
+            _mockMagpie.SwitchSubscribedChannel(3);
+            
+            Assert.AreEqual(3, _mockMagpie.AppInfo.SubscribedChannel);
         }
     }
 }

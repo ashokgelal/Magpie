@@ -16,6 +16,7 @@ namespace MagpieUpdater.Views
     public partial class MainWindow
     {
         private MainWindowViewModel _viewModel;
+        private bool _firstPageLoaded;
         public static string CustomStylesFilename = "Resources/MagpieStyles.xaml";
 
         internal MainWindowViewModel ViewModel
@@ -63,6 +64,17 @@ namespace MagpieUpdater.Views
             {
                 viewModel.SkipThisVersionCommand.Execute(null);
             }
+        }
+
+        private void ReleaseNotesBrowser_OnNavigating(object sender, NavigatingCancelEventArgs e)
+        {
+            if (!_firstPageLoaded)
+            {
+                _firstPageLoaded = true;
+                return;
+            }
+            e.Cancel = true;
+            Process.Start(e.Uri.ToString());
         }
     }
 
@@ -198,7 +210,7 @@ namespace MagpieUpdater.Views
         }
     }
 
-    internal class NoIconBehavior
+    public class NoIconBehavior
     {
         private const int GwlExstyle = -20;
         private const int SwpFramechanged = 0x0020;

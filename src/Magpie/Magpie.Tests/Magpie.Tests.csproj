@@ -61,6 +61,7 @@
     <Compile Include="Models\HelpersTest.cs" />
     <Compile Include="Services\MagpieTest.cs" />
     <Compile Include="Services\UpdateDeciderTest.cs" />
+    <Compile Include="ViewModels\EnrollmentViewModelTest.cs" />
     <Compile Include="ViewModels\MainWindowViewModelTest.cs" />
     <Compile Include="Mocks\MockMagpie.cs" />
     <Compile Include="Mocks\MockMainWindowViewModel.cs" />

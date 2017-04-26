@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
 using MagpieUpdater.Interfaces;
@@ -20,6 +21,7 @@ namespace MagpieUpdater.Services
         internal IRemoteContentDownloader RemoteContentDownloader { get; set; }
         public event EventHandler<SingleEventArgs<RemoteAppcast>> RemoteAppcastAvailableEvent;
         public event EventHandler<SingleEventArgs<string>> ArtifactDownloadedEvent;
+        public event EventHandler<SingleEventArgs<Enrollment>> EnrollmentAvailableEvent;
 
         public Magpie(AppInfo appInfo, IDebuggingInfoLogger debuggingInfoLogger = null,
             IAnalyticsLogger analyticsLogger = null)
@@ -34,24 +36,23 @@ namespace MagpieUpdater.Services
 
         public async void CheckInBackground(string appcastUrl = null, bool showDebuggingWindow = false)
         {
-            await Check(appcastUrl ?? AppInfo.AppCastUrl, AppInfo.SubscribedChannel, showDebuggingWindow)
-                .ConfigureAwait(false);
+            await Check(appcastUrl ?? AppInfo.AppCastUrl, CheckState.InBackground, AppInfo.SubscribedChannel,
+                showDebuggingWindow).ConfigureAwait(false);
         }
 
         public async void ForceCheckInBackground(string appcastUrl = null, bool showDebuggingWindow = false)
         {
-            await Check(appcastUrl ?? AppInfo.AppCastUrl, AppInfo.SubscribedChannel, showDebuggingWindow, true)
-                .ConfigureAwait(false);
+            await Check(appcastUrl ?? AppInfo.AppCastUrl, CheckState.Force, AppInfo.SubscribedChannel,
+                showDebuggingWindow).ConfigureAwait(false);
         }
 
         public async void SwitchSubscribedChannel(int channelId, bool showDebuggingWindow = false)
         {
-            AppInfo.SubscribedChannel = channelId;
-            await Check(AppInfo.AppCastUrl, channelId, showDebuggingWindow, true).ConfigureAwait(false);
+            await Check(AppInfo.AppCastUrl, CheckState.ChannelSwitch, channelId, showDebuggingWindow)
+                .ConfigureAwait(false);
         }
 
-        private async Task Check(string appcastUrl, int channelId = 1, bool showDebuggingWindow = false,
-            bool forceCheck = false)
+        private async Task Check(string appcastUrl, CheckState checkState, int channelId = 1, bool showDebuggingWindow = false)
         {
             _logger.Log(string.Format("Starting fetching remote channel content from address: {0}", appcastUrl));
             try
@@ -59,7 +60,7 @@ namespace MagpieUpdater.Services
                 var data = await RemoteContentDownloader.DownloadStringContent(appcastUrl, _logger).ConfigureAwait(true);
                 if (string.IsNullOrWhiteSpace(data))
                 {
-                    if (forceCheck)
+                    if (checkState == CheckState.Force || checkState == CheckState.ChannelSwitch)
                     {
                         ShowErrorWindow();
                     }
@@ -67,17 +68,21 @@ namespace MagpieUpdater.Services
                 }
 
                 var appcast = ParseAppcast(data);
-                OnRemoteAppcastAvailableEvent(new SingleEventArgs<RemoteAppcast>(appcast));
+
+                if (checkState == CheckState.ChannelSwitch && FailedToEnroll(appcast, channelId)) return;
+
                 var channelToUpdateFrom = BestChannelFinder.Find(channelId, appcast.Channels);
-                if (UpdateDecider.ShouldUpdate(channelToUpdateFrom, forceCheck))
+
+                if (UpdateDecider.ShouldUpdate(channelToUpdateFrom, checkState == CheckState.Force || checkState == CheckState.ChannelSwitch))
                 {
                     _analyticsLogger.LogUpdateAvailable(channelToUpdateFrom);
                     await ShowUpdateWindow(channelToUpdateFrom);
                 }
-                else if (forceCheck)
+                else if (checkState == CheckState.Force)
                 {
                     ShowNoUpdatesWindow();
                 }
+                AppInfo.SubscribedChannel = channelId;
             }
             catch (Exception ex)
             {
@@ -87,6 +92,29 @@ namespace MagpieUpdater.Services
             {
                 _logger.Log("Finished fetching remote channel content");
             }
+        }
+
+        private bool FailedToEnroll(RemoteAppcast appcast, int channelId)
+        {
+            var channel = appcast.Channels.FirstOrDefault(c => c.Id == channelId);
+            var enrollment = new Enrollment(channel);
+            if (channel != null && channel.RequiresEnrollment)
+            {
+                enrollment.IsRequired = true;
+                ShowEnrollmentWindow(enrollment);
+            }
+            _analyticsLogger.LogEnrollment(enrollment);
+            OnEnrollmentAvailableEvent(new SingleEventArgs<Enrollment>(enrollment));
+            return enrollment.IsRequired && !enrollment.IsEnrolled;
+        }
+
+        protected virtual void ShowEnrollmentWindow(Enrollment enrollment)
+        {
+            var viewModel = new EnrollmentViewModel(enrollment, AppInfo);
+            var window = new EnrollmentWindow { DataContext = viewModel };
+            SetOwner(window);
+            OnWindowWillBeDisplayed(window, enrollment.Channel);
+            window.ShowDialog();
         }
 
         protected virtual async Task ShowUpdateWindow(Channel channel)
@@ -159,7 +187,7 @@ namespace MagpieUpdater.Services
 
             var savedAt = await viewModel.StartAsync(channel, artifactPath).ConfigureAwait(true);
             finishedDownloading[0] = true;
-            ((DelegateCommand)viewModel.ContinueWithInstallationCommand).RaiseCanExecuteChanged();
+            ((DelegateCommand) viewModel.ContinueWithInstallationCommand).RaiseCanExecuteChanged();
 
             if (string.IsNullOrWhiteSpace(savedAt))
             {
@@ -220,6 +248,7 @@ namespace MagpieUpdater.Services
             _logger.Log("Started deserializing remote channel content");
             var appcast = RemoteAppcast.MakeFromJson(content);
             _logger.Log("Finished deserializing remote channel content");
+            OnRemoteAppcastAvailableEvent(new SingleEventArgs<RemoteAppcast>(appcast));
             return appcast;
         }
 
@@ -232,6 +261,12 @@ namespace MagpieUpdater.Services
         protected virtual void OnArtifactDownloadedEvent(SingleEventArgs<string> args)
         {
             var handler = ArtifactDownloadedEvent;
+            if (handler != null) handler(this, args);
+        }
+
+        protected virtual void OnEnrollmentAvailableEvent(SingleEventArgs<Enrollment> args)
+        {
+            var handler = EnrollmentAvailableEvent;
             if (handler != null) handler(this, args);
         }
     }
