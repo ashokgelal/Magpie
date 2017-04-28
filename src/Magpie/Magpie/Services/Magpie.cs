@@ -52,7 +52,11 @@ namespace MagpieUpdater.Services
                 .ConfigureAwait(false);
         }
 
-        private async Task Check(string appcastUrl, CheckState checkState, int channelId = 1, bool showDebuggingWindow = false)
+        public Task<bool> SwitchSubscribedChannelAsync(int channelId, bool showDebuggingWindow = false)
+        {
+            return Check(AppInfo.AppCastUrl, CheckState.ChannelSwitch, channelId, showDebuggingWindow);
+        }
+
         private async Task<bool> Check(string appcastUrl, CheckState checkState, int channelId = 1, bool showDebuggingWindow = false)
         {
             _logger.Log(string.Format("Starting fetching remote channel content from address: {0}", appcastUrl));
