@@ -74,7 +74,7 @@ namespace MagpieUpdater.Services
 
                 var appcast = ParseAppcast(data);
 
-                if (checkState == CheckState.ChannelSwitch && FailedToEnroll(appcast, channelId))
+                if (checkState == CheckState.ChannelSwitch && CheckIfFailedToEnroll(appcast, channelId))
                 {
                     return false;
                 }
@@ -104,7 +104,7 @@ namespace MagpieUpdater.Services
             }
         }
 
-        private bool FailedToEnroll(RemoteAppcast appcast, int channelId)
+        private bool CheckIfFailedToEnroll(RemoteAppcast appcast, int channelId)
         {
             var channel = appcast.Channels.FirstOrDefault(c => c.Id == channelId);
             var enrollment = new Enrollment(channel);
@@ -113,7 +113,6 @@ namespace MagpieUpdater.Services
                 enrollment.IsRequired = true;
                 ShowEnrollmentWindow(enrollment);
             }
-            _analyticsLogger.LogEnrollment(enrollment);
             OnEnrollmentAvailableEvent(new SingleEventArgs<Enrollment>(enrollment));
             return enrollment.IsRequired && !enrollment.IsEnrolled;
         }
@@ -276,6 +275,7 @@ namespace MagpieUpdater.Services
 
         protected virtual void OnEnrollmentAvailableEvent(SingleEventArgs<Enrollment> args)
         {
+            _analyticsLogger.LogEnrollment(args.Payload);
             var handler = EnrollmentAvailableEvent;
             if (handler != null) handler(this, args);
         }
