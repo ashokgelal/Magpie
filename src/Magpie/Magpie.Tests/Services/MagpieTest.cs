@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Magpie.Tests.Mocks;
 using MagpieUpdater.Interfaces;
 using MagpieUpdater.Models;
@@ -194,7 +195,7 @@ namespace Magpie.Tests.Services
         }
 
         [TestMethod] 
-        public void SwitchingToChannelThatDoesNotRequireEnrollment_UpdatesSubscribedChannel()
+        public void SwitchingChannel_ChannelDoesNotRequireEnrollment_UpdatesSubscribedChannel()
         {
             var updateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
             updateDecider.ShouldUpdate(Arg.Any<Channel>(), true).Returns(false);
@@ -202,6 +203,47 @@ namespace Magpie.Tests.Services
             _mockMagpie.SwitchSubscribedChannel(3);
             
             Assert.AreEqual(3, _mockMagpie.AppInfo.SubscribedChannel);
+        }
+
+        [TestMethod]
+        public async Task SwitchingChannelAsync_SuccessfullyEnrolled_ReturnsTrue()
+        {
+            var updateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
+            _mockMagpie.UpdateDecider = updateDecider;
+            updateDecider.ShouldUpdate(Arg.Any<Channel>(), true).Returns(false);
+            _mockMagpie._enrollmentToReturn = new Enrollment(new Channel()) { IsEnrolled = true };
+            var success = await _mockMagpie.SwitchSubscribedChannelAsync(4);
+
+            Assert.IsTrue(success);
+        }
+
+        [TestMethod]
+        public async Task SwitchingAsync_ChannelDoesNotRequireEnrollment_ReturnsTrue()
+        {
+            var updateDecider = Substitute.For<UpdateDecider>(new DebuggingWindowViewModel());
+            updateDecider.ShouldUpdate(Arg.Any<Channel>(), true).Returns(false);
+            _mockMagpie.UpdateDecider = updateDecider;
+            var success = await _mockMagpie.SwitchSubscribedChannelAsync(3);
+
+            Assert.IsTrue(success);
+        }
+
+        [TestMethod]
+        public async Task SwitchingChannelAsync_FailingToEnroll_ReturnsFalse()
+        {
+            _mockMagpie._enrollmentToReturn = new Enrollment(new Channel()) { IsEnrolled = false };
+            var success = await _mockMagpie.SwitchSubscribedChannelAsync(4);
+
+            Assert.IsFalse(success);
+        }
+
+        [TestMethod]
+        public async Task SwitchingAsync_AppCastIsEmpty_ReturnsFalse()
+        {
+            _mockMagpie.RemoteContentDownloader.DownloadStringContent(Arg.Any<string>(), Arg.Any<IDebuggingInfoLogger>()).Returns(Task.FromResult(string.Empty));
+            var success = await _mockMagpie.SwitchSubscribedChannelAsync(3);
+
+            Assert.IsFalse(success);
         }
     }
 }

@@ -41,7 +41,7 @@ namespace MagpieUpdater.Services
         {
         }
 
-        public void LogEnrollment(Enrollment enrollment)
+        public virtual void LogEnrollment(Enrollment enrollment)
         {
         }
     }
