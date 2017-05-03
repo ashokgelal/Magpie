@@ -9,4 +9,5 @@
     <system:String x:Key="_enroll">Enroll</system:String>
     <system:String x:Key="_enrollMsg">Please provide your email address to join the {0} Program</system:String>
     <system:String x:Key="_eulaMsg" xml:space="preserve">By enrolling in this program you agree with our </system:String>
+    <system:String x:Key="_eula">Terms and Condtions</system:String>
 </ResourceDictionary>
