@@ -52,7 +52,12 @@ namespace MagpieUpdater.Services
                 .ConfigureAwait(false);
         }
 
-        private async Task Check(string appcastUrl, CheckState checkState, int channelId = 1, bool showDebuggingWindow = false)
+        public Task<bool> SwitchSubscribedChannelAsync(int channelId, bool showDebuggingWindow = false)
+        {
+            return Check(AppInfo.AppCastUrl, CheckState.ChannelSwitch, channelId, showDebuggingWindow);
+        }
+
+        private async Task<bool> Check(string appcastUrl, CheckState checkState, int channelId = 1, bool showDebuggingWindow = false)
         {
             _logger.Log(string.Format("Starting fetching remote channel content from address: {0}", appcastUrl));
             try
@@ -64,12 +69,15 @@ namespace MagpieUpdater.Services
                     {
                         ShowErrorWindow();
                     }
-                    return;
+                    return false;
                 }
 
                 var appcast = ParseAppcast(data);
 
-                if (checkState == CheckState.ChannelSwitch && FailedToEnroll(appcast, channelId)) return;
+                if (checkState == CheckState.ChannelSwitch && CheckIfFailedToEnroll(appcast, channelId))
+                {
+                    return false;
+                }
 
                 var channelToUpdateFrom = BestChannelFinder.Find(channelId, appcast.Channels);
 
@@ -83,10 +91,12 @@ namespace MagpieUpdater.Services
                     ShowNoUpdatesWindow();
                 }
                 AppInfo.SubscribedChannel = channelId;
+                return true;
             }
             catch (Exception ex)
             {
                 _logger.Log(string.Format("Error parsing remote channel: {0}", ex.Message));
+                return false;
             }
             finally
             {
@@ -94,7 +104,7 @@ namespace MagpieUpdater.Services
             }
         }
 
-        private bool FailedToEnroll(RemoteAppcast appcast, int channelId)
+        private bool CheckIfFailedToEnroll(RemoteAppcast appcast, int channelId)
         {
             var channel = appcast.Channels.FirstOrDefault(c => c.Id == channelId);
             var enrollment = new Enrollment(channel);
@@ -103,7 +113,6 @@ namespace MagpieUpdater.Services
                 enrollment.IsRequired = true;
                 ShowEnrollmentWindow(enrollment);
             }
-            _analyticsLogger.LogEnrollment(enrollment);
             OnEnrollmentAvailableEvent(new SingleEventArgs<Enrollment>(enrollment));
             return enrollment.IsRequired && !enrollment.IsEnrolled;
         }
@@ -266,6 +275,7 @@ namespace MagpieUpdater.Services
 
         protected virtual void OnEnrollmentAvailableEvent(SingleEventArgs<Enrollment> args)
         {
+            _analyticsLogger.LogEnrollment(args.Payload);
             var handler = EnrollmentAvailableEvent;
             if (handler != null) handler(this, args);
         }

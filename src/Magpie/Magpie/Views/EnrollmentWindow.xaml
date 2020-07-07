@@ -63,7 +63,7 @@
                    Text="{DynamicResource _eulaMsg}"
                    TextWrapping="Wrap">
             <Hyperlink NavigateUri="{Binding EnrollmentEulaUrl}" RequestNavigate="NavigateUri">
-                <Run Text="EULA"/>
+                <Run Text="{DynamicResource _eula}"/>
             </Hyperlink>
         </TextBlock>
         <Border Grid.Row="3"
