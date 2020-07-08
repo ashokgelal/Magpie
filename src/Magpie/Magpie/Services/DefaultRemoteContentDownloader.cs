@@ -7,6 +7,11 @@ namespace MagpieUpdater.Services
 {
     internal class DefaultRemoteContentDownloader : IRemoteContentDownloader
     {
+        public DefaultRemoteContentDownloader()
+        {
+            ServicePointManager.Expect100Continue = true;
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12 | SecurityProtocolType.Ssl3;
+        }
         public async Task<string> DownloadStringContent(string url, IDebuggingInfoLogger logger = null)
         {
             try
