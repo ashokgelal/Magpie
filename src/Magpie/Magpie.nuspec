@@ -2,16 +2,17 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Magpie</id>
-    <version>1.0.3-beta</version>
+    <version>0.4.1-beta</version>
     <authors>MetaGeek, LLC</authors>
     <projectUrl>https://github.com/metageek-llc/Magpie</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>A modern software update framework for .NET applications.</description>
     <dependencies>
-      <dependency id="CommonMark.NET" version="0.9.1" />
+      <dependency id="Markdig" version="0.10.4" />
     </dependencies>
   </metadata>
   <files>
-    <file src="Magpie\bin\Release\Magpie.dll" target="lib\Magpie.dll" />
+    <file src="Magpie\bin\Release\Magpie.dll" target="lib\net45\Magpie.dll" />
+	<file src="Magpie\bin\Release\Magpie.dll" target="lib\net451\Magpie.dll" />
   </files>
 </package>
